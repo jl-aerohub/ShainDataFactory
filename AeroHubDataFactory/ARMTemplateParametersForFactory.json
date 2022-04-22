@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "AeroHubDataFactory"
+		},
+		"AerohubStorageAccount_connectionString": {
+			"value": ""
+		},
+		"ErrorTesting_connectionString": {
+			"value": ""
+		},
+		"Initial_QIF_in_connectionString": {
+			"value": ""
+		},
+		"MFIN Database_connectionString": {
+			"value": ""
+		},
+		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"InitialQIFIn Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		},
+		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"Measurement_QIF_Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		}
+	}
+}

@@ -1,0 +1,132 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AeroHubDataFactory"
+		},
+		"AerohubStorageAccount_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AerohubStorageAccount'"
+		},
+		"ErrorTesting_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ErrorTesting'"
+		},
+		"Initial_QIF_in_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Initial_QIF_in'"
+		},
+		"MFIN Database_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'MFIN Database'"
+		},
+		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"InitialQIFIn Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		},
+		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Measurement_QIF_Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "AeroHubDataFactory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AerohubStorageAccount_connectionString": {
+						"value": "[parameters('AerohubStorageAccount_connectionString')]"
+					},
+					"ErrorTesting_connectionString": {
+						"value": "[parameters('ErrorTesting_connectionString')]"
+					},
+					"Initial_QIF_in_connectionString": {
+						"value": "[parameters('Initial_QIF_in_connectionString')]"
+					},
+					"MFIN Database_connectionString": {
+						"value": "[parameters('MFIN Database_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "AeroHubDataFactory_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName": {
+						"value": "[parameters('InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName')]"
+					},
+					"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath": {
+						"value": "[parameters('InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath')]"
+					},
+					"InitialQIFIn Trigger_properties_typeProperties_scope": {
+						"value": "[parameters('InitialQIFIn Trigger_properties_typeProperties_scope')]"
+					},
+					"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
+						"value": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName')]"
+					},
+					"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
+						"value": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath')]"
+					},
+					"Measurement_QIF_Trigger_properties_typeProperties_scope": {
+						"value": "[parameters('Measurement_QIF_Trigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'AeroHubDataFactory_ArmTemplate_0')]"
+			]
+		}
+	]
+}
