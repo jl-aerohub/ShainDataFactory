@@ -1,0 +1,32 @@
+{
+	"name": "Character_Feature_Reference_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Initial_QIF_in",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "QPID",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Featureid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Characteristicid",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CharacteristicFeatureReference"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

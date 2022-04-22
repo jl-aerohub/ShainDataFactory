@@ -1,0 +1,40 @@
+{
+	"name": "Actual_Components_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Initial_QIF_in",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Resultid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SerialNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "Status",
+				"type": "varchar"
+			},
+			{
+				"name": "QPID",
+				"type": "uniqueidentifier"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ActualComponentSet"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

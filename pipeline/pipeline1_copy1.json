@@ -1,0 +1,168 @@
+{
+	"name": "pipeline1_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('pathKeys')",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "dataflow1_copy1",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "1.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "dataflow1_copy1",
+									"type": "DataFlowReference",
+									"parameters": {
+										"fullPath": {
+											"value": "'@{pipeline().parameters.pathKeyValues.values[item()]}'",
+											"type": "Expression"
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "None",
+								"runConcurrently": true
+							}
+						},
+						{
+							"name": "Append variable1",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "dataflow1_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "outputValues",
+								"value": {
+									"value": "@json(concat('{',item(),':',activity('dataflow1_copy1').output.runStatus.output.sink1.value[0].ColumnNames,'}'))",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select idmax from QIFDocument where QPID = 'fae53ecd-0594-4514-ace4-e3f692368342'",
+							"type": "Expression"
+						},
+						"queryTimeout": "00:05:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "QIFDocumentTable",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "idMax",
+					"value": {
+						"value": "@string(activity('Lookup1').output.firstRow.idmax)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pathKeyValues": {
+				"type": "object",
+				"defaultValue": {
+					"values": {
+						"FeatureItems": "QIFDocument.Features.FeatureItems",
+						"CharacteristicItems": "QIFDocument.Characteristics.CharacteristicItems"
+					}
+				}
+			}
+		},
+		"variables": {
+			"featureNameVar": {
+				"type": "String"
+			},
+			"outputValues": {
+				"type": "Array"
+			},
+			"featureTableVar": {
+				"type": "String"
+			},
+			"pathKeys": {
+				"type": "Array",
+				"defaultValue": [
+					"FeatureItems",
+					"CharacteristicItems",
+					"MeasurementResults"
+				]
+			},
+			"idMax": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Shain"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-22T19:33:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

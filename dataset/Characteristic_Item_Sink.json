@@ -1,0 +1,40 @@
+{
+	"name": "Characteristic_Item_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Initial_QIF_in",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CharacteristicType",
+				"type": "varchar"
+			},
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Name",
+				"type": "varchar"
+			},
+			{
+				"name": "CharacteristicNominalid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "QPID",
+				"type": "uniqueidentifier"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CharacteristicItems"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

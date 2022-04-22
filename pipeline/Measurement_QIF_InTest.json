@@ -1,0 +1,138 @@
+{
+	"name": "Measurement_QIF_InTest",
+	"properties": {
+		"activities": [
+			{
+				"name": "Measurement_QIF_In",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "measurementqifin/@{replace(pipeline().parameters.FilePath,'measurementqifin','')}/@{pipeline().parameters.FileName}"
+					},
+					{
+						"name": "Destination",
+						"value": "dbo.FeatureItems"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "XmlSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "XmlReadSettings",
+							"validationMode": "none",
+							"detectDataType": true,
+							"namespaces": true
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['QIFDocument']['QPId']"
+								},
+								"sink": {
+									"name": "QPID",
+									"type": "Guid"
+								}
+							},
+							{
+								"source": {
+									"path": "$['QIFDocument']['Features']['FeatureItems']['CylinderFeatureItem'][0]['FeatureNominalId']"
+								},
+								"sink": {
+									"name": "FeatureNominalid",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['QIFDocument']['Features']['FeatureItems']['CylinderFeatureItem'][0]['FeatureName']"
+								},
+								"sink": {
+									"name": "FeatureName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['QIFDocument']['Features']['FeatureItems']['CylinderFeatureItem'][0]['@id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['QIFDocument']['Features']['FeatureItems']['CylinderFeatureItem']"
+								},
+								"sink": {
+									"name": "FeatureType",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "$['QIFDocument']['Features']['FeatureItems']['CylinderFeatureItem']",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Measurement_QIF_In",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"FilePath": {
+								"value": "@pipeline().parameters.FilePath",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Feature_Item_Sink",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "AerohubHoleBlock242_3_0_wResultTest.xml"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "measurementqifin"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-14T20:02:35Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,145 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Select All Items Dataflow",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1_copy1",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "integrationRuntime1",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "None"
+				}
+			},
+			{
+				"name": "Iterate Selected Items",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('outputValues')",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "featureNameVar",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Current Item Dataflow",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "1.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "dataflow2",
+									"type": "DataFlowReference",
+									"parameters": {
+										"featureItemName": {
+											"value": "'@{variables('featureNameVar')}'",
+											"type": "Expression"
+										},
+										"tableName": {
+											"value": "'@{variables('featureTableVar')}'",
+											"type": "Expression"
+										}
+									}
+								},
+								"integrationRuntime": {
+									"referenceName": "integrationRuntime1",
+									"type": "IntegrationRuntimeReference"
+								},
+								"traceLevel": "Fine",
+								"runConcurrently": true
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Select All Items Dataflow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "outputValues",
+					"value": {
+						"value": "@activity('Select All Items Dataflow').output.runStatus.output.sink1.value[0].ColumnNames",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"featureNameVar": {
+				"type": "String"
+			},
+			"outputValues": {
+				"type": "Array"
+			},
+			"featureTableVar": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Shain"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-22T19:33:58Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

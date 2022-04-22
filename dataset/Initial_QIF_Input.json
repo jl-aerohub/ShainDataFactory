@@ -1,0 +1,36 @@
+{
+	"name": "Initial_QIF_Input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AerohubStorageAccount",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.FileName"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "@replace(dataset().FilePath,'initialqifin','')"
+			}
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@replace(dataset().FilePath,'initialqifin','')",
+					"type": "Expression"
+				},
+				"container": "initialqifin"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

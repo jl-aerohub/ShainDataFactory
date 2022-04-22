@@ -1,0 +1,36 @@
+{
+	"name": "Measurement_QIF_In",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AerohubStorageAccount",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.FileName"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "@replace(dataset().FilePath,'measurementqifin','')"
+			}
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@replace(dataset().FilePath,'measurementqifin','')",
+					"type": "Expression"
+				},
+				"container": "measurementqifin"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

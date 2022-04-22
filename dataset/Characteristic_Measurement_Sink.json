@@ -1,0 +1,65 @@
+{
+	"name": "Characteristic_Measurement_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Initial_QIF_in",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Resultsid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CharacteristicType",
+				"type": "varchar"
+			},
+			{
+				"name": "Status",
+				"type": "varchar"
+			},
+			{
+				"name": "CharacteristicItemid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MeasuredFeatureid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ActualComponentid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Value",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "DecimalPlaces",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "QPID",
+				"type": "uniqueidentifier"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MeasuredCharacteristics"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "AeroHubDataFactory",
+	"properties": {
+		"globalParameters": {
+			"IDMAX": {
+				"type": "int",
+				"value": 0
+			}
+		}
+	},
+	"location": "usgovvirginia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "91c220de-209e-4e32-9a03-b7d2f6ff265d",
+		"tenantId": "7f105a4d-39ff-4fe6-933b-9c745b1a9a6d"
+	}
+}
