@@ -346,7 +346,7 @@
 					"name": "AddIDMax"
 				},
 				{
-					"name": "QPIDSelect"
+					"name": "IDMaxSelect"
 				},
 				{
 					"name": "QIFDocumentSelect"
@@ -794,7 +794,7 @@
 				"IDMaxJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> IDMaxKey",
-				"VersionJoin, QPIDSelect join(1==1,",
+				"VersionJoin, IDMaxSelect join(1==1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
 				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
@@ -802,7 +802,7 @@
 				"          IDMax",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> QPIDSelect",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
 				"AddIDMax select(mapColumn(",
 				"          QPID,",
 				"          UpdateidMax = Updateid",
