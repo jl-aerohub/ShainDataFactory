@@ -10,6 +10,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -681,6 +688,12 @@
 				},
 				{
 					"name": "union16"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -699,6 +712,20 @@
 				"     inferDriftedColumnReferences: true,",
 				"     preferredIntegralReference: 'integer',",
 				"     preferredFractionalReference: 'float') ~> MeasurementQIFIn",
+				"source(output(",
+				"          FeatureType as string,",
+				"          id as integer,",
+				"          FeatureNominalid as integer,",
+				"          FeatureName as string,",
+				"          QPID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'FeatureItems',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> source1",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicItems.AngleBetweenCharacteristicItem),",
 				"     mapColumn(",
 				"          QPID = QPId,",
@@ -1946,7 +1973,17 @@
 				"union71, WeldCompoundReference union(byName: true)~> union72",
 				"union72 alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
 				"union15, DistanceBetweenReference union(byName: true)~> union16",
-				"RemoveNullRows sink(allowSchemaDrift: true,",
+				"RemoveNullRows, select1 lookup(Featureid == id,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup1",
+				"source1 select(mapColumn(",
+				"          FeatureNominalid,",
+				"          id,",
+				"          QPID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          QPID as string,",
