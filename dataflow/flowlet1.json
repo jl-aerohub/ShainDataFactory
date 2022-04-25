@@ -18,6 +18,9 @@
 			"sinks": [],
 			"transformations": [
 				{
+					"name": "select1"
+				},
+				{
 					"name": "output1"
 				}
 			],
@@ -37,7 +40,9 @@
 				"     resultSet: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     inputs:['@QPID' -> ($QPID)]) ~> source1",
-				"source1 output(mapColumn(",
+				"source1 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 output(mapColumn(",
 				"          idmax",
 				"     )) ~> output1"
 			]
