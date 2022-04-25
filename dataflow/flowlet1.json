@@ -23,17 +23,20 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     QPID as string",
+				"     QPID as string (\"fae53ecd-0594-4514-ace4-e3f692368342\")",
 				"}",
 				"source(output(",
 				"          idmax as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'query',",
+				"     format: 'procedure',",
 				"     store: 'sqlserver',",
-				"     query: (\"select idmax from QIFDocument where QPID = 'fae53ecd-0594-4514-ace4-e3f692368342'\"),",
-				"     isolationLevel: 'READ_UNCOMMITTED') ~> source1",
+				"     procedureName: 'GetCurrentIDMax',",
+				"     schemaName: 'dbo',",
+				"     resultSet: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     inputs:['@QPID' -> ($QPID)]) ~> source1",
 				"source1 output() ~> output1"
 			]
 		}
