@@ -37,7 +37,9 @@
 				"     resultSet: true,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     inputs:['@QPID' -> ($QPID)]) ~> source1",
-				"source1 output() ~> output1"
+				"source1 output(mapColumn(",
+				"          idmax",
+				"     )) ~> output1"
 			]
 		}
 	}
