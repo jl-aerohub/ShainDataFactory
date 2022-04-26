@@ -70,15 +70,6 @@
 									"name": "IDMax",
 									"type": "Int32"
 								}
-							},
-							{
-								"source": {
-									"path": "$['MBD']"
-								},
-								"sink": {
-									"name": "MBD",
-									"type": "String"
-								}
 							}
 						],
 						"mapComplexValuesToString": false
