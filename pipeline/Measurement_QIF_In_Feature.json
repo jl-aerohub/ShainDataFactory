@@ -1,9 +1,9 @@
 {
-	"name": "Measurement_QIF_In_Feature_copy1",
+	"name": "Measurement_QIF_In_Feature",
 	"properties": {
 		"activities": [
 			{
-				"name": "Feature_Item_DataFlow_OneUnion_copy1",
+				"name": "Feature_Item_DataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -34,7 +34,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Feature_Item_DataFlow_OneUnion_copy1",
+						"activity": "Feature_Item_DataFlow",
 						"dependencyConditions": [
 							"Succeeded"
 						]
