@@ -1,5 +1,5 @@
 {
-	"name": "Feature_Item_DataFlow_OneUnion_copy1",
+	"name": "Feature_Item_DataFlow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

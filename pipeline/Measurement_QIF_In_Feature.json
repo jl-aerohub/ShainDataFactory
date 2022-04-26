@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Feature_Item_DataFlow_OneUnion_copy1",
+						"referenceName": "Feature_Item_DataFlow",
 						"type": "DataFlowReference"
 					},
 					"compute": {
