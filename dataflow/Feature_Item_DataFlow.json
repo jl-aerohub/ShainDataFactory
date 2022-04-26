@@ -362,9 +362,6 @@
 				},
 				{
 					"name": "VersionJoin"
-				},
-				{
-					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -813,7 +810,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
-				"     IDMax = max(UpdateidMax)) ~> FindIDMax",
+				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
 				"QIFDocumentSource, FeatureItemSelect lookup(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
 				"     multiple: true,",
 				"     broadcast: 'auto')~> QPIDLookup",
@@ -822,10 +819,9 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
-				"RemoveNulls, ToTimestamp join(1 == 1,",
+				"RemoveNulls, VersionSelect join(1 == 1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
-				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -844,7 +840,6 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 2,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          FeatureType,",
@@ -866,11 +861,10 @@
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
-				"     keys:['QPID'],",
+				"     keys:['QPID','IDMax'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          QPID,",
