@@ -362,6 +362,9 @@
 				},
 				{
 					"name": "VersionJoin"
+				},
+				{
+					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -819,9 +822,10 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
-				"RemoveNulls, VersionSelect join(1 == 1,",
+				"RemoveNulls, ToTimestamp join(1 == 1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
+				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
