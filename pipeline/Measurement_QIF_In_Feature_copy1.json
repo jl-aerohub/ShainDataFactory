@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Feature_Item_DataFlow_OneUnion",
+				"name": "Feature_Item_DataFlow_OneUnion_copy1",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,14 +16,60 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Feature_Item_DataFlow_OneUnion",
+						"referenceName": "Feature_Item_DataFlow_OneUnion_copy1",
 						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "None",
+					"cacheSinks": {
+						"firstRowOnly": true
+					}
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Feature_Item_DataFlow_OneUnion_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[UpdateIDMax]",
+					"storedProcedureParameters": {
+						"IDMax": {
+							"value": {
+								"value": "@activity('Feature_Item_DataFlow_OneUnion_copy1').output.runStats.output.StoredProcedureParamSink.value[0].IDMax",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"QPID": {
+							"value": {
+								"value": "@activity('Feature_Item_DataFlow_OneUnion_copy1').output.runStats.output.StoredProcedureParamSink.value[0].QPID",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "MFIN Database",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
