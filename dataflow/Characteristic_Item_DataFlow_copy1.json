@@ -10,6 +10,9 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -474,6 +477,12 @@
 				},
 				{
 					"name": "ToTimestamp"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -492,6 +501,8 @@
 				"     preferredIntegralType: 'integer',",
 				"     preferredFractionalType: 'float',",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source1",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicItems.AngleBetweenCharacteristicItem),",
 				"     mapColumn(",
 				"          QPID = QPId,",
@@ -1309,6 +1320,12 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"source1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
