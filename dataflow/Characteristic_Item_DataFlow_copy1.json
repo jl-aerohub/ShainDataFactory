@@ -464,10 +464,16 @@
 					"name": "WidthType"
 				},
 				{
-					"name": "union1"
+					"name": "CharacteristicItemUnion"
 				},
 				{
 					"name": "RemoveNullRows"
+				},
+				{
+					"name": "VersionSelect"
+				},
+				{
+					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -1295,8 +1301,14 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> WidthFlatten",
 				"WidthFlatten derive(CharacteristicType = toString(iif(isNull(CharacteristicType) == false(),'Width'))) ~> WidthType",
-				"AngleBetweenType, AngleType, AngularCoordinateType, AngleFromType, AngularityType, ChordType, CircularityType, CircularRunoutType, CoaxialityType, ConcentricityType, ConicalTaperType, ConicityType, CurveLengthType, CylindricityType, DepthType, DiameterType, DistanceBetweenType, DistanceFromType, EllipticityType, FlatTaperType, FlatnessType, HeightType, LengthType, LinearCoordinateType, LineProfileType, OtherFormType, ParallelismType, PerpendicularityType, PointProfileType, PositionType, RadiusType, SphericalDiameterType, SphericalRadiusType, SphericityType, SquareType, StraightnessType, SurfaceProfileType, SurfaceProfileNonUniformType, SurfaceTextureType, SymmetryType, ThicknessType, ThreadType, ToroidicityType, TotalRunoutType, UserDefinedAttributeType, UserDefinedLinearType, UserDefinedAngularType, UserDefinedTemperatureType, UserDefinedAreaType, UserDefinedForceType, UserDefinedMassType, UserDefinedPressureType, UserDefinedSpeedType, UserDefinedTimeType, UserDefinedUnitType, WidthType, WeldFilletType, WeldPlugType, WeldSlotType, WeldSpotType, WeldStudType, WeldSeamType, WeldSurfacingType, WeldEdgeType, WeldSquareType, WeldBevelType, WeldVType, WeldUType, WeldJType, WeldFlareVType, WeldFlareBevelType, WeldScarfType, WeldCompoundType union(byName: true)~> union1",
-				"union1 alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
+				"AngleBetweenType, AngleType, AngularCoordinateType, AngleFromType, AngularityType, ChordType, CircularityType, CircularRunoutType, CoaxialityType, ConcentricityType, ConicalTaperType, ConicityType, CurveLengthType, CylindricityType, DepthType, DiameterType, DistanceBetweenType, DistanceFromType, EllipticityType, FlatTaperType, FlatnessType, HeightType, LengthType, LinearCoordinateType, LineProfileType, OtherFormType, ParallelismType, PerpendicularityType, PointProfileType, PositionType, RadiusType, SphericalDiameterType, SphericalRadiusType, SphericityType, SquareType, StraightnessType, SurfaceProfileType, SurfaceProfileNonUniformType, SurfaceTextureType, SymmetryType, ThicknessType, ThreadType, ToroidicityType, TotalRunoutType, UserDefinedAttributeType, UserDefinedLinearType, UserDefinedAngularType, UserDefinedTemperatureType, UserDefinedAreaType, UserDefinedForceType, UserDefinedMassType, UserDefinedPressureType, UserDefinedSpeedType, UserDefinedTimeType, UserDefinedUnitType, WidthType, WeldFilletType, WeldPlugType, WeldSlotType, WeldSpotType, WeldStudType, WeldSeamType, WeldSurfacingType, WeldEdgeType, WeldSquareType, WeldBevelType, WeldVType, WeldUType, WeldJType, WeldFlareVType, WeldFlareBevelType, WeldScarfType, WeldCompoundType union(byName: true)~> CharacteristicItemUnion",
+				"CharacteristicItemUnion alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
+				"MeasurementQIFIn select(mapColumn(",
+				"          QIFDocument",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"VersionSelect derive() ~> ToTimestamp",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
