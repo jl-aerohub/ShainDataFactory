@@ -12,7 +12,11 @@
 					"name": "MeasurementQIFIn"
 				},
 				{
-					"name": "source1"
+					"dataset": {
+						"referenceName": "QIFDocumentTable",
+						"type": "DatasetReference"
+					},
+					"name": "QIFDocumentSource"
 				}
 			],
 			"sinks": [
@@ -479,10 +483,10 @@
 					"name": "ToTimestamp"
 				},
 				{
-					"name": "lookup1"
+					"name": "QPIDLookup"
 				},
 				{
-					"name": "select1"
+					"name": "IDMaxSelect"
 				}
 			],
 			"scriptLines": [
@@ -501,8 +505,15 @@
 				"     preferredIntegralType: 'integer',",
 				"     preferredFractionalType: 'float',",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1",
+				"source(output(",
+				"          QPID as string,",
+				"          IDMax as integer,",
+				"          MBD as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> QIFDocumentSource",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicItems.AngleBetweenCharacteristicItem),",
 				"     mapColumn(",
 				"          QPID = QPId,",
@@ -1320,12 +1331,14 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"source1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
-				"     multiple: false,",
-				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup1",
-				"lookup1 select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
+				"QIFDocumentSource, CharacteristicItemSelect lookup(QIFDocumentSource@QPID == CharacteristicItemSelect@QPId,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> QPIDLookup",
+				"QPIDLookup select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
