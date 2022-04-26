@@ -681,6 +681,12 @@
 				},
 				{
 					"name": "RemoveNullRows"
+				},
+				{
+					"name": "VersionSelect"
+				},
+				{
+					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -1581,6 +1587,12 @@
 				"union70, WeldScarfType union(byName: true)~> union71",
 				"union71, WeldCompoundType union(byName: true)~> union72",
 				"union72 alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
+				"MeasurementQIFIn select(mapColumn(",
+				"          QIFDocument",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"VersionSelect derive() ~> ToTimestamp",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
