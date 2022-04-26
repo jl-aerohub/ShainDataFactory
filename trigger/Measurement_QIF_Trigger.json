@@ -3,18 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "Measurement_QIF_InTest",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"FileName": "@triggerBody().fileName",
-					"FilePath": "@triggerBody().folderPath"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/measurementqifin/blobs/",
