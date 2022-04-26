@@ -866,7 +866,7 @@
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:true,",
-				"     keys:['QPID'],",
+				"     keys:['QPID','IDMax'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
