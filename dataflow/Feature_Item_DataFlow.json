@@ -864,7 +864,7 @@
 				"     deletable:false,",
 				"     insertable:false,",
 				"     updateable:true,",
-				"     upsertable:false,",
+				"     upsertable:true,",
 				"     keys:['QPID'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
