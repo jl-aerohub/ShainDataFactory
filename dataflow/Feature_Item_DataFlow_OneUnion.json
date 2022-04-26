@@ -750,7 +750,8 @@
 				"     saveOrder: 2,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          IDMax",
+				"          IDMax,",
+				"          QPID",
 				"     )) ~> IDMaxSink"
 			]
 		}
