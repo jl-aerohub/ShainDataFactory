@@ -867,6 +867,7 @@
 				"     updateable:true,",
 				"     upsertable:true,",
 				"     keys:['QPID'],",
+				"     skipKeyWrites:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
