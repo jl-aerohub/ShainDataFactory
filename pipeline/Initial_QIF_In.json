@@ -4,108 +4,27 @@
 		"activities": [
 			{
 				"name": "Initial_QIF_In",
-				"type": "Copy",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "7.00:00:00",
+					"timeout": "1.00:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "Source",
-						"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
-					},
-					{
-						"name": "Destination",
-						"value": "dbo.QIFDocument"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "XmlSource",
-						"additionalColumns": [
-							{
-								"name": "MBD",
-								"value": "$$FILEPATH"
-							}
-						],
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "XmlReadSettings",
-							"validationMode": "none",
-							"detectDataType": true,
-							"namespaces": true
-						}
+					"dataflow": {
+						"referenceName": "Initial_QIF_In",
+						"type": "DataFlowReference"
 					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['QIFDocument']['QPId']"
-								},
-								"sink": {
-									"name": "QPID",
-									"type": "Guid"
-								}
-							},
-							{
-								"source": {
-									"path": "$['QIFDocument']['@idMax']"
-								},
-								"sink": {
-									"name": "IDMax",
-									"type": "Int32"
-								}
-							},
-							{
-								"source": {
-									"path": "$['MBD']"
-								},
-								"sink": {
-									"name": "MBD",
-									"type": "String"
-								}
-							}
-						],
-						"mapComplexValuesToString": false
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Initial_QIF_Input",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
-							"FilePath": {
-								"value": "@pipeline().parameters.FilePath",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Intial_QIF_Sink",
-						"type": "DatasetReference"
-					}
-				]
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"parameters": {
