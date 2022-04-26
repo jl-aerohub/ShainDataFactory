@@ -37,6 +37,12 @@
 			],
 			"transformations": [
 				{
+					"name": "QPIDLookup"
+				},
+				{
+					"name": "IDMaxSelect"
+				},
+				{
 					"name": "CircleFlatten"
 				},
 				{
@@ -253,16 +259,10 @@
 					"name": "AddIDMax"
 				},
 				{
-					"name": "IDMaxSelect"
-				},
-				{
 					"name": "QIFDocumentSelect"
 				},
 				{
 					"name": "FindIDMax"
-				},
-				{
-					"name": "QPIDLookup"
 				},
 				{
 					"name": "VersionSelect"
@@ -299,6 +299,14 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'QIFDocument',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
+				"QIFDocumentSource, FeatureItemSelect lookup(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> QPIDLookup",
+				"QPIDLookup select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
 				"FeatureItemSelect foldDown(unroll(FeatureItems.CircleFeatureItem),",
 				"     mapColumn(",
 				"          QPID = QPId,",
@@ -677,11 +685,6 @@
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
 				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
-				"QPIDLookup select(mapColumn(",
-				"          IDMax",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
 				"AddIDMax select(mapColumn(",
 				"          QPID,",
 				"          UpdateidMax = Updateid",
@@ -690,9 +693,6 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
 				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
-				"QIFDocumentSource, FeatureItemSelect lookup(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
-				"     multiple: true,",
-				"     broadcast: 'auto')~> QPIDLookup",
 				"MeasurementQIFIn select(mapColumn(",
 				"          FileVersion = QIFDocument.Version.TimeCreated",
 				"     ),",
