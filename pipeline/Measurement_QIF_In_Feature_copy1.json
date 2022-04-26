@@ -30,7 +30,7 @@
 				}
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "UpdateMaxID",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -53,14 +53,14 @@
 					"storedProcedureParameters": {
 						"IDMax": {
 							"value": {
-								"value": "@activity('Feature_Item_DataFlow_OneUnion_copy1').output.runStats.output.StoredProcedureParamSink.value[0].IDMax",
+								"value": "@activity('Feature_Item_DataFlow_OneUnion_copy1').output.runStatus.output.StoredProcedureParamSink.value[0].IDMax",
 								"type": "Expression"
 							},
 							"type": "Int32"
 						},
 						"QPID": {
 							"value": {
-								"value": "@activity('Feature_Item_DataFlow_OneUnion_copy1').output.runStats.output.StoredProcedureParamSink.value[0].QPID",
+								"value": "@activity('Feature_Item_DataFlow_OneUnion_copy1').output.runStatus.output.StoredProcedureParamSink.value[0].QPID",
 								"type": "Expression"
 							},
 							"type": "Guid"
