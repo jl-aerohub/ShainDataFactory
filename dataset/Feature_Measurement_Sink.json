@@ -2,7 +2,7 @@
 	"name": "Feature_Measurement_Sink",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Initial_QIF_in",
+			"referenceName": "MFIN Database",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
