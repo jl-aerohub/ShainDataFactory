@@ -498,13 +498,13 @@
 					"name": "IDMaxJoin"
 				},
 				{
-					"name": "surrogateKey1"
+					"name": "IDMaxKey"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "AddIDMax"
 				},
 				{
-					"name": "select1"
+					"name": "QIFDocumentSelect"
 				},
 				{
 					"name": "aggregate1"
@@ -1360,28 +1360,25 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
-				"RemoveNullRows join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
-				"     joinType:'inner',",
+				"RemoveNullRows, ToTimestamp join(1 == 1,",
+				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
-				"VersionJoin join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
-				"     joinType:'inner',",
+				"VersionJoin, IDMaxSelect join(1 == 1,",
+				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"IDMaxJoin keyGenerate(output(undefined as long),",
+				"IDMaxJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 derive() ~> derivedColumn1",
-				"derivedColumn1 select(mapColumn(",
+				"     stepValue: 1L) ~> IDMaxKey",
+				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
+				"AddIDMax select(mapColumn(",
 				"          QPID,",
-				"          CharacteristicType,",
-				"          id,",
-				"          Name,",
-				"          CharacteristicNominalid,",
-				"          undefined",
+				"          UpdateidMax = Updateid",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 aggregate() ~> aggregate1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
+				"QIFDocumentSelect aggregate(groupBy(QPID),",
+				"     IDMax = toInteger(max(UpdateidMax))) ~> aggregate1",
+				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          CharacteristicType as string,",
