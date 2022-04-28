@@ -601,6 +601,63 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/UpdateIDMax')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Shain"
+				},
+				"type": "Flowlet",
+				"typeProperties": {
+					"sources": [
+						{
+							"linkedService": {
+								"referenceName": "MFIN Database",
+								"type": "LinkedServiceReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "output1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     QPID as string (\"fae53ecd-0594-4514-ace4-e3f692368342\"),",
+						"     IDMax as integer",
+						"}",
+						"source(output(",
+						"          idmax as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'procedure',",
+						"     store: 'sqlserver',",
+						"     procedureName: 'UpdateIDMax',",
+						"     schemaName: 'dbo',",
+						"     resultSet: true,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     inputs:['@QPID' -> ($QPID),'@IDMax' -> ($IDMax)]) ~> source1",
+						"source1 select(skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 output(mapColumn(",
+						"          idmax",
+						"     )) ~> output1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/MFIN Database')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1_copy1')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -794,141 +851,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AerohubStorageAccount')]",
 				"[concat(variables('factoryId'), '/linkedServices/MFIN Database')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Initial_QIF_In')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Initial_QIF_In",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
-							},
-							{
-								"name": "Destination",
-								"value": "dbo.QIFDocument"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "XmlSource",
-								"additionalColumns": [
-									{
-										"name": "MBD",
-										"value": "$$FILEPATH"
-									}
-								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "XmlReadSettings",
-									"validationMode": "none",
-									"detectDataType": true,
-									"namespaces": true
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['QIFDocument']['QPId']"
-										},
-										"sink": {
-											"name": "QPID",
-											"type": "Guid"
-										}
-									},
-									{
-										"source": {
-											"path": "$['QIFDocument']['@idMax']"
-										},
-										"sink": {
-											"name": "IDMax",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "$['MBD']"
-										},
-										"sink": {
-											"name": "MBD",
-											"type": "String"
-										}
-									}
-								],
-								"mapComplexValuesToString": false
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Initial_QIF_Input",
-								"type": "DatasetReference",
-								"parameters": {
-									"FileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"FilePath": {
-										"value": "@pipeline().parameters.FilePath",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Intial_QIF_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"FileName": {
-						"type": "string",
-						"defaultValue": "Test"
-					},
-					"FilePath": {
-						"type": "string",
-						"defaultValue": "Test"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-04-05T20:34:26Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Initial_QIF_Input')]",
-				"[concat(variables('factoryId'), '/datasets/Intial_QIF_Sink')]"
 			]
 		}
 	]

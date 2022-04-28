@@ -6,36 +6,184 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "AeroHubDataFactory"
-		},
-		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
-		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
-		},
-		"InitialQIFIn Trigger_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
-		},
-		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
-		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
-		},
-		"Measurement_QIF_Trigger_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/flowlet1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Shain"
+				},
+				"type": "Flowlet",
+				"typeProperties": {
+					"sources": [
+						{
+							"linkedService": {
+								"referenceName": "MFIN Database",
+								"type": "LinkedServiceReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "output1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     QPID as string (\"fae53ecd-0594-4514-ace4-e3f692368342\")",
+						"}",
+						"source(output(",
+						"          idmax as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'procedure',",
+						"     store: 'sqlserver',",
+						"     procedureName: 'GetCurrentIDMax',",
+						"     schemaName: 'dbo',",
+						"     resultSet: true,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     inputs:['@QPID' -> ($QPID)]) ~> source1",
+						"source1 select(skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 output(mapColumn(",
+						"          idmax",
+						"     )) ~> output1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Initial_QIF_In')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Initial_QIF_In",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
+							},
+							{
+								"name": "Destination",
+								"value": "dbo.QIFDocument"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "XmlSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "XmlReadSettings",
+									"validationMode": "none",
+									"detectDataType": true,
+									"namespaces": true
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['QIFDocument']['QPId']"
+										},
+										"sink": {
+											"name": "QPID",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"path": "$['QIFDocument']['@idMax']"
+										},
+										"sink": {
+											"name": "IDMax",
+											"type": "Int32"
+										}
+									}
+								],
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Initial_QIF_Input",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"FilePath": {
+										"value": "@pipeline().parameters.FilePath",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Intial_QIF_Sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "Test"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "Test"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-05T20:34:26Z"
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Measurement_QIF_InTest')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -7878,6 +8026,145 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Initial_QIF_In_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Initial_QIF_In",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
+							},
+							{
+								"name": "Destination",
+								"value": "dbo.QIFDocument"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "XmlSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "XmlReadSettings",
+									"validationMode": "none",
+									"detectDataType": true,
+									"namespaces": true
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"sqlWriterStoredProcedureName": "[[dbo].[InsertNewQIF]",
+								"sqlWriterTableType": "base",
+								"storedProcedureTableTypeParameterName": "QIFDocument",
+								"storedProcedureParameters": {
+									"IDMax": {
+										"type": "Int32",
+										"value": "999"
+									},
+									"MBDFILE": {
+										"type": "String",
+										"value": {
+											"value": "@concat(pipeline().parameters.FilePath,pipeline().parameters.FileName)",
+											"type": "Expression"
+										}
+									},
+									"QPID": {
+										"type": "Guid",
+										"value": "FAE53ECD-0594-4514-ACE4-E3F692368346"
+									}
+								},
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['QIFDocument']['QPId']"
+										},
+										"sink": {
+											"name": "QPID",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"path": "$['QIFDocument']['@idMax']"
+										},
+										"sink": {
+											"name": "IDMax",
+											"type": "Int32"
+										}
+									}
+								],
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Initial_QIF_Input",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"FilePath": {
+										"value": "@pipeline().parameters.FilePath",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Intial_QIF_Sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "Test"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "Test"
+					}
+				},
+				"folder": {
+					"name": "Shain"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-05T20:34:26Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Measurement_QIF_In')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -8439,119 +8726,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/Characteristic_Feature_Item_Reference_DataFlow')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Measurement_QIF_in_Actual_Components')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Actual_Components_Set_DataFlow",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Actual_Components_Set_DataFlow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"MeasurementQIFIn": {},
-									"ActualComponentsSink": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-04-19T20:15:13Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/Actual_Components_Set_DataFlow')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InitialQIFIn Trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Initial_QIF_In",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"FileName": "[parameters('InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName')]",
-							"FilePath": "[parameters('InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath')]"
-						}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/initialqifin/blobs/",
-					"blobPathEndsWith": ".qif",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('InitialQIFIn Trigger_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Measurement_QIF_Trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Measurement_QIF_InTest",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"FileName": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName')]",
-							"FilePath": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath')]"
-						}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/measurementqifin/blobs/",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('Measurement_QIF_Trigger_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Measurement_QIF_InTest')]"
 			]
 		}
 	]

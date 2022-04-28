@@ -1,0 +1,193 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AeroHubDataFactory"
+		},
+		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"InitialQIFIn Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		},
+		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Measurement_QIF_Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		},
+		"Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Shain Initial QIF Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Measurement_QIF_in_Actual_Components')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Actual_Components_Set_DataFlow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Actual_Components_Set_DataFlow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"MeasurementQIFIn": {},
+									"ActualComponentsSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-19T20:15:13Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InitialQIFIn Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Initial_QIF_In",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FileName')]",
+							"FilePath": "[parameters('InitialQIFIn Trigger_properties_Initial_QIF_In_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/initialqifin/blobs/",
+					"blobPathEndsWith": ".qif",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('InitialQIFIn Trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Measurement_QIF_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Measurement_QIF_InTest",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName')]",
+							"FilePath": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/measurementqifin/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Measurement_QIF_Trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Shain Initial QIF Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Initial_QIF_In_copy1",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FileName')]",
+							"FilePath": "[parameters('Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/pythonin/blobs/",
+					"blobPathEndsWith": ".qif",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Shain Initial QIF Trigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

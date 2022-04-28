@@ -34,6 +34,15 @@
 		},
 		"Measurement_QIF_Trigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
+		},
+		"Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"Shain Initial QIF Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
 		}
 	}
 }
