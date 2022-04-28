@@ -45,6 +45,25 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[UpdateIDMax]",
+					"storedProcedureParameters": {
+						"IDMax": {
+							"value": {
+								"value": "@activity('Characteristic_Item_DataFlow').output.runStatus.output.StoredProcedureParamSink.value[0].IDMax",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"QPID": {
+							"value": {
+								"value": "@activity('Characteristic_Item_DataFlow').output.runStatus.output.StoredProcedureParamSink.value[0].QPID",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						}
+					}
+				},
 				"linkedServiceName": {
 					"referenceName": "MFIN Database",
 					"type": "LinkedServiceReference"
