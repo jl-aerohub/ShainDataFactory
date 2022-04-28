@@ -672,7 +672,7 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> TorusFlatten",
 				"TorusFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Torus'))) ~> TorusType",
-				"CircleType, CircularArcType, ConeType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureItemUnion",
+				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureItemUnion",
 				"FeatureItemUnion alterRow(deleteIf(isNull(FeatureType))) ~> RemoveNulls",
 				"IDMaxJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
