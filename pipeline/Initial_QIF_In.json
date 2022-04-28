@@ -13,16 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "Source",
-						"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
-					},
-					{
-						"name": "Destination",
-						"value": "dbo.QIFDocument"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "XmlSource",
