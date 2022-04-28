@@ -16,7 +16,14 @@
 						"referenceName": "MFIN Database",
 						"type": "LinkedServiceReference"
 					},
-					"name": "source1"
+					"name": "FeatureUpdate"
+				},
+				{
+					"dataset": {
+						"referenceName": "Characteristic_Item_Sink",
+						"type": "DatasetReference"
+					},
+					"name": "CharacteristicUpdate"
 				}
 			],
 			"sinks": [
@@ -252,7 +259,7 @@
 					"name": "WidthReference"
 				},
 				{
-					"name": "union1"
+					"name": "ReferenceUnion"
 				},
 				{
 					"name": "union2"
@@ -481,6 +488,15 @@
 				},
 				{
 					"name": "ToTimestamp"
+				},
+				{
+					"name": "lookup2"
+				},
+				{
+					"name": "FeatureLookup"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -501,10 +517,12 @@
 				"     preferredFractionalReference: 'float') ~> MeasurementQIFIn",
 				"source(output(",
 				"          FeatureType as string,",
-				"          id as integer,",
+				"          Updateid as integer,",
 				"          FeatureNominalid as integer,",
 				"          FeatureName as string,",
-				"          QPID as string",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -512,7 +530,20 @@
 				"     store: 'sqlserver',",
 				"     schemaName: 'dbo',",
 				"     tableName: 'FeatureItems',",
-				"     isolationLevel: 'READ_UNCOMMITTED') ~> source1",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> FeatureUpdate",
+				"source(output(",
+				"          CharacteristicType as string,",
+				"          Updateid as integer,",
+				"          Name as string,",
+				"          CharacteristicNominalid as integer,",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> CharacteristicUpdate",
 				"MeasurementQIFIn select(mapColumn(",
 				"          CharacteristicItems = QIFDocument.Characteristics.CharacteristicItems,",
 				"          QPId = QIFDocument.QPId",
@@ -1103,8 +1134,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> WidthReference",
-				"AngleBetweenReference, AngleReference union(byName: true)~> union1",
-				"union1, AngularCoordinateReference union(byName: true)~> union2",
+				"AngleBetweenReference, AngleReference union(byName: true)~> ReferenceUnion",
+				"ReferenceUnion, AngularCoordinateReference union(byName: true)~> union2",
 				"union2, AngleFromReference union(byName: true)~> union3",
 				"union3, AngularityReference union(byName: true)~> union4",
 				"union4, ChordReference union(byName: true)~> union5",
@@ -1179,10 +1210,10 @@
 				"RemoveNullRows, select1 lookup(Featureid == id,",
 				"     multiple: true,",
 				"     broadcast: 'auto')~> lookup1",
-				"source1 select(mapColumn(",
+				"FeatureLookup select(mapColumn(",
 				"          FeatureNominalid,",
 				"          id,",
-				"          QPID",
+				"          QPID = FeatureUpdate@QPID",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
@@ -1192,6 +1223,18 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"CharacteristicUpdate, ReferenceUnion lookup(CharacteristicUpdate@QPID == ERROR_FUNCTION('')",
+				"     && FileVersion == ERROR_FUNCTION(''),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup2",
+				"FeatureUpdate, ReferenceUnion lookup(FeatureUpdate@QPID == ReferenceUnion@QPID",
+				"     && FileVersion == ERROR_FUNCTION(''),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> FeatureLookup",
+				"lookup2 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
 				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
