@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Characteristic_Feature_Item_Reference_DataFlow",
+				"name": "Item_Reference_DataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Characteristic_Feature_Item_Reference_DataFlow",
+						"referenceName": "Item_Reference_DataFlow",
 						"type": "DataFlowReference"
 					},
 					"compute": {
