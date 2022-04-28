@@ -1,0 +1,130 @@
+{
+	"name": "Initial_QIF_In_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Initial_QIF_In",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
+					},
+					{
+						"name": "Destination",
+						"value": "dbo.QIFDocument"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "XmlSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "XmlReadSettings",
+							"validationMode": "none",
+							"detectDataType": true,
+							"namespaces": true
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"sqlWriterStoredProcedureName": "[dbo].[InsertNewQIF]",
+						"storedProcedureParameters": {
+							"IDMax": {
+								"type": "Int32",
+								"value": "999"
+							},
+							"MBDFILE": {
+								"type": "String",
+								"value": {
+									"value": "@concat(pipeline().parameters.FilePath,pipeline().parameters.FileName)",
+									"type": "Expression"
+								}
+							},
+							"QPID": {
+								"type": "Guid",
+								"value": "FAE53ECD-0594-4514-ACE4-E3F692368346"
+							}
+						},
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['QIFDocument']['QPId']"
+								},
+								"sink": {
+									"name": "QPID",
+									"type": "Guid"
+								}
+							},
+							{
+								"source": {
+									"path": "$['QIFDocument']['@idMax']"
+								},
+								"sink": {
+									"name": "IDMax",
+									"type": "Int32"
+								}
+							}
+						],
+						"mapComplexValuesToString": false
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Initial_QIF_Input",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"FilePath": {
+								"value": "@pipeline().parameters.FilePath",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Intial_QIF_Sink",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "Test"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "Test"
+			}
+		},
+		"folder": {
+			"name": "Shain"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-05T20:34:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
