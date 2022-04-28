@@ -21,6 +21,22 @@
 				"name": "Characteristicid",
 				"type": "int",
 				"precision": 10
+			},
+			{
+				"name": "UpdatedFeatureid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "UpdatedCharacteristicid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FileVersion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
 			}
 		],
 		"typeProperties": {
