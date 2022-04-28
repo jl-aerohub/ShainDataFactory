@@ -490,7 +490,7 @@
 					"name": "ToTimestamp"
 				},
 				{
-					"name": "lookup2"
+					"name": "CharacterisitcLookup"
 				},
 				{
 					"name": "FeatureLookup"
@@ -1227,13 +1227,13 @@
 				"     && FileVersion == ERROR_FUNCTION(''),",
 				"     multiple: false,",
 				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup2",
+				"     broadcast: 'auto')~> CharacterisitcLookup",
 				"FeatureUpdate, ReferenceUnion lookup(FeatureUpdate@QPID == ReferenceUnion@QPID",
 				"     && FileVersion == ERROR_FUNCTION(''),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> FeatureLookup",
-				"lookup2 select(skipDuplicateMapInputs: true,",
+				"CharacterisitcLookup select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
