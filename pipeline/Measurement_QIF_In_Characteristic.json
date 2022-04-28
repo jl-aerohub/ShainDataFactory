@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CharacteristicItemDataFlow",
+				"name": "Characteristic_Item_DataFlow_copy1",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Characteristic_Item_DataFlow",
+						"referenceName": "Characteristic_Item_DataFlow_copy1",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -24,6 +24,33 @@
 						"computeType": "General"
 					},
 					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "UpdateMaxID",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Characteristic_Item_DataFlow_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[UpdateIDMax]"
+				},
+				"linkedServiceName": {
+					"referenceName": "MFIN Database",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
