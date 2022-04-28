@@ -265,19 +265,10 @@
 					"name": "RemoveNullRows"
 				},
 				{
-					"name": "FeatureIdSelect"
-				},
-				{
 					"name": "VersionSelect"
 				},
 				{
 					"name": "ToTimestamp"
-				},
-				{
-					"name": "CharacterisitcLookup"
-				},
-				{
-					"name": "FeatureLookup"
 				},
 				{
 					"name": "CharacteristicIdSelect"
@@ -292,7 +283,19 @@
 					"name": "CharacteristicUpdateJoin"
 				},
 				{
-					"name": "FeatureClean"
+					"name": "FeatureIDSelect"
+				},
+				{
+					"name": "FeatureIDCheck"
+				},
+				{
+					"name": "CharacteristicIDCheck"
+				},
+				{
+					"name": "FeatureUpdateID"
+				},
+				{
+					"name": "CharacteristicUpdateID"
 				}
 			],
 			"scriptLines": [
@@ -938,44 +941,28 @@
 				"     skipDuplicateMapOutputs: false) ~> WidthReference",
 				"AngleBetweenReference, AngleReference, AngularCoordinateReference, AngleFromReference, AngularityReference, ChordReference, CircularityReference, CircularRunoutReference, CoaxialityReference, ConcentricityReference, ConicalTaperReference, ConicityReference, CurveLengthReference, CylindricityReference, DepthReference, DiameterReference, DistanceBetweenReference, DistanceFromReference, EllipticityReference, FlatTaperReference, FlatnessReference, HeightReference, LengthReference, LinearCoordinateReference, LineProfileReference, OtherFormReference, ParallelismReference, PerpendicularityReference, PointProfileReference, PositionReference, RadiusReference, SphericalDiameterReference, SphericalRadiusReference, SphericityReference, SquareReference, StraightnessReference, SurfaceProfileReference, SurfaceProfileNonUniformReference, SurfaceTextureReference, SymmetryReference, ThicknessReference, ThreadReference, ToroidicityReference, TotalRunoutReference, UserDefinedAttributeReference, UserDefinedLinearReference, UserDefinedAngularReference, UserDefinedTemperatureReference, UserDefinedAreaReference, UserDefinedForceReference, UserDefinedMassReference, UserDefinedPressureReference, UserDefinedSpeedReference, UserDefinedTimeReference, UserDefinedUnitReference, WidthReference, WeldFilletReference, WeldPlugReference, WeldSlotReference, WeldSpotReference, WeldStudReference, WeldSeamReference, WeldSurfacingReference, WeldEdgeReference, WeldSquareReference, WeldBevelReference, WeldVReference, WeldUReference, WeldJReference, WeldFlareVReference, WeldFlareBevelReference, WeldScarfReference, WeldCompoundReference union(byName: true)~> ReferenceUnion",
 				"ReferenceUnion alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
-				"FeatureLookup select(mapColumn(",
-				"          FeatureOrigid = Origid,",
-				"          FeatureUpdateid = Updateid",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> FeatureIdSelect",
 				"MeasurementQIFIn select(mapColumn(",
 				"          FileVersion = QIFDocument.Version.TimeCreated",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"CharacteristicUpdate, VersionJoin lookup(CharacteristicUpdate@QPID == ReferenceUnion@QPID",
-				"     && CharacteristicUpdate@FileVersion == ToTimestamp@FileVersion",
-				"     && Origid == Characteristicid,",
-				"     multiple: true,",
-				"     broadcast: 'auto',",
-				"     pickup: 'any')~> CharacterisitcLookup",
-				"FeatureClean, VersionJoin lookup(FeatureClean@QPID == ReferenceUnion@QPID",
-				"     && FeatureClean@FileVersion == ToTimestamp@FileVersion",
-				"     && Origid == Featureid,",
-				"     multiple: false,",
-				"     pickup: 'any',",
-				"     broadcast: 'auto')~> FeatureLookup",
-				"CharacterisitcLookup select(mapColumn(",
-				"          CharacteristicOrigid = Origid,",
-				"          CharacterisitcUpdateid = Updateid",
+				"CharacteristicUpdate select(mapColumn(",
+				"          Origid,",
+				"          Updateid,",
+				"          FileVersion,",
+				"          QPID",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> CharacteristicIdSelect",
 				"RemoveNullRows, ToTimestamp join(1 == 1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
-				"VersionJoin, FeatureIdSelect join(Featureid == FeatureOrigid,",
-				"     joinType:'right',",
+				"VersionJoin, FeatureUpdateID join(Featureid == Orginid,",
+				"     joinType:'inner',",
 				"     broadcast: 'auto')~> FeatureUpdateJoin",
-				"FeatureUpdateJoin, CharacteristicIdSelect join(Characteristicid == CharacteristicOrigid,",
-				"     joinType:'right',",
+				"FeatureUpdateJoin, CharacteristicUpdateID join(Characteristicid == CharacteristicOrigid,",
+				"     joinType:'inner',",
 				"     broadcast: 'auto')~> CharacteristicUpdateJoin",
 				"FeatureUpdate select(mapColumn(",
 				"          Origid,",
@@ -984,7 +971,29 @@
 				"          QPID",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> FeatureClean",
+				"     skipDuplicateMapOutputs: true) ~> FeatureIDSelect",
+				"FeatureIDSelect, VersionJoin exists(Origid == Featureid",
+				"     && FeatureIDSelect@QPID == ReferenceUnion@QPID",
+				"     && FeatureIDSelect@FileVersion == ToTimestamp@FileVersion,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> FeatureIDCheck",
+				"CharacteristicIdSelect, VersionJoin exists(Origid == Characteristicid",
+				"     && CharacteristicIdSelect@FileVersion == ToTimestamp@FileVersion",
+				"     && CharacteristicIdSelect@QPID == ReferenceUnion@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> CharacteristicIDCheck",
+				"FeatureIDCheck select(mapColumn(",
+				"          Updateid,",
+				"          Orginid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FeatureUpdateID",
+				"CharacteristicIDCheck select(mapColumn(",
+				"          CharacteristicOrigid = Origid,",
+				"          CharacterisitcUpdateid = Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CharacteristicUpdateID",
 				"CharacteristicUpdateJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -1005,7 +1014,7 @@
 				"          QPID,",
 				"          Featureid,",
 				"          Characteristicid,",
-				"          UpdatedFeatureid = FeatureUpdateid,",
+				"          UpdatedFeatureid = Updateid,",
 				"          UpdatedCharacteristicid = CharacterisitcUpdateid,",
 				"          FileVersion",
 				"     )) ~> CharacterFeatureReferenceSink"
