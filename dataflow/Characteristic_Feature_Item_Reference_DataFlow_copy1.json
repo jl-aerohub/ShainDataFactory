@@ -284,6 +284,12 @@
 				},
 				{
 					"name": "VersionJoin"
+				},
+				{
+					"name": "FeatureUpdateJoin"
+				},
+				{
+					"name": "CharacteristicUpdateJoin"
 				}
 			],
 			"scriptLines": [
@@ -924,8 +930,8 @@
 				"AngleBetweenReference, AngleReference, AngularCoordinateReference, AngleFromReference, AngularityReference, ChordReference, CircularityReference, CircularRunoutReference, CoaxialityReference, ConcentricityReference, ConicalTaperReference, ConicityReference, CurveLengthReference, CylindricityReference, DepthReference, DiameterReference, DistanceBetweenReference, DistanceFromReference, EllipticityReference, FlatTaperReference, FlatnessReference, HeightReference, LengthReference, LinearCoordinateReference, LineProfileReference, OtherFormReference, ParallelismReference, PerpendicularityReference, PointProfileReference, PositionReference, RadiusReference, SphericalDiameterReference, SphericalRadiusReference, SphericityReference, SquareReference, StraightnessReference, SurfaceProfileReference, SurfaceProfileNonUniformReference, SurfaceTextureReference, SymmetryReference, ThicknessReference, ThreadReference, ToroidicityReference, TotalRunoutReference, UserDefinedAttributeReference, UserDefinedLinearReference, UserDefinedAngularReference, UserDefinedTemperatureReference, UserDefinedAreaReference, UserDefinedForceReference, UserDefinedMassReference, UserDefinedPressureReference, UserDefinedSpeedReference, UserDefinedTimeReference, UserDefinedUnitReference, WidthReference, WeldFilletReference, WeldPlugReference, WeldSlotReference, WeldSpotReference, WeldStudReference, WeldSeamReference, WeldSurfacingReference, WeldEdgeReference, WeldSquareReference, WeldBevelReference, WeldVReference, WeldUReference, WeldJReference, WeldFlareVReference, WeldFlareBevelReference, WeldScarfReference, WeldCompoundReference union(byName: true)~> ReferenceUnion",
 				"ReferenceUnion alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
 				"FeatureLookup select(mapColumn(",
-				"          Origid,",
-				"          Updateid",
+				"          FeatureOrigid = Origid,",
+				"          FeatureUpdateid = Updateid",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> FeatureIdSelect",
@@ -946,15 +952,21 @@
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> FeatureLookup",
 				"CharacterisitcLookup select(mapColumn(",
-				"          Origid,",
-				"          Updateid",
+				"          CharacteristicOrigid = Origid,",
+				"          CharacterisitcUpdateid = Updateid",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> CharacteristicIdSelect",
 				"RemoveNullRows, ToTimestamp join(1 == 1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
-				"VersionJoin sink(allowSchemaDrift: true,",
+				"VersionJoin, FeatureIdSelect join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> FeatureUpdateJoin",
+				"FeatureUpdateJoin, CharacteristicIdSelect join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> CharacteristicUpdateJoin",
+				"CharacteristicUpdateJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          QPID as string,",
