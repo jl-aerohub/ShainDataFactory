@@ -26,6 +26,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "XmlSource",
+						"additionalColumns": [
+							{
+								"name": "MBD",
+								"value": "$$FILEPATH"
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
@@ -40,23 +46,42 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"sqlWriterStoredProcedureName": "[dbo].[InsertNewQIF]",
-						"storedProcedureParameters": {
-							"IDMax": {
-								"type": "Int32"
-							},
-							"MBD": {
-								"type": "String"
-							},
-							"QPID": {
-								"type": "Guid"
-							}
-						},
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['QPID']"
+								},
+								"sink": {
+									"name": "QPID",
+									"type": "Guid"
+								}
+							},
+							{
+								"source": {
+									"path": "$['IDMax']"
+								},
+								"sink": {
+									"name": "IDMax",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MBD']"
+								},
+								"sink": {
+									"name": "MBD",
+									"type": "String"
+								}
+							}
+						],
 						"mapComplexValuesToString": false
 					}
 				},
