@@ -262,226 +262,10 @@
 					"name": "ReferenceUnion"
 				},
 				{
-					"name": "union2"
-				},
-				{
-					"name": "union3"
-				},
-				{
-					"name": "union4"
-				},
-				{
-					"name": "union5"
-				},
-				{
-					"name": "union6"
-				},
-				{
-					"name": "union7"
-				},
-				{
-					"name": "union8"
-				},
-				{
-					"name": "union9"
-				},
-				{
-					"name": "union10"
-				},
-				{
-					"name": "union11"
-				},
-				{
-					"name": "union12"
-				},
-				{
-					"name": "union13"
-				},
-				{
-					"name": "union14"
-				},
-				{
-					"name": "union15"
-				},
-				{
-					"name": "union17"
-				},
-				{
-					"name": "union18"
-				},
-				{
-					"name": "union19"
-				},
-				{
-					"name": "union20"
-				},
-				{
-					"name": "union21"
-				},
-				{
-					"name": "union22"
-				},
-				{
-					"name": "union23"
-				},
-				{
-					"name": "union24"
-				},
-				{
-					"name": "union25"
-				},
-				{
-					"name": "union26"
-				},
-				{
-					"name": "union27"
-				},
-				{
-					"name": "union28"
-				},
-				{
-					"name": "union29"
-				},
-				{
-					"name": "union30"
-				},
-				{
-					"name": "union31"
-				},
-				{
-					"name": "union32"
-				},
-				{
-					"name": "union33"
-				},
-				{
-					"name": "union34"
-				},
-				{
-					"name": "union35"
-				},
-				{
-					"name": "union36"
-				},
-				{
-					"name": "union37"
-				},
-				{
-					"name": "union38"
-				},
-				{
-					"name": "union39"
-				},
-				{
-					"name": "union40"
-				},
-				{
-					"name": "union41"
-				},
-				{
-					"name": "union42"
-				},
-				{
-					"name": "union43"
-				},
-				{
-					"name": "union44"
-				},
-				{
-					"name": "union45"
-				},
-				{
-					"name": "union46"
-				},
-				{
-					"name": "union47"
-				},
-				{
-					"name": "union48"
-				},
-				{
-					"name": "union49"
-				},
-				{
-					"name": "union50"
-				},
-				{
-					"name": "union51"
-				},
-				{
-					"name": "union52"
-				},
-				{
-					"name": "union53"
-				},
-				{
-					"name": "union54"
-				},
-				{
-					"name": "union55"
-				},
-				{
-					"name": "union56"
-				},
-				{
-					"name": "union57"
-				},
-				{
-					"name": "union58"
-				},
-				{
-					"name": "union59"
-				},
-				{
-					"name": "union60"
-				},
-				{
-					"name": "union61"
-				},
-				{
-					"name": "union62"
-				},
-				{
-					"name": "union63"
-				},
-				{
-					"name": "union64"
-				},
-				{
-					"name": "union65"
-				},
-				{
-					"name": "union66"
-				},
-				{
-					"name": "union67"
-				},
-				{
-					"name": "union68"
-				},
-				{
-					"name": "union69"
-				},
-				{
-					"name": "union70"
-				},
-				{
-					"name": "union71"
-				},
-				{
-					"name": "union72"
-				},
-				{
 					"name": "RemoveNullRows"
 				},
 				{
-					"name": "union16"
-				},
-				{
-					"name": "lookup1"
-				},
-				{
-					"name": "select1"
+					"name": "FeatureIdSelect"
 				},
 				{
 					"name": "VersionSelect"
@@ -496,7 +280,10 @@
 					"name": "FeatureLookup"
 				},
 				{
-					"name": "select2"
+					"name": "CharacteristicIdSelect"
+				},
+				{
+					"name": "VersionJoin"
 				}
 			],
 			"scriptLines": [
@@ -550,18 +337,18 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> CharacteristicItemSelect",
-				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
+				"CharacteristicItemSelect foldDown(unroll(CharacteristicItems.AngleBetweenCharacteristicItem.FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.AngleBetweenCharacteristicItem.{@id}},",
-				"          Featureid = FeatureItemIds.Id",
+				"          Characteristicid = CharacteristicItems.AngleBetweenCharacteristicItem.{@id},",
+				"          Featureid = CharacteristicItems.AngleBetweenCharacteristicItem.FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> AngleBetweenReference",
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.AngleCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.AngleCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -569,7 +356,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.AngularCoordinateCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.AngularCoordinateCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -577,7 +364,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.AngleFromCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.AngleFromCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -585,7 +372,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.AngularityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.AngularityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -593,7 +380,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ChordCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ChordCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -601,7 +388,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.CircularityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.CircularityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -609,7 +396,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.CircularRunoutCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.CircularRunoutCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -617,7 +404,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.CoaxialityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.CoaxialityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -625,7 +412,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ConcentricityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ConcentricityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -633,7 +420,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ConicalTaperCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ConicalTaperCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -641,7 +428,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ConicityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ConicityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -649,7 +436,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.CurveLengthCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.CurveLengthCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -657,7 +444,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.CylindricityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.CylindricityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -665,7 +452,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.DepthCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.DepthCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -673,7 +460,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.DiameterCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.DiameterCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -681,7 +468,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.DistanceBetweenCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.DistanceBetweenCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -689,7 +476,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.DistanceFromCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.DistanceFromCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -697,7 +484,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.EllipticityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.EllipticityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -705,7 +492,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.FlatTaperCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.FlatTaperCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -713,7 +500,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.FlatnessCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.FlatnessCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -721,7 +508,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.HeightCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.HeightCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -729,7 +516,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.LengthCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.LengthCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -737,7 +524,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.LinearCoordinateCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.LinearCoordinateCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -745,7 +532,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.LineProfileCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.LineProfileCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -753,7 +540,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.OtherFormCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.OtherFormCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -761,7 +548,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ParallelismCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ParallelismCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -769,7 +556,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.PerpendicularityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.PerpendicularityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -777,7 +564,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.PointProfileCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.PointProfileCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -785,7 +572,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.PositionCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.PositionCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -793,7 +580,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.RadiusCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.RadiusCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -801,7 +588,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SphericalDiameterCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SphericalDiameterCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -809,7 +596,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SphericalRadiusCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SphericalRadiusCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -817,7 +604,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SphericityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SphericityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -825,7 +612,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SquareCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SquareCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -833,7 +620,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.StraightnessCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.StraightnessCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -841,7 +628,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SurfaceProfileCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SurfaceProfileCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -849,7 +636,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SurfaceProfileNonUniformCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SurfaceProfileNonUniformCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -857,7 +644,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SurfaceTextureCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SurfaceTextureCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -865,7 +652,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.SymmetryCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.SymmetryCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -873,7 +660,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ThicknessCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ThicknessCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -881,7 +668,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ThreadCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ThreadCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -889,7 +676,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.ToroidicityCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.ToroidicityCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -897,7 +684,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.TotalRunoutCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.TotalRunoutCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -905,7 +692,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedAttributeCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedAttributeCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -913,7 +700,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedLinearCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedLinearCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -921,7 +708,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedAngularCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedAngularCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -929,7 +716,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedTemperatureCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedTemperatureCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -937,7 +724,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedAreaCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedAreaCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -945,7 +732,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedForceCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedForceCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -953,7 +740,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedMassCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedMassCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -961,7 +748,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedPressureCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedPressureCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -969,7 +756,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedSpeedCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedSpeedCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -977,7 +764,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedTimeCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedTimeCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -985,7 +772,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.UserDefinedUnitCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.UserDefinedUnitCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -993,7 +780,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldFilletCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldFilletCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1001,7 +788,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldPlugCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldPlugCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1009,7 +796,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldSlotCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldSlotCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1017,7 +804,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldSpotCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldSpotCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1025,7 +812,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldStudCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldStudCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1033,7 +820,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldSeamCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldSeamCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1041,7 +828,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldSurfacingCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldSurfacingCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1049,7 +836,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldEdgeCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldEdgeCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1057,7 +844,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldSquareCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldSquareCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1065,7 +852,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldBevelCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldBevelCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1073,7 +860,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldVCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldVCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1081,7 +868,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldUCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldUCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1089,7 +876,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldJCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldJCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1097,7 +884,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldFlareVCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldFlareVCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1105,7 +892,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldFlareBevelCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldFlareBevelCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1113,7 +900,7 @@
 				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldScarfCharacteristicItem.{@id}},",
+				"          Characteristicid = {CharacteristicItems.WeldScarfCharacteristicItem.{@id},",
 				"          Featureid = FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
@@ -1134,108 +921,40 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> WidthReference",
-				"AngleBetweenReference, AngleReference union(byName: true)~> ReferenceUnion",
-				"ReferenceUnion, AngularCoordinateReference union(byName: true)~> union2",
-				"union2, AngleFromReference union(byName: true)~> union3",
-				"union3, AngularityReference union(byName: true)~> union4",
-				"union4, ChordReference union(byName: true)~> union5",
-				"union5, CircularityReference union(byName: true)~> union6",
-				"union6, CircularRunoutReference union(byName: true)~> union7",
-				"union7, CoaxialityReference union(byName: true)~> union8",
-				"union8, ConcentricityReference union(byName: true)~> union9",
-				"union9, ConicalTaperReference union(byName: true)~> union10",
-				"union10, ConicityReference union(byName: true)~> union11",
-				"union11, CurveLengthReference union(byName: true)~> union12",
-				"union12, CylindricityReference union(byName: true)~> union13",
-				"union13, DepthReference union(byName: true)~> union14",
-				"union14, DiameterReference union(byName: true)~> union15",
-				"union16, DistanceFromReference union(byName: true)~> union17",
-				"union17, EllipticityReference union(byName: true)~> union18",
-				"union18, FlatTaperReference union(byName: true)~> union19",
-				"union19, FlatnessReference union(byName: true)~> union20",
-				"union20, HeightReference union(byName: true)~> union21",
-				"union21, LengthReference union(byName: true)~> union22",
-				"union22, LinearCoordinateReference union(byName: true)~> union23",
-				"union23, LineProfileReference union(byName: true)~> union24",
-				"union24, OtherFormReference union(byName: true)~> union25",
-				"union25, ParallelismReference union(byName: true)~> union26",
-				"union26, PerpendicularityReference union(byName: true)~> union27",
-				"union27, PointProfileReference union(byName: true)~> union28",
-				"union28, PositionReference union(byName: true)~> union29",
-				"union29, RadiusReference union(byName: true)~> union30",
-				"union30, SphericalDiameterReference union(byName: true)~> union31",
-				"union31, SphericalRadiusReference union(byName: true)~> union32",
-				"union32, SphericityReference union(byName: true)~> union33",
-				"union33, SquareReference union(byName: true)~> union34",
-				"union34, StraightnessReference union(byName: true)~> union35",
-				"union35, SurfaceProfileReference union(byName: true)~> union36",
-				"union36, SurfaceProfileNonUniformReference union(byName: true)~> union37",
-				"union37, SurfaceTextureReference union(byName: true)~> union38",
-				"union38, SymmetryReference union(byName: true)~> union39",
-				"union39, ThicknessReference union(byName: true)~> union40",
-				"union40, ThreadReference union(byName: true)~> union41",
-				"union41, ToroidicityReference union(byName: true)~> union42",
-				"union42, TotalRunoutReference union(byName: true)~> union43",
-				"union43, UserDefinedAttributeReference union(byName: true)~> union44",
-				"union44, UserDefinedLinearReference union(byName: true)~> union45",
-				"union45, UserDefinedAngularReference union(byName: true)~> union46",
-				"union46, UserDefinedTemperatureReference union(byName: true)~> union47",
-				"union47, UserDefinedAreaReference union(byName: true)~> union48",
-				"union48, UserDefinedForceReference union(byName: true)~> union49",
-				"union49, UserDefinedMassReference union(byName: true)~> union50",
-				"union50, UserDefinedPressureReference union(byName: true)~> union51",
-				"union51, UserDefinedSpeedReference union(byName: true)~> union52",
-				"union52, UserDefinedTimeReference union(byName: true)~> union53",
-				"union53, UserDefinedUnitReference union(byName: true)~> union54",
-				"union54, WidthReference union(byName: true)~> union55",
-				"union55, WeldFilletReference union(byName: true)~> union56",
-				"union56, WeldPlugReference union(byName: true)~> union57",
-				"union57, WeldSlotReference union(byName: true)~> union58",
-				"union58, WeldSpotReference union(byName: true)~> union59",
-				"union59, WeldStudReference union(byName: true)~> union60",
-				"union60, WeldSeamReference union(byName: true)~> union61",
-				"union61, WeldSurfacingReference union(byName: true)~> union62",
-				"union62, WeldEdgeReference union(byName: true)~> union63",
-				"union63, WeldSquareReference union(byName: true)~> union64",
-				"union64, WeldBevelReference union(byName: true)~> union65",
-				"union65, WeldVReference union(byName: true)~> union66",
-				"union66, WeldUReference union(byName: true)~> union67",
-				"union67, WeldJReference union(byName: true)~> union68",
-				"union68, WeldFlareVReference union(byName: true)~> union69",
-				"union69, WeldFlareBevelReference union(byName: true)~> union70",
-				"union70, WeldScarfReference union(byName: true)~> union71",
-				"union71, WeldCompoundReference union(byName: true)~> union72",
-				"union72 alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
-				"union15, DistanceBetweenReference union(byName: true)~> union16",
-				"RemoveNullRows, select1 lookup(Featureid == id,",
-				"     multiple: true,",
-				"     broadcast: 'auto')~> lookup1",
+				"AngleBetweenReference, AngleReference, AngularCoordinateReference, AngleFromReference, AngularityReference, ChordReference, CircularityReference, CircularRunoutReference, CoaxialityReference, ConcentricityReference, ConicalTaperReference, ConicityReference, CurveLengthReference, CylindricityReference, DepthReference, DiameterReference, DistanceBetweenReference, DistanceFromReference, EllipticityReference, FlatTaperReference, FlatnessReference, HeightReference, LengthReference, LinearCoordinateReference, LineProfileReference, OtherFormReference, ParallelismReference, PerpendicularityReference, PointProfileReference, PositionReference, RadiusReference, SphericalDiameterReference, SphericalRadiusReference, SphericityReference, SquareReference, StraightnessReference, SurfaceProfileReference, SurfaceProfileNonUniformReference, SurfaceTextureReference, SymmetryReference, ThicknessReference, ThreadReference, ToroidicityReference, TotalRunoutReference, UserDefinedAttributeReference, UserDefinedLinearReference, UserDefinedAngularReference, UserDefinedTemperatureReference, UserDefinedAreaReference, UserDefinedForceReference, UserDefinedMassReference, UserDefinedPressureReference, UserDefinedSpeedReference, UserDefinedTimeReference, UserDefinedUnitReference, WidthReference, WeldFilletReference, WeldPlugReference, WeldSlotReference, WeldSpotReference, WeldStudReference, WeldSeamReference, WeldSurfacingReference, WeldEdgeReference, WeldSquareReference, WeldBevelReference, WeldVReference, WeldUReference, WeldJReference, WeldFlareVReference, WeldFlareBevelReference, WeldScarfReference, WeldCompoundReference union(byName: true)~> ReferenceUnion",
+				"ReferenceUnion alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
 				"FeatureLookup select(mapColumn(",
-				"          FeatureNominalid,",
-				"          id,",
-				"          QPID = FeatureUpdate@QPID",
+				"          Origid,",
+				"          Updateid",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
+				"     skipDuplicateMapOutputs: true) ~> FeatureIdSelect",
 				"MeasurementQIFIn select(mapColumn(",
 				"          FileVersion = QIFDocument.Version.TimeCreated",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"CharacteristicUpdate, ReferenceUnion lookup(CharacteristicUpdate@QPID == ERROR_FUNCTION('')",
-				"     && FileVersion == ERROR_FUNCTION(''),",
+				"CharacteristicUpdate, VersionJoin lookup(CharacteristicUpdate@QPID == ReferenceUnion@QPID",
+				"     && CharacteristicUpdate@FileVersion == ToTimestamp@FileVersion,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> CharacterisitcLookup",
-				"FeatureUpdate, ReferenceUnion lookup(FeatureUpdate@QPID == ReferenceUnion@QPID",
-				"     && FileVersion == ERROR_FUNCTION(''),",
+				"FeatureUpdate, VersionJoin lookup(FeatureUpdate@QPID == ReferenceUnion@QPID",
+				"     && FeatureUpdate@FileVersion == ToTimestamp@FileVersion,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> FeatureLookup",
-				"CharacterisitcLookup select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
-				"lookup1 sink(allowSchemaDrift: true,",
+				"CharacterisitcLookup select(mapColumn(",
+				"          Origid,",
+				"          Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CharacteristicIdSelect",
+				"RemoveNullRows, ToTimestamp join(1 == 1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> VersionJoin",
+				"VersionJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          QPID as string,",
