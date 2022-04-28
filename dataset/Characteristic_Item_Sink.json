@@ -13,7 +13,7 @@
 				"type": "varchar"
 			},
 			{
-				"name": "id",
+				"name": "Updateid",
 				"type": "int",
 				"precision": 10
 			},
@@ -29,6 +29,17 @@
 			{
 				"name": "QPID",
 				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Origid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FileVersion",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
 			}
 		],
 		"typeProperties": {
