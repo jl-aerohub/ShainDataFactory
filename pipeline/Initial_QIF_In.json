@@ -40,24 +40,8 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"sqlWriterStoredProcedureName": "[dbo].[InsertNewQIF]",
-						"storedProcedureParameters": {
-							"IDMax": {
-								"type": "Int32",
-								"value": "999"
-							},
-							"MBDFILE": {
-								"type": "String",
-								"value": {
-									"value": "@concat(pipeline().parameters.FilePath,pipeline().parameters.FileName)",
-									"type": "Expression"
-								}
-							},
-							"QPID": {
-								"type": "Guid",
-								"value": "FAE53ECD-0594-4514-ACE4-E3F692368346"
-							}
-						},
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
