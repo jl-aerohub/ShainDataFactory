@@ -29,7 +29,10 @@
 						"additionalColumns": [
 							{
 								"name": "MBD",
-								"value": "$$FILEPATH"
+								"value": {
+									"value": "@pipeline().parameters.FileName",
+									"type": "Expression"
+								}
 							}
 						],
 						"storeSettings": {
