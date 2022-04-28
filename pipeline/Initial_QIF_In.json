@@ -53,7 +53,8 @@
 									"path": "$['QIFDocument']['QPId']"
 								},
 								"sink": {
-									"name": "QPID"
+									"name": "QPID",
+									"type": "GUID"
 								}
 							},
 							{
