@@ -1,5 +1,5 @@
 {
-	"name": "Characteristic_Feature_Item_Reference_DataFlow_copy1",
+	"name": "Characteristic_Feature_Item_Reference_DataFlow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
