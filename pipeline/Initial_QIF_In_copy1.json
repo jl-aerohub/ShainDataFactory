@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Initial_QIF_In",
+				"name": "ShainQIFin",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
+						"value": "pythonin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
 					},
 					{
 						"name": "Destination",
