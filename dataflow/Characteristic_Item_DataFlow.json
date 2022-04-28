@@ -12,9 +12,9 @@
 					"name": "MeasurementQIFIn"
 				},
 				{
-					"dataset": {
-						"referenceName": "QIFDocumentTable",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
 					},
 					"name": "QIFDocumentSource"
 				}
@@ -526,15 +526,13 @@
 				"     preferredIntegralType: 'integer',",
 				"     preferredFractionalType: 'float',",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
-				"source(output(",
-				"          QPID as string,",
-				"          IDMax as integer,",
-				"          MBD as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> QIFDocumentSource",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'QIFDocument',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicItems.AngleBetweenCharacteristicItem),",
 				"     mapColumn(",
 				"          QPID = QPId,",
@@ -1352,7 +1350,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"QIFDocumentSource, CharacteristicItemSelect lookup(QIFDocumentSource@QPID == CharacteristicItemSelect@QPId,",
+				"QIFDocumentSource, CharacteristicItemSelect lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
 				"     multiple: true,",
 				"     broadcast: 'auto')~> QPIDLookup",
 				"QPIDLookup select(mapColumn(",

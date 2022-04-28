@@ -19,9 +19,9 @@
 					"name": "FeatureUpdate"
 				},
 				{
-					"dataset": {
-						"referenceName": "Characteristic_Item_Sink",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
 					},
 					"name": "CharacteristicUpdate"
 				}
@@ -338,8 +338,11 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> CharacteristicUpdate",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'CharacteristicItems',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> CharacteristicUpdate",
 				"MeasurementQIFIn select(mapColumn(",
 				"          CharacteristicItems = QIFDocument.Characteristics.CharacteristicItems,",
 				"          QPId = QIFDocument.QPId",
