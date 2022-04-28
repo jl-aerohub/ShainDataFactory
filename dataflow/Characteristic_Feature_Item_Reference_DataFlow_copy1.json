@@ -475,6 +475,9 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "VersionSelect"
 				}
 			],
 			"scriptLines": [
@@ -1081,11 +1084,11 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> WeldScarfReference",
-				"CharacteristicItemSelect foldDown(unroll(FeatureItemIds.Id),",
+				"CharacteristicItemSelect foldDown(unroll(CharacteristicItems.WeldCompoundCharacteristicItem.FeatureItemIds.Id),",
 				"     mapColumn(",
 				"          QPID = QPId,",
-				"          Characteristicid = {CharacteristicItems.WeldCompoundCharacteristicItem.{@id}},",
-				"          Featureid = FeatureItemIds.Id",
+				"          Characteristicid = CharacteristicItems.WeldCompoundCharacteristicItem.{@id},",
+				"          Featureid = CharacteristicItems.WeldCompoundCharacteristicItem.FeatureItemIds.Id",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> WeldCompoundReference",
@@ -1180,6 +1183,11 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
+				"MeasurementQIFIn select(mapColumn(",
+				"          FileVersion = QIFDocument.Version.TimeCreated",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
