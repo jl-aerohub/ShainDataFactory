@@ -41,6 +41,10 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Measurement_QIF_In_Item_Reference",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			}
