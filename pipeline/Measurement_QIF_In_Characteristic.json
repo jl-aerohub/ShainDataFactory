@@ -45,9 +45,6 @@
 					"secureInput": false
 				},
 				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[UpdateIDMax]"
-				},
 				"linkedServiceName": {
 					"referenceName": "MFIN Database",
 					"type": "LinkedServiceReference"
