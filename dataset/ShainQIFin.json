@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "AerohubHoleBlock242_3_0_wResultTest2.qif",
+				"fileName": "*.qif",
 				"container": "pythonin"
 			}
 		}
