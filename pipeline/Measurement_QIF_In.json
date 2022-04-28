@@ -34,6 +34,15 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Execute ItemReference",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"annotations": [],
