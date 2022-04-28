@@ -41,6 +41,8 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"sqlWriterStoredProcedureName": "[dbo].[InsertNewQIF]",
+						"sqlWriterTableType": "base",
+						"storedProcedureTableTypeParameterName": "QIFDocument",
 						"storedProcedureParameters": {
 							"IDMax": {
 								"type": "Int32",
