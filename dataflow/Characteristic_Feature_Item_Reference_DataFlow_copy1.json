@@ -987,7 +987,10 @@
 				"     mapColumn(",
 				"          QPID,",
 				"          Featureid,",
-				"          Characteristicid",
+				"          Characteristicid,",
+				"          UpdatedFeatureid = FeatureUpdateid,",
+				"          UpdatedCharacteristicid = CharacterisitcUpdateid,",
+				"          FileVersion",
 				"     )) ~> CharacterFeatureReferenceSink"
 			]
 		}
