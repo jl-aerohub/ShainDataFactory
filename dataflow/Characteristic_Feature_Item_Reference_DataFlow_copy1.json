@@ -478,6 +478,9 @@
 				},
 				{
 					"name": "VersionSelect"
+				},
+				{
+					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -1188,6 +1191,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
 				"lookup1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
