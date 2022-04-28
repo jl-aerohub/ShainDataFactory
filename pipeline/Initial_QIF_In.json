@@ -115,11 +115,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Test"
+				"defaultValue": "AerohubMFINMapping.qif"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "Test"
+				"defaultValue": "initialqifin"
 			}
 		},
 		"annotations": [],
