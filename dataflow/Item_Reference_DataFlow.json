@@ -290,6 +290,9 @@
 				},
 				{
 					"name": "CharacteristicUpdateJoin"
+				},
+				{
+					"name": "FeatureClean"
 				}
 			],
 			"scriptLines": [
@@ -953,12 +956,12 @@
 				"     multiple: true,",
 				"     broadcast: 'auto',",
 				"     pickup: 'any')~> CharacterisitcLookup",
-				"FeatureUpdate, VersionJoin lookup(FeatureUpdate@QPID == ReferenceUnion@QPID",
-				"     && FeatureUpdate@FileVersion == ToTimestamp@FileVersion",
+				"FeatureClean, VersionJoin lookup(FeatureClean@QPID == ReferenceUnion@QPID",
+				"     && FeatureClean@FileVersion == ToTimestamp@FileVersion",
 				"     && Origid == Featureid,",
-				"     multiple: true,",
-				"     broadcast: 'auto',",
-				"     pickup: 'any')~> FeatureLookup",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> FeatureLookup",
 				"CharacterisitcLookup select(mapColumn(",
 				"          CharacteristicOrigid = Origid,",
 				"          CharacterisitcUpdateid = Updateid",
@@ -974,6 +977,14 @@
 				"FeatureUpdateJoin, CharacteristicIdSelect join(Characteristicid == CharacteristicOrigid,",
 				"     joinType:'right',",
 				"     broadcast: 'auto')~> CharacteristicUpdateJoin",
+				"FeatureUpdate select(mapColumn(",
+				"          Origid,",
+				"          Updateid,",
+				"          FileVersion,",
+				"          QPID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FeatureClean",
 				"CharacteristicUpdateJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
