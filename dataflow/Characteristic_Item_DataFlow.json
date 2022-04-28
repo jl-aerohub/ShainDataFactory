@@ -1,5 +1,5 @@
 {
-	"name": "Characteristic_Item_DataFlow_copy1",
+	"name": "Characteristic_Item_DataFlow",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

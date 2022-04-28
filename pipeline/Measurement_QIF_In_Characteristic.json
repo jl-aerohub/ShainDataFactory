@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Characteristic_Item_DataFlow_copy1",
+				"name": "Characteristic_Item_DataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Characteristic_Item_DataFlow_copy1",
+						"referenceName": "Characteristic_Item_DataFlow",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -31,7 +31,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Characteristic_Item_DataFlow_copy1",
+						"activity": "Characteristic_Item_DataFlow",
 						"dependencyConditions": [
 							"Succeeded"
 						]
