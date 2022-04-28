@@ -9624,7 +9624,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Initial_QIF_In",
+						"name": "ShainQIFin",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -9637,7 +9637,7 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
+								"value": "pythonin/@{replace(pipeline().parameters.FilePath,'pythonin','')}/@{pipeline().parameters.FileName}"
 							},
 							{
 								"name": "Destination",
@@ -9711,18 +9711,9 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Initial_QIF_Input",
+								"referenceName": "ShainQIFin",
 								"type": "DatasetReference",
-								"parameters": {
-									"FileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"FilePath": {
-										"value": "@pipeline().parameters.FilePath",
-										"type": "Expression"
-									}
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -9755,7 +9746,7 @@
 				"lastPublishTime": "2022-04-05T20:34:26Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Initial_QIF_Input')]",
+				"[concat(variables('factoryId'), '/datasets/ShainQIFin')]",
 				"[concat(variables('factoryId'), '/datasets/Intial_QIF_Sink')]"
 			]
 		},
@@ -9791,6 +9782,29 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Initial_QIF_In_copy1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ShainQIFin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AerohubStorageAccount",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Xml",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "*.qif",
+						"container": "pythonin"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AerohubStorageAccount')]"
 			]
 		}
 	]
