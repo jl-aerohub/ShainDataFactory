@@ -90,18 +90,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Initial_QIF_Input",
-						"type": "DatasetReference",
-						"parameters": {
-							"FileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
-							"FilePath": {
-								"value": "@pipeline().parameters.FilePath",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "ShainQIFin",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
