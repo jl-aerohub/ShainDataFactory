@@ -16,7 +16,7 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "pythonin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
+						"value": "pythonin/@{replace(pipeline().parameters.FilePath,'pythonin','')}/@{pipeline().parameters.FileName}"
 					},
 					{
 						"name": "Destination",
