@@ -1379,7 +1379,7 @@
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
 				"     IDMax = toInteger(max(UpdateidMax))) ~> aggregate1",
 				"QIFDocumentSource, CharacteristicItemSelect exists(QIFDocumentSource@QPID == CharacteristicItemSelect@QPId,",
-				"     negate:false,",
+				"     negate:true,",
 				"     broadcast: 'auto')~> QPIDExists",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",

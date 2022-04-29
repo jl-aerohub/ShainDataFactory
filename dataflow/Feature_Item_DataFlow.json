@@ -696,7 +696,7 @@
 				"     broadcast: 'auto')~> VersionJoin",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
 				"QIFDocumentSource, FeatureItemSelect exists(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
-				"     negate:false,",
+				"     negate:true,",
 				"     broadcast: 'auto')~> QPIDExists",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
