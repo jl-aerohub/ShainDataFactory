@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CharacteristicItemDataFlow",
+				"name": "Characteristic_Item_DataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -23,7 +23,53 @@
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "None",
+					"cacheSinks": {
+						"firstRowOnly": true
+					}
+				}
+			},
+			{
+				"name": "UpdateMaxID",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Characteristic_Item_DataFlow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[UpdateIDMax]",
+					"storedProcedureParameters": {
+						"IDMax": {
+							"value": {
+								"value": "@activity('Characteristic_Item_DataFlow').output.runStatus.output.StoredProcedureParamSink.value[0].IDMax",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"QPID": {
+							"value": {
+								"value": "@activity('Characteristic_Item_DataFlow').output.runStatus.output.StoredProcedureParamSink.value[0].QPID",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "MFIN Database",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],

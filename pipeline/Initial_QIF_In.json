@@ -13,29 +13,29 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "Source",
-						"value": "initialqifin/@{replace(pipeline().parameters.FilePath,'initialqifin','')}/@{pipeline().parameters.FileName}"
-					},
-					{
-						"name": "Destination",
-						"value": "dbo.QIFDocument"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "XmlSource",
+						"additionalColumns": [
+							{
+								"name": "MBD",
+								"value": {
+									"value": "@pipeline().parameters.FileName",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
 							"type": "XmlReadSettings",
 							"validationMode": "none",
-							"detectDataType": true,
-							"namespaces": true
+							"detectDataType": false,
+							"namespaces": false
 						}
 					},
 					"sink": {
@@ -54,7 +54,7 @@
 								},
 								"sink": {
 									"name": "QPID",
-									"type": "Guid"
+									"type": "GUID"
 								}
 							},
 							{
@@ -62,11 +62,19 @@
 									"path": "$['QIFDocument']['@idMax']"
 								},
 								"sink": {
-									"name": "IDMax",
-									"type": "Int32"
+									"name": "IDMax"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MBD']"
+								},
+								"sink": {
+									"name": "MBD"
 								}
 							}
 						],
+						"collectionReference": "",
 						"mapComplexValuesToString": false
 					}
 				},
@@ -97,11 +105,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Test"
+				"defaultValue": "AerohubMFINMapping.qif"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "Test"
+				"defaultValue": "initialqifin"
 			}
 		},
 		"annotations": [],

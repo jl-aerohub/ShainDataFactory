@@ -10,6 +10,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "QIFDocumentSource"
 				}
 			],
 			"sinks": [
@@ -19,29 +26,14 @@
 						"type": "DatasetReference"
 					},
 					"name": "FeatureItemSink"
+				},
+				{
+					"name": "StoredProcedureParamSink"
 				}
 			],
 			"transformations": [
 				{
-					"name": "CylinderFlatten"
-				},
-				{
-					"name": "FeatureItemSelect"
-				},
-				{
-					"name": "ConeFlatten"
-				},
-				{
-					"name": "CircularArcFlatten"
-				},
-				{
-					"name": "CircularArcType"
-				},
-				{
-					"name": "ConeType"
-				},
-				{
-					"name": "CylinderType"
+					"name": "IDMaxSelect"
 				},
 				{
 					"name": "CircleFlatten"
@@ -50,10 +42,31 @@
 					"name": "CircleType"
 				},
 				{
+					"name": "CircularArcFlatten"
+				},
+				{
+					"name": "CircularArcType"
+				},
+				{
+					"name": "ConeFlatten"
+				},
+				{
+					"name": "ConeType"
+				},
+				{
 					"name": "ConicalSegmentFlatten"
 				},
 				{
 					"name": "ConicalSegmentType"
+				},
+				{
+					"name": "CylinderFlatten"
+				},
+				{
+					"name": "FeatureItemSelect"
+				},
+				{
+					"name": "CylinderType"
 				},
 				{
 					"name": "CylindricalSegmentFlatten"
@@ -224,103 +237,40 @@
 					"name": "TorusType"
 				},
 				{
-					"name": "union1"
+					"name": "FeatureItemUnion"
 				},
 				{
-					"name": "union2"
+					"name": "RemoveNulls"
 				},
 				{
-					"name": "union3"
+					"name": "IDMaxKey"
 				},
 				{
-					"name": "union4"
+					"name": "IDMaxJoin"
 				},
 				{
-					"name": "union5"
+					"name": "AddIDMax"
 				},
 				{
-					"name": "union6"
+					"name": "QIFDocumentSelect"
 				},
 				{
-					"name": "union7"
+					"name": "FindIDMax"
 				},
 				{
-					"name": "union8"
+					"name": "VersionSelect"
 				},
 				{
-					"name": "union9"
+					"name": "VersionJoin"
 				},
 				{
-					"name": "union10"
+					"name": "ToTimestamp"
 				},
 				{
-					"name": "union11"
+					"name": "QPIDExists"
 				},
 				{
-					"name": "union12"
-				},
-				{
-					"name": "union13"
-				},
-				{
-					"name": "union14"
-				},
-				{
-					"name": "union15"
-				},
-				{
-					"name": "union16"
-				},
-				{
-					"name": "union17"
-				},
-				{
-					"name": "union18"
-				},
-				{
-					"name": "union19"
-				},
-				{
-					"name": "union20"
-				},
-				{
-					"name": "union21"
-				},
-				{
-					"name": "union22"
-				},
-				{
-					"name": "union23"
-				},
-				{
-					"name": "union24"
-				},
-				{
-					"name": "union25"
-				},
-				{
-					"name": "union26"
-				},
-				{
-					"name": "union27"
-				},
-				{
-					"name": "union28"
-				},
-				{
-					"name": "union29"
-				},
-				{
-					"name": "union30"
-				},
-				{
-					"name": "union31"
-				},
-				{
-					"name": "union32"
-				},
-				{
-					"name": "alterRow1"
+					"name": "CapQPID"
 				}
 			],
 			"scriptLines": [
@@ -336,11 +286,72 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['/AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
+				"source(output(",
+				"          QPID as string,",
+				"          IDMax as integer,",
+				"          MBD as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'QIFDocument',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
+				"QPIDExists select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
+				"FeatureItemSelect foldDown(unroll(FeatureItems.CircleFeatureItem),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          FeatureType = FeatureItems.CircleFeatureItem,",
+				"          Origid = FeatureItems.CircleFeatureItem.{@id},",
+				"          FeatureName = FeatureItems.CircleFeatureItem.FeatureName,",
+				"          FeatureNominalid = FeatureItems.CircleFeatureItem.FeatureNominalId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CircleFlatten",
+				"CircleFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Circle'))) ~> CircleType",
+				"FeatureItemSelect foldDown(unroll(FeatureItems.CircularArcFeatureItem),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          FeatureType = FeatureItems.CircularArcFeatureItem,",
+				"          Origid = FeatureItems.CircularArcFeatureItem.{@id},",
+				"          FeatureName = FeatureItems.CircularArcFeatureItem.FeatureName,",
+				"          FeatureNominalid = FeatureItems.CircularArcFeatureItem.FeatureNominalId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CircularArcFlatten",
+				"CircularArcFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'CircularArc'))) ~> CircularArcType",
+				"FeatureItemSelect foldDown(unroll(FeatureItems.ConeFeatureItem),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          FeatureType = FeatureItems.ConeFeatureItem,",
+				"          Origid = FeatureItems.ConeFeatureItem.{@id},",
+				"          FeatureName = FeatureItems.ConeFeatureItem.FeatureName,",
+				"          FeatureNominalid = FeatureItems.ConeFeatureItem.FeatureNominalId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ConeFlatten",
+				"ConeFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cone'))) ~> ConeType",
+				"FeatureItemSelect foldDown(unroll(FeatureItems.ConicalSegmentFeatureItem),",
+				"     mapColumn(",
+				"          FeatureType = FeatureItems.ConicalSegmentFeatureItem,",
+				"          QPID = QPId,",
+				"          Origid = FeatureItems.ConicalSegmentFeatureItem.{@id},",
+				"          FeatureName = FeatureItems.ConicalSegmentFeatureItem.FeatureName,",
+				"          FeatureNominalid = FeatureItems.ConicalSegmentFeatureItem.FeatureNominalId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ConicalSegmentFlatten",
+				"ConicalSegmentFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'ConicalSegment'))) ~> ConicalSegmentType",
 				"FeatureItemSelect foldDown(unroll(FeatureItems.CylinderFeatureItem),",
 				"     mapColumn(",
 				"          QPID = QPId,",
 				"          FeatureType = FeatureItems.CylinderFeatureItem,",
-				"          id = FeatureItems.CylinderFeatureItem.{@id},",
+				"          Origid = FeatureItems.CylinderFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.CylinderFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.CylinderFeatureItem.FeatureNominalId",
 				"     ),",
@@ -352,56 +363,12 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> FeatureItemSelect",
-				"FeatureItemSelect foldDown(unroll(FeatureItems.ConeFeatureItem),",
-				"     mapColumn(",
-				"          QPID = QPId,",
-				"          FeatureType = FeatureItems.ConeFeatureItem,",
-				"          id = FeatureItems.ConeFeatureItem.{@id},",
-				"          FeatureName = FeatureItems.ConeFeatureItem.FeatureName,",
-				"          FeatureNominalid = FeatureItems.ConeFeatureItem.FeatureNominalId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> ConeFlatten",
-				"FeatureItemSelect foldDown(unroll(FeatureItems.CircularArcFeatureItem),",
-				"     mapColumn(",
-				"          QPID = QPId,",
-				"          FeatureType = FeatureItems.CircularArcFeatureItem,",
-				"          id = FeatureItems.CircularArcFeatureItem.{@id},",
-				"          FeatureName = FeatureItems.CircularArcFeatureItem.FeatureName,",
-				"          FeatureNominalid = FeatureItems.CircularArcFeatureItem.FeatureNominalId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> CircularArcFlatten",
-				"CircularArcFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'CircularArc'))) ~> CircularArcType",
-				"ConeFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cone'))) ~> ConeType",
 				"CylinderFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cylinder'))) ~> CylinderType",
-				"FeatureItemSelect foldDown(unroll(FeatureItems.CircleFeatureItem),",
-				"     mapColumn(",
-				"          QPID = QPId,",
-				"          FeatureType = FeatureItems.CircleFeatureItem,",
-				"          id = FeatureItems.CircleFeatureItem.{@id},",
-				"          FeatureName = FeatureItems.CircleFeatureItem.FeatureName,",
-				"          FeatureNominalid = FeatureItems.CircleFeatureItem.FeatureNominalId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> CircleFlatten",
-				"CircleFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Circle'))) ~> CircleType",
-				"FeatureItemSelect foldDown(unroll(FeatureItems.ConicalSegmentFeatureItem),",
-				"     mapColumn(",
-				"          FeatureType = FeatureItems.ConicalSegmentFeatureItem,",
-				"          QPID = QPId,",
-				"          id = FeatureItems.ConicalSegmentFeatureItem.{@id},",
-				"          FeatureName = FeatureItems.ConicalSegmentFeatureItem.FeatureName,",
-				"          FeatureNominalid = FeatureItems.ConicalSegmentFeatureItem.FeatureNominalId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> ConicalSegmentFlatten",
-				"ConicalSegmentFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'ConicalSegment'))) ~> ConicalSegmentType",
 				"FeatureItemSelect foldDown(unroll(FeatureItems.CylindricalSegmentFeatureItem),",
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.CylindricalSegmentFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.CylindricalSegmentFeatureItem.{@id},",
+				"          Origid = FeatureItems.CylindricalSegmentFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.CylindricalSegmentFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.CylindricalSegmentFeatureItem.FeatureNominalId",
 				"     ),",
@@ -412,7 +379,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.EdgePointFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.EdgePointFeatureItem.{@id},",
+				"          Origid = FeatureItems.EdgePointFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.EdgePointFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.EdgePointFeatureItem.FeatureNominalId",
 				"     ),",
@@ -423,7 +390,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.EllipseFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.EllipseFeatureItem.{@id},",
+				"          Origid = FeatureItems.EllipseFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.EllipseFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.EllipseFeatureItem.FeatureNominalId",
 				"     ),",
@@ -434,7 +401,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.EllipticalArcFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.EllipticalArcFeatureItem.{@id},",
+				"          Origid = FeatureItems.EllipticalArcFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.EllipticalArcFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.EllipticalArcFeatureItem.FeatureNominalId",
 				"     ),",
@@ -445,7 +412,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.ElongatedCircleFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.ElongatedCircleFeatureItem.{@id},",
+				"          Origid = FeatureItems.ElongatedCircleFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.ElongatedCircleFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.ElongatedCircleFeatureItem.FeatureNominalId",
 				"     ),",
@@ -456,7 +423,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.ElongatedCylinderFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.ElongatedCylinderFeatureItem.{@id},",
+				"          Origid = FeatureItems.ElongatedCylinderFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.ElongatedCylinderFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.ElongatedCylinderFeatureItem.FeatureNominalId",
 				"     ),",
@@ -467,7 +434,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.ExtrudedCrossSectionFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.ExtrudedCrossSectionFeatureItem.{@id},",
+				"          Origid = FeatureItems.ExtrudedCrossSectionFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.ExtrudedCrossSectionFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.ExtrudedCrossSectionFeatureItem.FeatureNominalId",
 				"     ),",
@@ -478,7 +445,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.GroupFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.GroupFeatureItem.{@id},",
+				"          Origid = FeatureItems.GroupFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.GroupFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.GroupFeatureItem.FeatureNominalId",
 				"     ),",
@@ -489,7 +456,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.LineFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.LineFeatureItem.{@id},",
+				"          Origid = FeatureItems.LineFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.LineFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.LineFeatureItem.FeatureNominalId",
 				"     ),",
@@ -500,7 +467,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.MarkingFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.MarkingFeatureItem.{@id},",
+				"          Origid = FeatureItems.MarkingFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.MarkingFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.MarkingFeatureItem.FeatureNominalId",
 				"     ),",
@@ -511,7 +478,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OppositeAngledLinesFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OppositeAngledLinesFeatureItem.{@id},",
+				"          Origid = FeatureItems.OppositeAngledLinesFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OppositeAngledLinesFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OppositeAngledLinesFeatureItem.FeatureNominalId",
 				"     ),",
@@ -522,7 +489,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OppositeAngledPlanesFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OppositeAngledPlanesFeatureItem.{@id},",
+				"          Origid = FeatureItems.OppositeAngledPlanesFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OppositeAngledPlanesFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OppositeAngledPlanesFeatureItem.FeatureNominalId",
 				"     ),",
@@ -533,7 +500,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OppositeParallelLinesFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OppositeParallelLinesFeatureItem.{@id},",
+				"          Origid = FeatureItems.OppositeParallelLinesFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OppositeParallelLinesFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OppositeParallelLinesFeatureItem.FeatureNominalId",
 				"     ),",
@@ -544,7 +511,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OppositeParallelPlanesFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OppositeParallelPlanesFeatureItem.{@id},",
+				"          Origid = FeatureItems.OppositeParallelPlanesFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OppositeParallelPlanesFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OppositeParallelPlanesFeatureItem.FeatureNominalId",
 				"     ),",
@@ -555,7 +522,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OtherCurveFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OtherCurveFeatureItem.{@id},",
+				"          Origid = FeatureItems.OtherCurveFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OtherCurveFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OtherCurveFeatureItem.FeatureNominalId",
 				"     ),",
@@ -566,7 +533,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OtherNonShapeFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OtherNonShapeFeatureItem.{@id},",
+				"          Origid = FeatureItems.OtherNonShapeFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OtherNonShapeFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OtherNonShapeFeatureItem.FeatureNominalId",
 				"     ),",
@@ -577,7 +544,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OtherShapeFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OtherShapeFeatureItem.{@id},",
+				"          Origid = FeatureItems.OtherShapeFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OtherShapeFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OtherShapeFeatureItem.FeatureNominalId",
 				"     ),",
@@ -588,7 +555,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.OtherSurfaceFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.OtherSurfaceFeatureItem.{@id},",
+				"          Origid = FeatureItems.OtherSurfaceFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.OtherSurfaceFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.OtherSurfaceFeatureItem.FeatureNominalId",
 				"     ),",
@@ -599,7 +566,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.PlaneFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.PlaneFeatureItem.{@id},",
+				"          Origid = FeatureItems.PlaneFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.PlaneFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.PlaneFeatureItem.FeatureNominalId",
 				"     ),",
@@ -610,7 +577,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.PointDefinedCurveFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.PointDefinedCurveFeatureItem.{@id},",
+				"          Origid = FeatureItems.PointDefinedCurveFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.PointDefinedCurveFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.PointDefinedCurveFeatureItem.FeatureNominalId",
 				"     ),",
@@ -621,7 +588,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.PointDefinedSurfaceFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.PointDefinedSurfaceFeatureItem.{@id},",
+				"          Origid = FeatureItems.PointDefinedSurfaceFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.PointDefinedSurfaceFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.PointDefinedSurfaceFeatureItem.FeatureNominalId",
 				"     ),",
@@ -632,7 +599,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.PointFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.PointFeatureItem.{@id},",
+				"          Origid = FeatureItems.PointFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.PointFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.PointFeatureItem.FeatureNominalId",
 				"     ),",
@@ -643,7 +610,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.SphereFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.SphereFeatureItem.{@id},",
+				"          Origid = FeatureItems.SphereFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.SphereFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.SphereFeatureItem.FeatureNominalId",
 				"     ),",
@@ -654,7 +621,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.SphericalSegmentFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.SphericalSegmentFeatureItem.{@id},",
+				"          Origid = FeatureItems.SphericalSegmentFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.SphericalSegmentFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.SphericalSegmentFeatureItem.FeatureNominalId",
 				"     ),",
@@ -665,7 +632,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.SurfaceOfRevolutionFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.SurfaceOfRevolutionFeatureItem.{@id},",
+				"          Origid = FeatureItems.SurfaceOfRevolutionFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.SurfaceOfRevolutionFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.SurfaceOfRevolutionFeatureItem.FeatureNominalId",
 				"     ),",
@@ -676,7 +643,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.ThreadedFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.ThreadedFeatureItem.{@id},",
+				"          Origid = FeatureItems.ThreadedFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.ThreadedFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.ThreadedFeatureItem.FeatureNominalId",
 				"     ),",
@@ -687,7 +654,7 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.ToroidalSegmentFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.ToroidalSegmentFeatureItem.{@id},",
+				"          Origid = FeatureItems.ToroidalSegmentFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.ToroidalSegmentFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.ToroidalSegmentFeatureItem.FeatureNominalId",
 				"     ),",
@@ -698,54 +665,53 @@
 				"     mapColumn(",
 				"          FeatureType = FeatureItems.TorusFeatureItem,",
 				"          QPID = QPId,",
-				"          id = FeatureItems.TorusFeatureItem.{@id},",
+				"          Origid = FeatureItems.TorusFeatureItem.{@id},",
 				"          FeatureName = FeatureItems.TorusFeatureItem.FeatureName,",
 				"          FeatureNominalid = FeatureItems.TorusFeatureItem.FeatureNominalId",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> TorusFlatten",
 				"TorusFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Torus'))) ~> TorusType",
-				"CircleType, CircularArcType union(byName: true)~> union1",
-				"union1, ConeType union(byName: true)~> union2",
-				"union2, ConicalSegmentType union(byName: true)~> union3",
-				"union3, CylinderType union(byName: true)~> union4",
-				"union4, CylindricalSegmentType union(byName: true)~> union5",
-				"union5, EdgePointType union(byName: true)~> union6",
-				"union6, EllipseType union(byName: true)~> union7",
-				"union7, EllipticalArcType union(byName: true)~> union8",
-				"union8, ElongatedCircleType union(byName: true)~> union9",
-				"union9, ElongatedCylinderType union(byName: true)~> union10",
-				"union10, ExtrudedCrossSectionType union(byName: true)~> union11",
-				"union11, GroupType union(byName: true)~> union12",
-				"union12, Linetype union(byName: true)~> union13",
-				"union13, MarkingType union(byName: true)~> union14",
-				"union14, OppositeAngledLinesType union(byName: true)~> union15",
-				"union15, OppositeAngledPlanesType union(byName: true)~> union16",
-				"union16, OppositeParallelLinesType union(byName: true)~> union17",
-				"union17, OppositeParallelPlanesType union(byName: true)~> union18",
-				"union18, OtherCurveType union(byName: true)~> union19",
-				"union19, OtherNonShapeType union(byName: true)~> union20",
-				"union20, OtherShapeType union(byName: true)~> union21",
-				"union21, OtherSurfaceType union(byName: true)~> union22",
-				"union22, PlaneType union(byName: true)~> union23",
-				"union23, PointDefinedCurveType union(byName: true)~> union24",
-				"union24, PointDefinedSurfaceType union(byName: true)~> union25",
-				"union25, PointType union(byName: true)~> union26",
-				"union26, SphereType union(byName: true)~> union27",
-				"union27, SphericalSegmentType union(byName: true)~> union28",
-				"union28, SurfaceOfRevolutionType union(byName: true)~> union29",
-				"union29, ThreadedType union(byName: true)~> union30",
-				"union30, ToroidalSegmentType union(byName: true)~> union31",
-				"union31, TorusType union(byName: true)~> union32",
-				"union32 alterRow(deleteIf(isNull(FeatureType))) ~> alterRow1",
-				"alterRow1 sink(allowSchemaDrift: true,",
+				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureItemUnion",
+				"CapQPID alterRow(deleteIf(isNull(FeatureType))) ~> RemoveNulls",
+				"IDMaxJoin keyGenerate(output(Updateid as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> IDMaxKey",
+				"VersionJoin, IDMaxSelect join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> IDMaxJoin",
+				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
+				"AddIDMax select(mapColumn(",
+				"          QPID,",
+				"          UpdateidMax = Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
+				"QIFDocumentSelect aggregate(groupBy(QPID),",
+				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"MeasurementQIFIn select(mapColumn(",
+				"          FileVersion = QIFDocument.Version.TimeCreated",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"RemoveNulls, ToTimestamp join(1 == 1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> VersionJoin",
+				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QPIDExists",
+				"FeatureItemUnion derive(QPID = upper(QPID)) ~> CapQPID",
+				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          FeatureType as string,",
-				"          id as integer,",
+				"          Updateid as integer,",
 				"          FeatureNominalid as integer,",
 				"          FeatureName as string,",
-				"          QPID as string",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
 				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -754,14 +720,25 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          QPID,",
 				"          FeatureType,",
-				"          id,",
+				"          Updateid,",
+				"          FeatureNominalid,",
 				"          FeatureName,",
-				"          FeatureNominalid",
-				"     )) ~> FeatureItemSink"
+				"          QPID,",
+				"          Origid,",
+				"          FileVersion",
+				"     )) ~> FeatureItemSink",
+				"FindIDMax sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: true,",
+				"     saveOrder: 1) ~> StoredProcedureParamSink"
 			]
 		}
 	}

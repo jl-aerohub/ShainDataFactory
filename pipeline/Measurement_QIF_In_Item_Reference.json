@@ -1,9 +1,9 @@
 {
-	"name": "Measurement_QIF_In_Reference",
+	"name": "Measurement_QIF_In_Item_Reference",
 	"properties": {
 		"activities": [
 			{
-				"name": "Characteristic_Feature_Item_Reference_DataFlow",
+				"name": "Item_Reference_DataFlow",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,14 +16,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Characteristic_Feature_Item_Reference_DataFlow",
+						"referenceName": "Item_Reference_DataFlow",
 						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "None",
+					"runConcurrently": true,
+					"cacheSinks": {
+						"firstRowOnly": true
+					}
 				}
 			}
 		],
