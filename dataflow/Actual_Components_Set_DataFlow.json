@@ -10,6 +10,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "QIFDocumentSource"
 				}
 			],
 			"sinks": [
@@ -27,6 +34,12 @@
 				},
 				{
 					"name": "ActualComponentsFlatten"
+				},
+				{
+					"name": "QPIDExists"
+				},
+				{
+					"name": "IDMaxSelect"
 				}
 			],
 			"scriptLines": [
@@ -41,6 +54,13 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'QIFDocument',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
 				"MeasurementQIFIn select(mapColumn(",
 				"          QPID = QIFDocument.QPId,",
 				"          ActualComponents = QIFDocument.Results.ActualComponentSets.ActualComponentSet",
@@ -56,6 +76,11 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> ActualComponentsFlatten",
+				"QIFDocumentSource, ActualComponentsSelect exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QPIDExists",
+				"QPIDExists select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
 				"ActualComponentsFlatten sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
