@@ -486,9 +486,6 @@
 					"name": "ToTimestamp"
 				},
 				{
-					"name": "QPIDLookup"
-				},
-				{
 					"name": "IDMaxSelect"
 				},
 				{
@@ -508,6 +505,9 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "QPIDExists"
 				}
 			],
 			"scriptLines": [
@@ -1355,10 +1355,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"QIFDocumentSource, CharacteristicItemSelect lookup(QIFDocumentSource@QPID == CharacteristicItemSelect@QPId,",
-				"     multiple: true,",
-				"     broadcast: 'auto')~> QPIDLookup",
-				"QPIDLookup select(mapColumn(",
+				"QPIDExists select(mapColumn(",
 				"          IDMax",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
@@ -1381,6 +1378,9 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
 				"     IDMax = toInteger(max(UpdateidMax))) ~> aggregate1",
+				"QIFDocumentSource, CharacteristicItemSelect exists(QIFDocumentSource@QPID == CharacteristicItemSelect@QPId,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QPIDExists",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",

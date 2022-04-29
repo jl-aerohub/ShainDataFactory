@@ -33,9 +33,6 @@
 			],
 			"transformations": [
 				{
-					"name": "QPIDLookup"
-				},
-				{
 					"name": "IDMaxSelect"
 				},
 				{
@@ -268,6 +265,9 @@
 				},
 				{
 					"name": "ToTimestamp"
+				},
+				{
+					"name": "QPIDExists"
 				}
 			],
 			"scriptLines": [
@@ -295,10 +295,7 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'QIFDocument',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
-				"QIFDocumentSource, FeatureItemSelect lookup(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
-				"     multiple: true,",
-				"     broadcast: 'auto')~> QPIDLookup",
-				"QPIDLookup select(mapColumn(",
+				"QPIDExists select(mapColumn(",
 				"          IDMax",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
@@ -698,6 +695,9 @@
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"QIFDocumentSource, FeatureItemSelect exists(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QPIDExists",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
