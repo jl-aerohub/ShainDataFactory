@@ -224,7 +224,7 @@
 					"name": "TorusType"
 				},
 				{
-					"name": "FeatureItemUnion"
+					"name": "FeatureMeasurementUnion"
 				},
 				{
 					"name": "NullRemoval"
@@ -649,8 +649,8 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> TorusFlatten",
 				"TorusFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Torus'))) ~> TorusType",
-				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureItemUnion",
-				"FeatureItemUnion alterRow(deleteIf(isNull(FeatureType))) ~> NullRemoval",
+				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureMeasurementUnion",
+				"FeatureMeasurementUnion alterRow(deleteIf(isNull(FeatureType))) ~> NullRemoval",
 				"MeasurementQIFIn foldDown(unroll(QIFDocument.Results.MeasurementResultsSet.MeasurementResults),",
 				"     mapColumn(",
 				"          id = QIFDocument.Results.MeasurementResultsSet.MeasurementResults.{@id},",
