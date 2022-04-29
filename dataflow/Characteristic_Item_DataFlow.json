@@ -508,6 +508,9 @@
 				},
 				{
 					"name": "QPIDExists"
+				},
+				{
+					"name": "CapQPID"
 				}
 			],
 			"scriptLines": [
@@ -1348,7 +1351,7 @@
 				"     skipDuplicateMapOutputs: false) ~> WidthFlatten",
 				"WidthFlatten derive(CharacteristicType = toString(iif(isNull(CharacteristicType) == false(),'Width'))) ~> WidthType",
 				"AngleBetweenType, AngleType, AngularCoordinateType, AngleFromType, AngularityType, ChordType, CircularityType, CircularRunoutType, CoaxialityType, ConcentricityType, ConicalTaperType, ConicityType, CurveLengthType, CylindricityType, DepthType, DiameterType, DistanceBetweenType, DistanceFromType, EllipticityType, FlatTaperType, FlatnessType, HeightType, LengthType, LinearCoordinateType, LineProfileType, OtherFormType, ParallelismType, PerpendicularityType, PointProfileType, PositionType, RadiusType, SphericalDiameterType, SphericalRadiusType, SphericityType, SquareType, StraightnessType, SurfaceProfileType, SurfaceProfileNonUniformType, SurfaceTextureType, SymmetryType, ThicknessType, ThreadType, ToroidicityType, TotalRunoutType, UserDefinedAttributeType, UserDefinedLinearType, UserDefinedAngularType, UserDefinedTemperatureType, UserDefinedAreaType, UserDefinedForceType, UserDefinedMassType, UserDefinedPressureType, UserDefinedSpeedType, UserDefinedTimeType, UserDefinedUnitType, WidthType, WeldFilletType, WeldPlugType, WeldSlotType, WeldSpotType, WeldStudType, WeldSeamType, WeldSurfacingType, WeldEdgeType, WeldSquareType, WeldBevelType, WeldVType, WeldUType, WeldJType, WeldFlareVType, WeldFlareBevelType, WeldScarfType, WeldCompoundType union(byName: true)~> CharacteristicItemUnion",
-				"CharacteristicItemUnion alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
+				"CapQPID alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
 				"MeasurementQIFIn select(mapColumn(",
 				"          FileVersion = QIFDocument.Version.TimeCreated",
 				"     ),",
@@ -1378,9 +1381,10 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
 				"     IDMax = toInteger(max(UpdateidMax))) ~> aggregate1",
-				"QIFDocumentSource, CharacteristicItemSelect exists(QIFDocumentSource@QPID == CharacteristicItemSelect@QPId,",
-				"     negate:true,",
+				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
 				"     broadcast: 'auto')~> QPIDExists",
+				"CharacteristicItemUnion derive(QPID = upper(QPID)) ~> CapQPID",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",

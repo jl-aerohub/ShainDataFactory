@@ -268,6 +268,9 @@
 				},
 				{
 					"name": "QPIDExists"
+				},
+				{
+					"name": "CapQPID"
 				}
 			],
 			"scriptLines": [
@@ -670,7 +673,7 @@
 				"     skipDuplicateMapOutputs: false) ~> TorusFlatten",
 				"TorusFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Torus'))) ~> TorusType",
 				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureItemUnion",
-				"FeatureItemUnion alterRow(deleteIf(isNull(FeatureType))) ~> RemoveNulls",
+				"CapQPID alterRow(deleteIf(isNull(FeatureType))) ~> RemoveNulls",
 				"IDMaxJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> IDMaxKey",
@@ -695,9 +698,10 @@
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> VersionJoin",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"QIFDocumentSource, FeatureItemSelect exists(QIFDocumentSource@QPID == FeatureItemSelect@QPId,",
-				"     negate:true,",
+				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
 				"     broadcast: 'auto')~> QPIDExists",
+				"FeatureItemUnion derive(QPID = upper(QPID)) ~> CapQPID",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",

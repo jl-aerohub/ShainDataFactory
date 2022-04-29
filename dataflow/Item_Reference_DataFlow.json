@@ -296,6 +296,9 @@
 				},
 				{
 					"name": "CharacteristicUpdateID"
+				},
+				{
+					"name": "CapQPID"
 				}
 			],
 			"scriptLines": [
@@ -940,7 +943,7 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> WidthReference",
 				"AngleBetweenReference, AngleReference, AngularCoordinateReference, AngleFromReference, AngularityReference, ChordReference, CircularityReference, CircularRunoutReference, CoaxialityReference, ConcentricityReference, ConicalTaperReference, ConicityReference, CurveLengthReference, CylindricityReference, DepthReference, DiameterReference, DistanceBetweenReference, DistanceFromReference, EllipticityReference, FlatTaperReference, FlatnessReference, HeightReference, LengthReference, LinearCoordinateReference, LineProfileReference, OtherFormReference, ParallelismReference, PerpendicularityReference, PointProfileReference, PositionReference, RadiusReference, SphericalDiameterReference, SphericalRadiusReference, SphericityReference, SquareReference, StraightnessReference, SurfaceProfileReference, SurfaceProfileNonUniformReference, SurfaceTextureReference, SymmetryReference, ThicknessReference, ThreadReference, ToroidicityReference, TotalRunoutReference, UserDefinedAttributeReference, UserDefinedLinearReference, UserDefinedAngularReference, UserDefinedTemperatureReference, UserDefinedAreaReference, UserDefinedForceReference, UserDefinedMassReference, UserDefinedPressureReference, UserDefinedSpeedReference, UserDefinedTimeReference, UserDefinedUnitReference, WidthReference, WeldFilletReference, WeldPlugReference, WeldSlotReference, WeldSpotReference, WeldStudReference, WeldSeamReference, WeldSurfacingReference, WeldEdgeReference, WeldSquareReference, WeldBevelReference, WeldVReference, WeldUReference, WeldJReference, WeldFlareVReference, WeldFlareBevelReference, WeldScarfReference, WeldCompoundReference union(byName: true)~> ReferenceUnion",
-				"ReferenceUnion alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
+				"CapQPID alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
 				"MeasurementQIFIn select(mapColumn(",
 				"          FileVersion = QIFDocument.Version.TimeCreated",
 				"     ),",
@@ -994,6 +997,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> CharacteristicUpdateID",
+				"ReferenceUnion derive(QPID = upper(QPID)) ~> CapQPID",
 				"CharacteristicUpdateJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
