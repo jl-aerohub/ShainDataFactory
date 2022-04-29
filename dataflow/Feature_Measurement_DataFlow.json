@@ -23,13 +23,10 @@
 			],
 			"transformations": [
 				{
-					"name": "CylinderFlatten"
+					"name": "CircleFlatten"
 				},
 				{
-					"name": "FeatureMeasurementSelect"
-				},
-				{
-					"name": "ConeFlatten"
+					"name": "CircleType"
 				},
 				{
 					"name": "CircularArcFlatten"
@@ -38,16 +35,19 @@
 					"name": "CircularArcType"
 				},
 				{
+					"name": "ConeFlatten"
+				},
+				{
 					"name": "ConeType"
+				},
+				{
+					"name": "CylinderFlatten"
 				},
 				{
 					"name": "CylinderType"
 				},
 				{
-					"name": "CircleFlatten"
-				},
-				{
-					"name": "CircleType"
+					"name": "FeatureMeasurementSelect"
 				},
 				{
 					"name": "ConicalSegmentFlatten"
@@ -224,100 +224,7 @@
 					"name": "TorusType"
 				},
 				{
-					"name": "union1"
-				},
-				{
-					"name": "union2"
-				},
-				{
-					"name": "union3"
-				},
-				{
-					"name": "union4"
-				},
-				{
-					"name": "union5"
-				},
-				{
-					"name": "union6"
-				},
-				{
-					"name": "union7"
-				},
-				{
-					"name": "union8"
-				},
-				{
-					"name": "union9"
-				},
-				{
-					"name": "union10"
-				},
-				{
-					"name": "union11"
-				},
-				{
-					"name": "union12"
-				},
-				{
-					"name": "union13"
-				},
-				{
-					"name": "union14"
-				},
-				{
-					"name": "union15"
-				},
-				{
-					"name": "union16"
-				},
-				{
-					"name": "union17"
-				},
-				{
-					"name": "union18"
-				},
-				{
-					"name": "union19"
-				},
-				{
-					"name": "union20"
-				},
-				{
-					"name": "union21"
-				},
-				{
-					"name": "union22"
-				},
-				{
-					"name": "union23"
-				},
-				{
-					"name": "union24"
-				},
-				{
-					"name": "union25"
-				},
-				{
-					"name": "union26"
-				},
-				{
-					"name": "union27"
-				},
-				{
-					"name": "union28"
-				},
-				{
-					"name": "union29"
-				},
-				{
-					"name": "union30"
-				},
-				{
-					"name": "union31"
-				},
-				{
-					"name": "union32"
+					"name": "FeatureItemUnion"
 				},
 				{
 					"name": "NullRemoval"
@@ -339,49 +246,6 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
-				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CylinderFeatureMeasurement),",
-				"     mapColumn(",
-				"          Resultsid,",
-				"          id = FeatureMeasurements.CylinderFeatureMeasurement.{@id},",
-				"          FeatureType = FeatureMeasurements.CylinderFeatureMeasurement,",
-				"          ActualComponentid = FeatureMeasurements.CylinderFeatureMeasurement.ActualComponentId,",
-				"          QPID = QPId,",
-				"          FeatureItemId = FeatureMeasurements.CylinderFeatureMeasurement.FeatureItemId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> CylinderFlatten",
-				"MeasurementResultsFlatten select(mapColumn(",
-				"          QPId,",
-				"          FeatureMeasurements = MeasurementResults.MeasuredFeatures,",
-				"          Resultsid = id",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> FeatureMeasurementSelect",
-				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.ConeFeatureMeasurement),",
-				"     mapColumn(",
-				"          Resultsid,",
-				"          id = FeatureMeasurements.ConeFeatureMeasurement.{@id},",
-				"          FeatureType = FeatureMeasurements.ConeFeatureMeasurement,",
-				"          ActualComponentid = FeatureMeasurements.ConeFeatureMeasurement.ActualComponentId,",
-				"          QPID = QPId,",
-				"          FeatureItemId = FeatureMeasurements.ConeFeatureMeasurement.FeatureItemId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> ConeFlatten",
-				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircularArcFeatureMeasurement),",
-				"     mapColumn(",
-				"          Resultsid,",
-				"          id = FeatureMeasurements.CircularArcFeatureMeasurement.{@id},",
-				"          FeatureType = FeatureMeasurements.CircularArcFeatureMeasurement,",
-				"          ActualComponentid = FeatureMeasurements.CircularArcFeatureMeasurement.ActualComponentId,",
-				"          QPID = QPId,",
-				"          FeatureItemId = FeatureMeasurements.CircularArcFeatureMeasurement.FeatureItemId",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> CircularArcFlatten",
-				"CircularArcFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'CircularArc'))) ~> CircularArcType",
-				"ConeFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cone'))) ~> ConeType",
-				"CylinderFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cylinder'))) ~> CylinderType",
 				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircleFeatureMeasurement),",
 				"     mapColumn(",
 				"          Resultsid,",
@@ -394,6 +258,49 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> CircleFlatten",
 				"CircleFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Circle'))) ~> CircleType",
+				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircularArcFeatureMeasurement),",
+				"     mapColumn(",
+				"          Resultsid,",
+				"          id = FeatureMeasurements.CircularArcFeatureMeasurement.{@id},",
+				"          FeatureType = FeatureMeasurements.CircularArcFeatureMeasurement,",
+				"          ActualComponentid = FeatureMeasurements.CircularArcFeatureMeasurement.ActualComponentId,",
+				"          QPID = QPId,",
+				"          FeatureItemId = FeatureMeasurements.CircularArcFeatureMeasurement.FeatureItemId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CircularArcFlatten",
+				"CircularArcFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'CircularArc'))) ~> CircularArcType",
+				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.ConeFeatureMeasurement),",
+				"     mapColumn(",
+				"          Resultsid,",
+				"          id = FeatureMeasurements.ConeFeatureMeasurement.{@id},",
+				"          FeatureType = FeatureMeasurements.ConeFeatureMeasurement,",
+				"          ActualComponentid = FeatureMeasurements.ConeFeatureMeasurement.ActualComponentId,",
+				"          QPID = QPId,",
+				"          FeatureItemId = FeatureMeasurements.ConeFeatureMeasurement.FeatureItemId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ConeFlatten",
+				"ConeFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cone'))) ~> ConeType",
+				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CylinderFeatureMeasurement),",
+				"     mapColumn(",
+				"          Resultsid,",
+				"          id = FeatureMeasurements.CylinderFeatureMeasurement.{@id},",
+				"          FeatureType = FeatureMeasurements.CylinderFeatureMeasurement,",
+				"          ActualComponentid = FeatureMeasurements.CylinderFeatureMeasurement.ActualComponentId,",
+				"          QPID = QPId,",
+				"          FeatureItemId = FeatureMeasurements.CylinderFeatureMeasurement.FeatureItemId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CylinderFlatten",
+				"CylinderFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Cylinder'))) ~> CylinderType",
+				"MeasurementResultsFlatten select(mapColumn(",
+				"          QPId,",
+				"          FeatureMeasurements = MeasurementResults.MeasuredFeatures,",
+				"          Resultsid = id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FeatureMeasurementSelect",
 				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.ConicalSegmentFeatureMeasurement),",
 				"     mapColumn(",
 				"          Resultsid,",
@@ -742,39 +649,8 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> TorusFlatten",
 				"TorusFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Torus'))) ~> TorusType",
-				"CircleType, CircularArcType union(byName: true)~> union1",
-				"union1, ConeType union(byName: true)~> union2",
-				"union2, ConicalSegmentType union(byName: true)~> union3",
-				"union3, CylinderType union(byName: true)~> union4",
-				"union4, CylindricalSegmentType union(byName: true)~> union5",
-				"union5, EdgePointType union(byName: true)~> union6",
-				"union6, EllipseType union(byName: true)~> union7",
-				"union7, EllipticalArcType union(byName: true)~> union8",
-				"union8, ElongatedCircleType union(byName: true)~> union9",
-				"union9, ElongatedCylinderType union(byName: true)~> union10",
-				"union10, ExtrudedCrossSectionType union(byName: true)~> union11",
-				"union11, GroupType union(byName: true)~> union12",
-				"union12, Linetype union(byName: true)~> union13",
-				"union13, MarkingType union(byName: true)~> union14",
-				"union14, OppositeAngledLinesType union(byName: true)~> union15",
-				"union15, OppositeAngledPlanesType union(byName: true)~> union16",
-				"union16, OppositeParallelLinesType union(byName: true)~> union17",
-				"union17, OppositeParallelPlanesType union(byName: true)~> union18",
-				"union18, OtherCurveType union(byName: true)~> union19",
-				"union19, OtherNonShapeType union(byName: true)~> union20",
-				"union20, OtherShapeType union(byName: true)~> union21",
-				"union21, OtherSurfaceType union(byName: true)~> union22",
-				"union22, PlaneType union(byName: true)~> union23",
-				"union23, PointDefinedCurveType union(byName: true)~> union24",
-				"union24, PointDefinedSurfaceType union(byName: true)~> union25",
-				"union25, PointType union(byName: true)~> union26",
-				"union26, SphereType union(byName: true)~> union27",
-				"union27, SphericalSegmentType union(byName: true)~> union28",
-				"union28, SurfaceOfRevolutionType union(byName: true)~> union29",
-				"union29, ThreadedType union(byName: true)~> union30",
-				"union30, ToroidalSegmentType union(byName: true)~> union31",
-				"union31, TorusType union(byName: true)~> union32",
-				"union32 alterRow(deleteIf(isNull(FeatureType))) ~> NullRemoval",
+				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureItemUnion",
+				"FeatureItemUnion alterRow(deleteIf(isNull(FeatureType))) ~> NullRemoval",
 				"MeasurementQIFIn foldDown(unroll(QIFDocument.Results.MeasurementResultsSet.MeasurementResults),",
 				"     mapColumn(",
 				"          id = QIFDocument.Results.MeasurementResultsSet.MeasurementResults.{@id},",
