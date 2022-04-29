@@ -86,6 +86,9 @@
 				},
 				{
 					"name": "ActualComponentIDSelect"
+				},
+				{
+					"name": "ActualComponentJoin"
 				}
 			],
 			"scriptLines": [
@@ -185,7 +188,10 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ActualComponentIDSelect",
-				"AddMaxID sink(allowSchemaDrift: true,",
+				"AddMaxID, ActualComponentUpdateID join(ActualComponentid == ActualComponentUpdateID@id,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> ActualComponentJoin",
+				"ActualComponentJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          id as integer,",
