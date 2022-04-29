@@ -26,6 +26,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "ActualComponentsSink"
+				},
+				{
+					"name": "StoredProcedureParamSink"
 				}
 			],
 			"transformations": [
@@ -46,6 +49,18 @@
 				},
 				{
 					"name": "IDMaxJoin"
+				},
+				{
+					"name": "IDMaxKey"
+				},
+				{
+					"name": "AddMaxID"
+				},
+				{
+					"name": "QIFDocumentSelect"
+				},
+				{
+					"name": "FindIDMax"
 				}
 			],
 			"scriptLines": [
@@ -99,7 +114,19 @@
 				"ActualComponentsFlatten, IDMaxSelect join(1==1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"IDMaxJoin sink(allowSchemaDrift: true,",
+				"IDMaxJoin keyGenerate(output(Updateid as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> IDMaxKey",
+				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddMaxID",
+				"AddMaxID select(mapColumn(",
+				"          QPID,",
+				"          UpdateidMax = Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
+				"QIFDocumentSelect aggregate(groupBy(QPID),",
+				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"AddMaxID sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          Resultid as integer,",
@@ -121,7 +148,15 @@
 				"          Status = InspectionStatus,",
 				"          QPID,",
 				"          SerialNumber",
-				"     )) ~> ActualComponentsSink"
+				"     )) ~> ActualComponentsSink",
+				"FindIDMax sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: true,",
+				"     saveOrder: 1) ~> StoredProcedureParamSink"
 			]
 		}
 	}
