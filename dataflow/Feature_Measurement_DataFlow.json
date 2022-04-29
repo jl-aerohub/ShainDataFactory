@@ -231,6 +231,15 @@
 				},
 				{
 					"name": "MeasurementResultsFlatten"
+				},
+				{
+					"name": "CapQPID"
+				},
+				{
+					"name": "VersionSelect"
+				},
+				{
+					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -650,7 +659,7 @@
 				"     skipDuplicateMapOutputs: false) ~> TorusFlatten",
 				"TorusFlatten derive(FeatureType = toString(iif(isNull(FeatureType) == false(),'Torus'))) ~> TorusType",
 				"CircleType, CircularArcType, ConeType, ConicalSegmentType, CylinderType, CylindricalSegmentType, EdgePointType, EllipseType, EllipticalArcType, ElongatedCircleType, ElongatedCylinderType, ExtrudedCrossSectionType, GroupType, Linetype, MarkingType, OppositeAngledLinesType, OppositeAngledPlanesType, OppositeParallelLinesType, OppositeParallelPlanesType, OtherCurveType, OtherNonShapeType, OtherShapeType, OtherSurfaceType, PlaneType, PointDefinedCurveType, PointDefinedSurfaceType, PointType, SphereType, SphericalSegmentType, SurfaceOfRevolutionType, ThreadedType, ToroidalSegmentType, TorusType union(byName: true)~> FeatureMeasurementUnion",
-				"FeatureMeasurementUnion alterRow(deleteIf(isNull(FeatureType))) ~> NullRemoval",
+				"CapQPID alterRow(deleteIf(isNull(FeatureType))) ~> NullRemoval",
 				"MeasurementQIFIn foldDown(unroll(QIFDocument.Results.MeasurementResultsSet.MeasurementResults),",
 				"     mapColumn(",
 				"          id = QIFDocument.Results.MeasurementResultsSet.MeasurementResults.{@id},",
@@ -659,6 +668,13 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsFlatten",
+				"FeatureMeasurementUnion derive(QPID = upper(QPID)) ~> CapQPID",
+				"MeasurementQIFIn select(mapColumn(",
+				"          FileVersion = QIFDocument.Version.TimeCreated",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
 				"NullRemoval sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
