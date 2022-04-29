@@ -10,6 +10,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "QIFDocumentSource"
 				}
 			],
 			"sinks": [
@@ -41,6 +48,13 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: '',",
+				"     tableName: '',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
 				"MeasurementQIFIn select(mapColumn(",
 				"          QPID = QIFDocument.QPId,",
 				"          MeasurementResults = QIFDocument.Results.MeasurementResultsSet.MeasurementResults",
