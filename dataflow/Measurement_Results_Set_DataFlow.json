@@ -26,6 +26,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "MeasurementResultsSink"
+				},
+				{
+					"name": "StoredProcedureParamSink"
 				}
 			],
 			"transformations": [
@@ -34,6 +37,30 @@
 				},
 				{
 					"name": "MeasurementResultsSetFlatten"
+				},
+				{
+					"name": "QPIDExists"
+				},
+				{
+					"name": "IDMax"
+				},
+				{
+					"name": "CapQPID"
+				},
+				{
+					"name": "IDMaxKey"
+				},
+				{
+					"name": "AddMaxID"
+				},
+				{
+					"name": "IDMaxJoin"
+				},
+				{
+					"name": "QIFDocumentSelect"
+				},
+				{
+					"name": "FindIDMax"
 				}
 			],
 			"scriptLines": [
@@ -48,12 +75,17 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          QPID as string,",
+				"          IDMax as integer,",
+				"          MBD as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table',",
 				"     store: 'sqlserver',",
-				"     schemaName: '',",
-				"     tableName: '',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'QIFDocument',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
 				"MeasurementQIFIn select(mapColumn(",
 				"          QPID = QIFDocument.QPId,",
@@ -61,7 +93,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> MeasurementResultsSelect",
-				"MeasurementResultsSelect foldDown(unroll(MeasurementResults.ActualComponentIds.Id),",
+				"CapQPID foldDown(unroll(MeasurementResults.ActualComponentIds.Id),",
 				"     mapColumn(",
 				"          id = MeasurementResults.{@id},",
 				"          ActualComponentid = MeasurementResults.ActualComponentIds.Id,",
@@ -70,7 +102,31 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsSetFlatten",
-				"MeasurementResultsSetFlatten sink(allowSchemaDrift: true,",
+				"QIFDocumentSource, CapQPID exists(QIFDocumentSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QPIDExists",
+				"QPIDExists select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMax",
+				"MeasurementResultsSelect derive(QPID = upper(QPID)) ~> CapQPID",
+				"IDMaxJoin keyGenerate(output(Updateid as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> IDMaxKey",
+				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddMaxID",
+				"MeasurementResultsSetFlatten, IDMax join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> IDMaxJoin",
+				"AddMaxID select(mapColumn(",
+				"          QPID,",
+				"          UpdateidMax = Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
+				"QIFDocumentSelect aggregate(groupBy(QPID),",
+				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"AddMaxID sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          id as integer,",
@@ -91,7 +147,15 @@
 				"          InspectionStatus,",
 				"          ActualComponentid,",
 				"          QPID",
-				"     )) ~> MeasurementResultsSink"
+				"     )) ~> MeasurementResultsSink",
+				"FindIDMax sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: true,",
+				"     saveOrder: 1) ~> StoredProcedureParamSink"
 			]
 		}
 	}

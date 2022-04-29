@@ -40,6 +40,12 @@
 				},
 				{
 					"name": "IDMaxSelect"
+				},
+				{
+					"name": "CapQPID"
+				},
+				{
+					"name": "IDMaxJoin"
 				}
 			],
 			"scriptLines": [
@@ -54,7 +60,12 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          QPID as string,",
+				"          IDMax as integer,",
+				"          MBD as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table',",
 				"     store: 'sqlserver',",
@@ -67,7 +78,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ActualComponentsSelect",
-				"ActualComponentsSelect foldDown(unroll(ActualComponents.ActualComponent),",
+				"CapQPID foldDown(unroll(ActualComponents.ActualComponent),",
 				"     mapColumn(",
 				"          QPID,",
 				"          id = ActualComponents.ActualComponent.{@id},",
@@ -76,12 +87,19 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> ActualComponentsFlatten",
-				"QIFDocumentSource, ActualComponentsSelect exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"QIFDocumentSource, CapQPID exists(QIFDocumentSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> QPIDExists",
-				"QPIDExists select(skipDuplicateMapInputs: true,",
+				"QPIDExists select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
-				"ActualComponentsFlatten sink(allowSchemaDrift: true,",
+				"ActualComponentsSelect derive(QPID = upper(QPID)) ~> CapQPID",
+				"ActualComponentsFlatten, IDMaxSelect join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> IDMaxJoin",
+				"IDMaxJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          Resultid as integer,",
