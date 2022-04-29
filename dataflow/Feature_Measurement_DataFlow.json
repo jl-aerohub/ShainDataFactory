@@ -10,6 +10,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "QIFDocumentSource"
 				}
 			],
 			"sinks": [
@@ -240,6 +247,24 @@
 				},
 				{
 					"name": "ToTimestamp"
+				},
+				{
+					"name": "VersionJoin"
+				},
+				{
+					"name": "QPIDExists"
+				},
+				{
+					"name": "IDMaxSelect"
+				},
+				{
+					"name": "IDMaxJoin"
+				},
+				{
+					"name": "IDMaxKey"
+				},
+				{
+					"name": "AddIDMax"
 				}
 			],
 			"scriptLines": [
@@ -255,6 +280,18 @@
 				"     validationMode: 'none',",
 				"     namespaces: false,",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
+				"source(output(",
+				"          QPID as string,",
+				"          IDMax as integer,",
+				"          MBD as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'QIFDocument',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
 				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircleFeatureMeasurement),",
 				"     mapColumn(",
 				"          Resultsid,",
@@ -675,14 +712,33 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
-				"NullRemoval sink(allowSchemaDrift: true,",
+				"NullRemoval, ToTimestamp join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> VersionJoin",
+				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QPIDExists",
+				"QPIDExists select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
+				"VersionJoin, IDMaxSelect join(1 == 1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> IDMaxJoin",
+				"IDMaxJoin keyGenerate(output(Updateid as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> IDMaxKey",
+				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
+				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          Resultsid as integer,",
-				"          id as integer,",
+				"          Updateid as integer,",
 				"          FeatureType as string,",
 				"          ActualComponentid as integer,",
 				"          QPID as string,",
+				"          Origid as integer,",
 				"          FeatureItemid as integer",
 				"     ),",
 				"     deletable:false,",

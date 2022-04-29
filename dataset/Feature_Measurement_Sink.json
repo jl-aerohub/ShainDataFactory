@@ -14,7 +14,7 @@
 				"precision": 10
 			},
 			{
-				"name": "id",
+				"name": "Updateid",
 				"type": "int",
 				"precision": 10
 			},
@@ -30,6 +30,11 @@
 			{
 				"name": "QPID",
 				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Origid",
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "FeatureItemid",
