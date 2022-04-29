@@ -1,0 +1,51 @@
+{
+	"name": "flowlet1",
+	"properties": {
+		"folder": {
+			"name": "Shain"
+		},
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     QPID as string (\"fae53ecd-0594-4514-ace4-e3f692368342\")",
+				"}",
+				"source(output(",
+				"          idmax as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'procedure',",
+				"     store: 'sqlserver',",
+				"     procedureName: 'GetCurrentIDMax',",
+				"     schemaName: 'dbo',",
+				"     resultSet: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     inputs:['@QPID' -> ($QPID)]) ~> source1",
+				"source1 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 output(mapColumn(",
+				"          idmax",
+				"     )) ~> output1"
+			]
+		}
+	}
+}

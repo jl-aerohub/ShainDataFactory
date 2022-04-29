@@ -1,0 +1,21 @@
+{
+	"name": "Initial_QIF_In_copy1",
+	"properties": {
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "Test"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "Test"
+			}
+		},
+		"folder": {
+			"name": "Shain"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-05T20:34:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
