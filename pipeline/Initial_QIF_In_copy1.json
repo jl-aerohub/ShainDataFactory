@@ -1,6 +1,56 @@
 {
 	"name": "Initial_QIF_In_copy1",
 	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "ImportQIFDF",
+						"type": "DataFlowReference"
+					},
+					"integrationRuntime": {
+						"referenceName": "integrationRuntime1",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "None",
+					"runConcurrently": true,
+					"cacheSinks": {
+						"firstRowOnly": false
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Data flow1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DocumentVar",
+					"value": {
+						"value": "@xml(activity('Data flow1').output.runStatus.output.sink1.value[0])",
+						"type": "Expression"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
@@ -9,6 +59,11 @@
 			"FilePath": {
 				"type": "string",
 				"defaultValue": "Test"
+			}
+		},
+		"variables": {
+			"DocumentVar": {
+				"type": "String"
 			}
 		},
 		"folder": {
