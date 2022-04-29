@@ -102,7 +102,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> ActualComponentsFlatten",
-				"QIFDocumentSource, CapQPID exists(QIFDocumentSource@QPID == CapQPID@QPID,",
+				"QIFDocumentSource, CapQPID exists(select1@QPID == CapQPID@QPID,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> QPIDExists",
 				"QPIDExists select(mapColumn(",

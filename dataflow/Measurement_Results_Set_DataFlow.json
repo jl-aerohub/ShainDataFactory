@@ -17,6 +17,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "QIFDocumentSource"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "ActualComponentSource"
 				}
 			],
 			"sinks": [
@@ -61,6 +68,24 @@
 				},
 				{
 					"name": "FindIDMax"
+				},
+				{
+					"name": "ActualComponentExists"
+				},
+				{
+					"name": "ActualComponentUpdateID"
+				},
+				{
+					"name": "ToTimestamp"
+				},
+				{
+					"name": "FileVersionSelect"
+				},
+				{
+					"name": "VersionJoin"
+				},
+				{
+					"name": "ActualComponentIDSelect"
 				}
 			],
 			"scriptLines": [
@@ -87,6 +112,20 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'QIFDocument',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
+				"source(output(",
+				"          Resultid as integer,",
+				"          id as integer,",
+				"          SerialNumber as string,",
+				"          Status as string,",
+				"          QPID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'ActualComponentSet',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> ActualComponentSource",
 				"MeasurementQIFIn select(mapColumn(",
 				"          QPID = QIFDocument.QPId,",
 				"          MeasurementResults = QIFDocument.Results.MeasurementResultsSet.MeasurementResults",
@@ -115,7 +154,7 @@
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> IDMaxKey",
 				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddMaxID",
-				"MeasurementResultsSetFlatten, IDMax join(1==1,",
+				"VersionJoin, IDMax join(1==1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
 				"AddMaxID select(mapColumn(",
@@ -126,6 +165,26 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
 				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"ActualComponentIDSelect, VersionJoin exists(ActualComponentIDSelect@QPID == MeasurementResultsSetFlatten@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> ActualComponentExists",
+				"ActualComponentExists select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ActualComponentUpdateID",
+				"FileVersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"MeasurementQIFIn select(mapColumn(",
+				"          FileVersion = QIFDocument.Version.TimeCreated",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FileVersionSelect",
+				"MeasurementResultsSetFlatten, ToTimestamp join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> VersionJoin",
+				"ActualComponentSource select(mapColumn(",
+				"          id,",
+				"          QPID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ActualComponentIDSelect",
 				"AddMaxID sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
