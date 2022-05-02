@@ -94,7 +94,7 @@
 					"name": "ActualComponentFlatten"
 				},
 				{
-					"name": "Test"
+					"name": "ACJoin"
 				}
 			],
 			"scriptLines": [
@@ -144,7 +144,8 @@
 				"CapQPID foldDown(unroll(MeasurementResults),",
 				"     mapColumn(",
 				"          QPID,",
-				"          id = MeasurementResults.{@id}",
+				"          id = MeasurementResults.{@id},",
+				"          InspectionStatus = MeasurementResults.InspectionStatus.InspectionStatusEnum",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsSetFlatten",
@@ -197,19 +198,19 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ActualComponentIDSelect",
-				"Test, ActualComponentUpdateID join(ActualComponentid == ACOrigid,",
+				"ACJoin, ActualComponentUpdateID join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ActualComponentJoin",
 				"CapQPID foldDown(unroll(MeasurementResults.ActualComponentIds.Id),",
 				"     mapColumn(",
 				"          ActualComponentid = MeasurementResults.ActualComponentIds.Id,",
-				"          id = MeasurementResults.{@id}",
+				"          Referenceid = MeasurementResults.{@id}",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> ActualComponentFlatten",
-				"AddMaxID, ActualComponentFlatten join(MeasurementResultsSetFlatten@id == ActualComponentFlatten@id,",
+				"AddMaxID, ActualComponentFlatten join(id == Referenceid,",
 				"     joinType:'inner',",
-				"     broadcast: 'auto')~> Test",
+				"     broadcast: 'auto')~> ACJoin",
 				"ActualComponentJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -233,7 +234,7 @@
 				"     mapColumn(",
 				"          Updateid,",
 				"          InspectionStatus,",
-				"          ActualComponentid = ACUpdateid,",
+				"          ActualComponentid,",
 				"          QPID,",
 				"          Origid = id",
 				"     )) ~> MeasurementResultsSink",
