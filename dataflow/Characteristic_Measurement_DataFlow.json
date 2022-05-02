@@ -509,7 +509,7 @@
 					"name": "ACSelect"
 				},
 				{
-					"name": "QIFSelect"
+					"name": "IDMaxSelect"
 				},
 				{
 					"name": "VersionSelect"
@@ -519,6 +519,21 @@
 				},
 				{
 					"name": "CapQPID"
+				},
+				{
+					"name": "VersionJoin"
+				},
+				{
+					"name": "IDMaxJoin"
+				},
+				{
+					"name": "ACUpdateJoin"
+				},
+				{
+					"name": "MRUpdateJoin"
+				},
+				{
+					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
@@ -1762,21 +1777,32 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsFlatten",
-				"MeasurementResultsSource exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"MeasurementResultsSource, VersionJoin exists(Origid == Resultsid,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> MRExists",
-				"ActualComponentSource exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"ActualComponentSource, VersionJoin exists(Origid == ActualComponentid,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> ACExists",
-				"QIFDocumentSource exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> QIFExists",
-				"MRExists select(skipDuplicateMapInputs: true,",
+				"MRExists select(mapColumn(",
+				"          MRUpdateid = Updateid,",
+				"          MROrigid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> MRSelect",
-				"ACExists select(skipDuplicateMapInputs: true,",
+				"ACExists select(mapColumn(",
+				"          ACUpdateid = Updateid,",
+				"          ACOrigid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ACSelect",
-				"QIFExists select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
+				"QIFExists select(mapColumn(",
+				"          IDMax",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> IDMaxSelect",
 				"MeasurementQIFIn select(mapColumn(",
 				"          FileVersion = QIFDocument.Version.TimeCreated",
 				"     ),",
@@ -1784,7 +1810,22 @@
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
 				"CharacterMeasurementUnion derive(QPID = upper(QPID)) ~> CapQPID",
-				"RemoveNullRows sink(allowSchemaDrift: true,",
+				"RemoveNullRows, ToTimestamp join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> VersionJoin",
+				"VersionJoin, IDMaxSelect join(1==1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> IDMaxJoin",
+				"IDMaxJoin join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> ACUpdateJoin",
+				"ACUpdateJoin join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> MRUpdateJoin",
+				"MRUpdateJoin keyGenerate(output({undefined} as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          id as integer,",
