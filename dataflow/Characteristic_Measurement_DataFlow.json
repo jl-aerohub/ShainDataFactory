@@ -31,6 +31,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementResultsSource"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "CharacteisticItemSource"
 				}
 			],
 			"sinks": [
@@ -546,6 +553,15 @@
 				},
 				{
 					"name": "FindIDMax"
+				},
+				{
+					"name": "ItemExists"
+				},
+				{
+					"name": "ItemSelect"
+				},
+				{
+					"name": "ItemUpdateJoin"
 				}
 			],
 			"scriptLines": [
@@ -604,6 +620,22 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'MeasurementResults',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> MeasurementResultsSource",
+				"source(output(",
+				"          CharacteristicType as string,",
+				"          Updateid as integer,",
+				"          Name as string,",
+				"          CharacteristicNominalid as integer,",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'CharacteristicItems',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> CharacteisticItemSource",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id),",
 				"     mapColumn(",
 				"          QPID,",
@@ -1789,10 +1821,12 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsFlatten",
-				"MeasurementResultsSource, VersionJoin exists(Origid == Resultsid,",
+				"MeasurementResultsSource, VersionJoin exists(Origid == Resultsid",
+				"     && MeasurementResultsSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> MRExists",
-				"ActualComponentSource, VersionJoin exists(Origid == ActualComponentid,",
+				"ActualComponentSource, VersionJoin exists(Origid == ActualComponentid",
+				"     && ActualComponentSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> ACExists",
 				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
@@ -1828,7 +1862,7 @@
 				"VersionJoin, IDMaxSelect join(1==1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
+				"ItemUpdateJoin, ACSelect join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ACUpdateJoin",
 				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
@@ -1846,6 +1880,20 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
 				"QIFSelect aggregate(groupBy(QPID),",
 				"     UpdateidMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"CharacteisticItemSource, VersionJoin exists(Origid == CharacteristicItemid",
+				"     && CharacteisticItemSource@QPID == CapQPID@QPID",
+				"     && CharacteisticItemSource@FileVersion == ToTimestamp@FileVersion,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> ItemExists",
+				"ItemExists select(mapColumn(",
+				"          ItemUpdateid = Updateid,",
+				"          ItemOrigid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ItemSelect",
+				"IDMaxJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> ItemUpdateJoin",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -1876,7 +1924,7 @@
 				"          Resultsid = MRUpdateid,",
 				"          CharacteristicType,",
 				"          Status,",
-				"          CharacteristicItemid,",
+				"          CharacteristicItemid = ItemUpdateid,",
 				"          ActualComponentid = ACUpdateid,",
 				"          Value,",
 				"          DecimalPlaces,",
