@@ -21,9 +21,9 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "Actual_Components_Sink",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
 					},
 					"name": "ActualComponentsSink"
 				},
@@ -97,8 +97,7 @@
 				"     mapColumn(",
 				"          QPID,",
 				"          id = ActualComponents.ActualComponent.{@id},",
-				"          SerialNumber = ActualComponents.ActualComponent.SerialNumber,",
-				"          InspectionStatus = ActualComponents.ActualComponent.Status.InspectionStatusEnum",
+				"          SerialNumber = ActualComponents.ActualComponent.SerialNumber",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> ActualComponentsFlatten",
@@ -135,19 +134,23 @@
 				"          QPID as string,",
 				"          Origid as integer",
 				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
 				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'ActualComponentSet',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          id,",
-				"          Status = InspectionStatus,",
 				"          QPID,",
-				"          SerialNumber",
+				"          Origid = id,",
+				"          SerialNumber,",
+				"          Status = InspectionStatus,",
+				"          Updateid",
 				"     )) ~> ActualComponentsSink",
 				"FindIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
