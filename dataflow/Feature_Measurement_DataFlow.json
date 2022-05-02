@@ -35,9 +35,9 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "Feature_Measurement_Sink",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
 					},
 					"name": "FeatureItemSink"
 				},
@@ -844,19 +844,22 @@
 				"          Origid as integer,",
 				"          FeatureItemid as integer",
 				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
 				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'MeasuredFeatures',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          Resultsid,",
+				"          Resultsid = MRUpdateid,",
 				"          Updateid,",
 				"          FeatureType,",
-				"          ActualComponentid,",
+				"          ActualComponentid = ACUpdateid,",
 				"          QPID,",
 				"          Origid = id,",
 				"          FeatureItemid = FeatureItemId",
