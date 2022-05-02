@@ -516,6 +516,9 @@
 				},
 				{
 					"name": "ToTimestamp"
+				},
+				{
+					"name": "CapQPID"
 				}
 			],
 			"scriptLines": [
@@ -1750,7 +1753,7 @@
 				"     skipDuplicateMapOutputs: false) ~> WidthFlatten",
 				"WidthFlatten derive(CharacteristicType = toString(iif(isNull(CharacteristicType) == false(),'Width'))) ~> WidthType",
 				"AngleBetweenType, AngleType, AngularCoordinateType, AngleFromType, AngularityType, ChordType, CircularityType, CircularRunoutType, CoaxialityType, ConcentricityType, ConicalTaperType, ConicityType, CurveLengthType, CylindricityType, DepthType, DiameterType, DistanceBetweenType, DistanceFromType, EllipticityType, FlatTaperType, FlatnessType, HeightType, LengthType, LinearCoordinateType, LineProfileType, OtherFormType, ParallelismType, PerpendicularityType, PointProfileType, PositionType, RadiusType, SphericalDiameterType, SphericalRadiusType, SphericityType, SquareType, StraightnessType, SurfaceProfileType, SurfaceProfileNonUniformType, SurfaceTextureType, SymmetryType, ThicknessType, ThreadType, ToroidicityType, TotalRunoutType, UserDefinedAttributeType, UserDefinedLinearType, UserDefinedAngularType, UserDefinedTemperatureType, UserDefinedAreaType, UserDefinedForceType, UserDefinedMassType, UserDefinedPressureType, UserDefinedSpeedType, UserDefinedTimeType, UserDefinedUnitType, WidthType, WeldFilletType, WeldPlugType, WeldSlotType, WeldSpotType, WeldStudType, WeldSeamType, WeldSurfacingType, WeldEdgeType, WeldSquareType, WeldBevelType, WeldVType, WeldUType, WeldJType, WeldFlareVType, WeldFlareBevelType, WeldScarfType, WeldCompoundType union(byName: true)~> CharacterMeasurementUnion",
-				"CharacterMeasurementUnion alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
+				"CapQPID alterRow(deleteIf(isNull(CharacteristicType))) ~> RemoveNullRows",
 				"MeasurementQIFIn foldDown(unroll(QIFDocument.Results.MeasurementResultsSet.MeasurementResults),",
 				"     mapColumn(",
 				"          QPID = QIFDocument.QPId,",
@@ -1780,6 +1783,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
 				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"CharacterMeasurementUnion derive(QPID = upper(QPID)) ~> CapQPID",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
