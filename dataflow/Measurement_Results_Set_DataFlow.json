@@ -234,7 +234,7 @@
 				"     mapColumn(",
 				"          Updateid,",
 				"          InspectionStatus,",
-				"          ActualComponentid,",
+				"          ActualComponentid = ACUpdateid,",
 				"          QPID,",
 				"          Origid = id",
 				"     )) ~> MeasurementResultsSink",
