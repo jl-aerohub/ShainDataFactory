@@ -35,11 +35,14 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "Characteristic_Measurement_Sink",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
 					},
 					"name": "CharacteristicItemSink"
+				},
+				{
+					"name": "StoredProcedureParamSink"
 				}
 			],
 			"transformations": [
@@ -533,7 +536,16 @@
 					"name": "MRUpdateJoin"
 				},
 				{
-					"name": "surrogateKey1"
+					"name": "IDMaxKey"
+				},
+				{
+					"name": "AddIDMax"
+				},
+				{
+					"name": "QIFSelect"
+				},
+				{
+					"name": "FindIDMax"
 				}
 			],
 			"scriptLines": [
@@ -1816,49 +1828,69 @@
 				"VersionJoin, IDMaxSelect join(1==1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"IDMaxJoin join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ACUpdateJoin",
-				"ACUpdateJoin join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> MRUpdateJoin",
-				"MRUpdateJoin keyGenerate(output({undefined} as long),",
+				"MRUpdateJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     stepValue: 1L) ~> IDMaxKey",
+				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
+				"AddIDMax select(mapColumn(",
+				"          QPID,",
+				"          UpdateidMax = Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
+				"QIFSelect aggregate(groupBy(QPID),",
+				"     UpdateidMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
-				"          id as integer,",
+				"          Updateid as integer,",
 				"          Resultsid as integer,",
 				"          CharacteristicType as string,",
 				"          Status as string,",
 				"          CharacteristicItemid as integer,",
-				"          MeasuredFeatureid as integer,",
 				"          ActualComponentid as integer,",
 				"          Value as double,",
 				"          DecimalPlaces as integer,",
-				"          QPID as string",
+				"          QPID as string,",
+				"          Origid as integer",
 				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
 				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'MeasuredCharacteristics',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          id,",
-				"          Resultsid,",
+				"          Updateid,",
+				"          Resultsid = MRUpdateid,",
 				"          CharacteristicType,",
 				"          Status,",
 				"          CharacteristicItemid,",
-				"          MeasuredFeatureid = FeatureMeasurementid,",
-				"          ActualComponentid,",
+				"          ActualComponentid = ACUpdateid,",
 				"          Value,",
 				"          DecimalPlaces,",
-				"          QPID",
-				"     )) ~> CharacteristicItemSink"
+				"          QPID,",
+				"          Origid = id",
+				"     )) ~> CharacteristicItemSink",
+				"FindIDMax sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     store: 'cache',",
+				"     format: 'inline',",
+				"     output: true,",
+				"     saveOrder: 1) ~> StoredProcedureParamSink"
 			]
 		}
 	}
