@@ -17,6 +17,20 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "QIFDocumentSource"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "ActualComponentSource"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "MeasurementResultSource"
 				}
 			],
 			"sinks": [
@@ -274,6 +288,18 @@
 				},
 				{
 					"name": "FindIDMax"
+				},
+				{
+					"name": "ACExists"
+				},
+				{
+					"name": "MRExists"
+				},
+				{
+					"name": "ACSelect"
+				},
+				{
+					"name": "MRSelect"
 				}
 			],
 			"scriptLines": [
@@ -301,6 +327,34 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'QIFDocument',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
+				"source(output(",
+				"          Updateid as integer,",
+				"          SerialNumber as string,",
+				"          Status as string,",
+				"          QPID as string,",
+				"          Origid as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'ActualComponentSet',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> ActualComponentSource",
+				"source(output(",
+				"          Updateid as integer,",
+				"          InspectionStatus as string,",
+				"          ActualComponentid as integer,",
+				"          QPID as string,",
+				"          Origid as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'MeasurementResults',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> MeasurementResultSource",
 				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircleFeatureMeasurement),",
 				"     mapColumn(",
 				"          Resultsid,",
@@ -747,6 +801,21 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFDocumentSelect",
 				"QIFDocumentSelect aggregate(groupBy(QPID),",
 				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"ActualComponentSource, VersionJoin exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     negate:false,",
+				"     broadcast: 'auto')~> ACExists",
+				"MeasurementResultSource, VersionJoin exists(Origid == Resultsid",
+				"     && MeasurementResultSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> MRExists",
+				"ACExists select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ACSelect",
+				"MRExists select(mapColumn(",
+				"          MRUpdateid = Updateid,",
+				"          MROrigid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> MRSelect",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
