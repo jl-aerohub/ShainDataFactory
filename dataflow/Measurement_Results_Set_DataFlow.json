@@ -92,6 +92,9 @@
 				},
 				{
 					"name": "ActualComponentFlatten"
+				},
+				{
+					"name": "Test"
 				}
 			],
 			"scriptLines": [
@@ -194,15 +197,19 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ActualComponentIDSelect",
-				"AddMaxID, ActualComponentUpdateID join(ActualComponentid == ACOrigid,",
+				"Test, ActualComponentUpdateID join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ActualComponentJoin",
 				"CapQPID foldDown(unroll(MeasurementResults.ActualComponentIds.Id),",
 				"     mapColumn(",
-				"          ActualComponentid = MeasurementResults.ActualComponentIds.Id",
+				"          ActualComponentid = MeasurementResults.ActualComponentIds.Id,",
+				"          id = MeasurementResults.{@id}",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> ActualComponentFlatten",
+				"AddMaxID, ActualComponentFlatten join(MeasurementResultsSetFlatten@id == ActualComponentFlatten@id,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> Test",
 				"ActualComponentJoin sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
