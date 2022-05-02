@@ -10,6 +10,15 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementQIFIn"
+				},
+				{
+					"name": "QIFDocumentSource"
+				},
+				{
+					"name": "ActualComponentSource"
+				},
+				{
+					"name": "MeasurementResultsSource"
 				}
 			],
 			"sinks": [
@@ -471,6 +480,24 @@
 				},
 				{
 					"name": "MeasurementResultsFlatten"
+				},
+				{
+					"name": "MRExists"
+				},
+				{
+					"name": "ACExists"
+				},
+				{
+					"name": "QIFExists"
+				},
+				{
+					"name": "MRSelect"
+				},
+				{
+					"name": "ACSelect"
+				},
+				{
+					"name": "QIFSelect"
 				}
 			],
 			"scriptLines": [
@@ -489,6 +516,12 @@
 				"     preferredIntegralType: 'integer',",
 				"     preferredFractionalType: 'float',",
 				"     wildcardPaths:['AerohubMFINMapping.qif']) ~> MeasurementQIFIn",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> QIFDocumentSource",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> ActualComponentSource",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> MeasurementResultsSource",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id),",
 				"     mapColumn(",
 				"          QPID,",
@@ -1674,6 +1707,21 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsFlatten",
+				"MeasurementResultsSource exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     negate:false,",
+				"     broadcast: 'auto')~> MRExists",
+				"ActualComponentSource exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     negate:false,",
+				"     broadcast: 'auto')~> ACExists",
+				"QIFDocumentSource exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     negate:false,",
+				"     broadcast: 'auto')~> QIFExists",
+				"MRExists select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> MRSelect",
+				"ACExists select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ACSelect",
+				"QIFExists select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
