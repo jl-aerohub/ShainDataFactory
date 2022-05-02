@@ -510,6 +510,12 @@
 				},
 				{
 					"name": "QIFSelect"
+				},
+				{
+					"name": "VersionSelect"
+				},
+				{
+					"name": "ToTimestamp"
 				}
 			],
 			"scriptLines": [
@@ -1768,6 +1774,12 @@
 				"     skipDuplicateMapOutputs: true) ~> ACSelect",
 				"QIFExists select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
+				"MeasurementQIFIn select(mapColumn(",
+				"          QIFDocument",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"VersionSelect derive() ~> ToTimestamp",
 				"RemoveNullRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
