@@ -220,6 +220,7 @@
 				"          Updateid,",
 				"          InspectionStatus,",
 				"          ActualComponentid = ACUpdateid,",
+				"          QPID,",
 				"          Origid = id",
 				"     )) ~> MeasurementResultsSink",
 				"FindIDMax sink(allowSchemaDrift: true,",
