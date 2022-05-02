@@ -300,6 +300,12 @@
 				},
 				{
 					"name": "MRSelect"
+				},
+				{
+					"name": "ACUpdateJoin"
+				},
+				{
+					"name": "MRUpdateJoin"
 				}
 			],
 			"scriptLines": [
@@ -789,7 +795,7 @@
 				"VersionJoin, IDMaxSelect join(1 == 1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"IDMaxJoin keyGenerate(output(Updateid as long),",
+				"MRUpdateJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> IDMaxKey",
 				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
@@ -821,6 +827,12 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> MRSelect",
+				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> ACUpdateJoin",
+				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> MRUpdateJoin",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
