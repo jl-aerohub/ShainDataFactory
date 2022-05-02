@@ -3,18 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "Initial_QIF_In_copy1",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"FileName": "@triggerBody().fileName",
-					"FilePath": "@triggerBody().folderPath"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/pythonin/blobs/",
