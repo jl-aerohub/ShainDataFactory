@@ -19,9 +19,9 @@
 						"referenceName": "Characteristic_Measurement_DataFlow",
 						"type": "DataFlowReference"
 					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
+					"integrationRuntime": {
+						"referenceName": "integrationRuntime1",
+						"type": "IntegrationRuntimeReference"
 					},
 					"traceLevel": "None",
 					"cacheSinks": {
