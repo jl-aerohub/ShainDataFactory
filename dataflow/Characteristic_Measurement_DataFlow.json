@@ -46,7 +46,7 @@
 						"referenceName": "MFIN Database",
 						"type": "LinkedServiceReference"
 					},
-					"name": "CharacteristicItemSink"
+					"name": "CharacteristicMeasurementSink"
 				},
 				{
 					"name": "StoredProcedureParamSink"
@@ -1879,7 +1879,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
 				"QIFSelect aggregate(groupBy(QPID),",
-				"     UpdateidMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"     IDMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
 				"CharacteristicItemSource, VersionJoin exists(CharacteristicItemSource@QPID == CapQPID@QPID",
 				"     && Origid == CharacteristicItemid",
 				"     && CharacteristicItemSource@FileVersion == ToTimestamp@FileVersion,",
@@ -1930,7 +1930,7 @@
 				"          DecimalPlaces,",
 				"          QPID,",
 				"          Origid = id",
-				"     )) ~> CharacteristicItemSink",
+				"     )) ~> CharacteristicMeasurementSink",
 				"FindIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
@@ -1938,7 +1938,11 @@
 				"     store: 'cache',",
 				"     format: 'inline',",
 				"     output: true,",
-				"     saveOrder: 1) ~> StoredProcedureParamSink"
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          QPID,",
+				"          IDMax",
+				"     )) ~> StoredProcedureParamSink"
 			]
 		}
 	}
