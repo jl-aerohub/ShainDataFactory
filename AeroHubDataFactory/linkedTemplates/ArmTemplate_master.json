@@ -35,14 +35,6 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
 		},
-		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
-		"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
-		},
 		"Measurement_QIF_Trigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/0fa38953-5cae-4448-b99b-2cb26dc3aa85/resourceGroups/AeroHubPlatform/providers/Microsoft.Storage/storageAccounts/aerohubblobstorage1"
@@ -145,15 +137,6 @@
 					"InitialQIFIn Trigger_properties_typeProperties_scope": {
 						"value": "[parameters('InitialQIFIn Trigger_properties_typeProperties_scope')]"
 					},
-					"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName": {
-						"value": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FileName')]"
-					},
-					"Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath": {
-						"value": "[parameters('Measurement_QIF_Trigger_properties_Measurement_QIF_InTest_parameters_FilePath')]"
-					},
-					"Measurement_QIF_Trigger_properties_typeProperties_scope": {
-						"value": "[parameters('Measurement_QIF_Trigger_properties_typeProperties_scope')]"
-					},
 					"Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FileName": {
 						"value": "[parameters('Shain Initial QIF Trigger_properties_Initial_QIF_In_copy1_parameters_FileName')]"
 					},
@@ -162,6 +145,9 @@
 					},
 					"Shain Initial QIF Trigger_properties_typeProperties_scope": {
 						"value": "[parameters('Shain Initial QIF Trigger_properties_typeProperties_scope')]"
+					},
+					"Measurement_QIF_Trigger_properties_typeProperties_scope": {
+						"value": "[parameters('Measurement_QIF_Trigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
