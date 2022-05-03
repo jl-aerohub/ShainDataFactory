@@ -31,6 +31,9 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementResultSource"
+				},
+				{
+					"name": "FeatureItemSource"
 				}
 			],
 			"sinks": [
@@ -361,6 +364,8 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'MeasurementResults',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> MeasurementResultSource",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> FeatureItemSource",
 				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircleFeatureMeasurement),",
 				"     mapColumn(",
 				"          Resultsid,",
