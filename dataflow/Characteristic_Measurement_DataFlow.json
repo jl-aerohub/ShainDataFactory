@@ -31,6 +31,13 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "MeasurementResultsSource"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -604,6 +611,22 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'MeasurementResults',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> MeasurementResultsSource",
+				"source(output(",
+				"          CharacteristicType as string,",
+				"          Updateid as integer,",
+				"          Name as string,",
+				"          CharacteristicNominalid as integer,",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'CharacteristicItems',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> source1",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id),",
 				"     mapColumn(",
 				"          QPID,",
