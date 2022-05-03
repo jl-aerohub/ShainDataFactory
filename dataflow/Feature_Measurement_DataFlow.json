@@ -319,6 +319,9 @@
 				},
 				{
 					"name": "ItemSelect"
+				},
+				{
+					"name": "ItemJoin"
 				}
 			],
 			"scriptLines": [
@@ -824,7 +827,7 @@
 				"VersionJoin, IDMaxSelect join(1 == 1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"MRUpdateJoin keyGenerate(output(Updateid as long),",
+				"ItemJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> IDMaxKey",
 				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
@@ -873,6 +876,9 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ItemSelect",
+				"MRUpdateJoin, ItemSelect join(FeatureItemId == ItemOrigid,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> ItemJoin",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -902,7 +908,7 @@
 				"          ActualComponentid = ACUpdateid,",
 				"          QPID,",
 				"          Origid = id,",
-				"          FeatureItemid = FeatureItemId",
+				"          FeatureItemid = ItemUpdateid",
 				"     )) ~> FeatureItemSink",
 				"FindIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
