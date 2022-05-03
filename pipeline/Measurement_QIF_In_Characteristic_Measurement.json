@@ -24,6 +24,7 @@
 						"type": "IntegrationRuntimeReference"
 					},
 					"traceLevel": "None",
+					"runConcurrently": true,
 					"cacheSinks": {
 						"firstRowOnly": true
 					}
