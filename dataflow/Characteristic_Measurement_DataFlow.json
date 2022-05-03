@@ -553,6 +553,12 @@
 				},
 				{
 					"name": "FindIDMax"
+				},
+				{
+					"name": "ItemExists"
+				},
+				{
+					"name": "ItemSelect"
 				}
 			],
 			"scriptLines": [
@@ -1871,6 +1877,15 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
 				"QIFSelect aggregate(groupBy(QPID),",
 				"     UpdateidMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
+				"CharacteristicItemSource, VersionJoin exists(CharacteristicItemSource@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> ItemExists",
+				"ItemExists select(mapColumn(",
+				"          ItemUpdateid = Updateid,",
+				"          ItemOrigid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ItemSelect",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
