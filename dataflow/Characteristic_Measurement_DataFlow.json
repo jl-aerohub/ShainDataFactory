@@ -1924,7 +1924,7 @@
 				"          Resultsid = MRUpdateid,",
 				"          CharacteristicType,",
 				"          Status,",
-				"          CharacteristicItemid = Updateid,",
+				"          CharacteristicItemid = ItemUpdateid,",
 				"          ActualComponentid = ACUpdateid,",
 				"          Value,",
 				"          DecimalPlaces,",
