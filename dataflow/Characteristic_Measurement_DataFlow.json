@@ -561,7 +561,7 @@
 					"name": "ItemSelect"
 				},
 				{
-					"name": "ItemJoin"
+					"name": "ItemUpdateJoin"
 				}
 			],
 			"scriptLines": [
@@ -1868,7 +1868,7 @@
 				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> MRUpdateJoin",
-				"ItemJoin keyGenerate(output(Updateid as long),",
+				"ItemUpdateJoin keyGenerate(output(Updateid as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> IDMaxKey",
 				"IDMaxKey derive(Updateid = Updateid + IDMax) ~> AddIDMax",
@@ -1893,7 +1893,7 @@
 				"     skipDuplicateMapOutputs: true) ~> ItemSelect",
 				"MRUpdateJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
 				"     joinType:'inner',",
-				"     broadcast: 'auto')~> ItemJoin",
+				"     broadcast: 'auto')~> ItemUpdateJoin",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
