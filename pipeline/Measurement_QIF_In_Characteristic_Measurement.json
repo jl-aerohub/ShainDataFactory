@@ -20,7 +20,7 @@
 						"type": "DataFlowReference"
 					},
 					"integrationRuntime": {
-						"referenceName": "integrationRuntime2",
+						"referenceName": "integrationRuntime1",
 						"type": "IntegrationRuntimeReference"
 					},
 					"traceLevel": "None",

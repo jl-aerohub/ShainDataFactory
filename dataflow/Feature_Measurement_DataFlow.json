@@ -33,6 +33,10 @@
 					"name": "MeasurementResultSource"
 				},
 				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
 					"name": "FeatureItemSource"
 				}
 			],
@@ -309,6 +313,12 @@
 				},
 				{
 					"name": "MRUpdateJoin"
+				},
+				{
+					"name": "ItemExists"
+				},
+				{
+					"name": "ItemSelect"
 				}
 			],
 			"scriptLines": [
@@ -364,8 +374,22 @@
 				"     schemaName: 'dbo',",
 				"     tableName: 'MeasurementResults',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> MeasurementResultSource",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> FeatureItemSource",
+				"source(output(",
+				"          FeatureType as string,",
+				"          Updateid as integer,",
+				"          FeatureNominalid as integer,",
+				"          FeatureName as string,",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'FeatureItems',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> FeatureItemSource",
 				"FeatureMeasurementSelect foldDown(unroll(FeatureMeasurements.CircleFeatureMeasurement),",
 				"     mapColumn(",
 				"          Resultsid,",
@@ -838,6 +862,17 @@
 				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> MRUpdateJoin",
+				"FeatureItemSource, VersionJoin exists(FeatureItemSource@QPID == CapQPID@QPID",
+				"     && FeatureItemSource@FileVersion == ToTimestamp@FileVersion",
+				"     && Origid == FeatureItemId,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> ItemExists",
+				"ItemExists select(mapColumn(",
+				"          ItemUpdateid = Updateid,",
+				"          ItemOrigid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ItemSelect",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
