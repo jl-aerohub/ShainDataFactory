@@ -1,0 +1,1028 @@
+{
+	"name": "Measurement_Reference_DataFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "AerohubStorageAccount",
+						"type": "LinkedServiceReference"
+					},
+					"name": "MeasurementQIFIn"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "FeatureUpdate"
+				},
+				{
+					"linkedService": {
+						"referenceName": "MFIN Database",
+						"type": "LinkedServiceReference"
+					},
+					"name": "CharacteristicUpdate"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Character_Feature_Reference_Sink",
+						"type": "DatasetReference"
+					},
+					"name": "CharacterFeatureReferenceSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "CharacteristicMeasurementSelect"
+				},
+				{
+					"name": "AngleBetweenReference"
+				},
+				{
+					"name": "AngleReference"
+				},
+				{
+					"name": "AngularCoordinateReference"
+				},
+				{
+					"name": "AngleFromReference"
+				},
+				{
+					"name": "AngularityReference"
+				},
+				{
+					"name": "ChordReference"
+				},
+				{
+					"name": "CircularityReference"
+				},
+				{
+					"name": "CircularRunoutReference"
+				},
+				{
+					"name": "CoaxialityReference"
+				},
+				{
+					"name": "ConcentricityReference"
+				},
+				{
+					"name": "ConicalTaperReference"
+				},
+				{
+					"name": "ConicityReference"
+				},
+				{
+					"name": "CurveLengthReference"
+				},
+				{
+					"name": "CylindricityReference"
+				},
+				{
+					"name": "DepthReference"
+				},
+				{
+					"name": "DiameterReference"
+				},
+				{
+					"name": "DistanceBetweenReference"
+				},
+				{
+					"name": "DistanceFromReference"
+				},
+				{
+					"name": "EllipticityReference"
+				},
+				{
+					"name": "FlatTaperReference"
+				},
+				{
+					"name": "FlatnessReference"
+				},
+				{
+					"name": "HeightReference"
+				},
+				{
+					"name": "LengthReference"
+				},
+				{
+					"name": "LinearCoordinateReference"
+				},
+				{
+					"name": "LineProfileReference"
+				},
+				{
+					"name": "OtherFormReference"
+				},
+				{
+					"name": "ParallelismReference"
+				},
+				{
+					"name": "PerpendicularityReference"
+				},
+				{
+					"name": "PointProfileReference"
+				},
+				{
+					"name": "PositionReference"
+				},
+				{
+					"name": "RadiusReference"
+				},
+				{
+					"name": "SphericalDiameterReference"
+				},
+				{
+					"name": "SphericalRadiusReference"
+				},
+				{
+					"name": "SphericityReference"
+				},
+				{
+					"name": "SquareReference"
+				},
+				{
+					"name": "StraightnessReference"
+				},
+				{
+					"name": "SurfaceProfileReference"
+				},
+				{
+					"name": "SurfaceProfileNonUniformReference"
+				},
+				{
+					"name": "SurfaceTextureReference"
+				},
+				{
+					"name": "SymmetryReference"
+				},
+				{
+					"name": "ThicknessReference"
+				},
+				{
+					"name": "ThreadReference"
+				},
+				{
+					"name": "ToroidicityReference"
+				},
+				{
+					"name": "TotalRunoutReference"
+				},
+				{
+					"name": "UserDefinedAttributeReference"
+				},
+				{
+					"name": "UserDefinedLinearReference"
+				},
+				{
+					"name": "UserDefinedAngularReference"
+				},
+				{
+					"name": "UserDefinedTemperatureReference"
+				},
+				{
+					"name": "UserDefinedAreaReference"
+				},
+				{
+					"name": "UserDefinedForceReference"
+				},
+				{
+					"name": "UserDefinedMassReference"
+				},
+				{
+					"name": "UserDefinedPressureReference"
+				},
+				{
+					"name": "UserDefinedSpeedReference"
+				},
+				{
+					"name": "UserDefinedTimeReference"
+				},
+				{
+					"name": "UserDefinedUnitReference"
+				},
+				{
+					"name": "WeldFilletReference"
+				},
+				{
+					"name": "WeldPlugReference"
+				},
+				{
+					"name": "WeldSlotReference"
+				},
+				{
+					"name": "WeldSpotReference"
+				},
+				{
+					"name": "WeldStudReference"
+				},
+				{
+					"name": "WeldSeamReference"
+				},
+				{
+					"name": "WeldSurfacingReference"
+				},
+				{
+					"name": "WeldEdgeReference"
+				},
+				{
+					"name": "WeldSquareReference"
+				},
+				{
+					"name": "WeldBevelReference"
+				},
+				{
+					"name": "WeldVReference"
+				},
+				{
+					"name": "WeldUReference"
+				},
+				{
+					"name": "WeldJReference"
+				},
+				{
+					"name": "WeldFlareVReference"
+				},
+				{
+					"name": "WeldFlareBevelReference"
+				},
+				{
+					"name": "WeldScarfReference"
+				},
+				{
+					"name": "WeldCompoundReference"
+				},
+				{
+					"name": "WidthReference"
+				},
+				{
+					"name": "ReferenceUnion"
+				},
+				{
+					"name": "RemoveNullRows"
+				},
+				{
+					"name": "VersionSelect"
+				},
+				{
+					"name": "ToTimestamp"
+				},
+				{
+					"name": "CharacteristicIdSelect"
+				},
+				{
+					"name": "VersionJoin"
+				},
+				{
+					"name": "FeatureUpdateJoin"
+				},
+				{
+					"name": "CharacteristicUpdateJoin"
+				},
+				{
+					"name": "FeatureIDSelect"
+				},
+				{
+					"name": "FeatureIDCheck"
+				},
+				{
+					"name": "CharacteristicIDCheck"
+				},
+				{
+					"name": "FeatureUpdateID"
+				},
+				{
+					"name": "CharacteristicUpdateID"
+				},
+				{
+					"name": "CapQPID"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          QIFDocument as ({@idMax} as short, {@versionQIF} as string, {@xmlns} as string, Attributes as ({@n} as short, AttributeBool as ({@name} as string, {@value} as boolean)[], AttributeD1 as ({@name} as string, {@value} as double), AttributeI1 as ({@name} as string, {@value} as short)[]), Characteristics as (CharacteristicDefinitions as ({@n} as boolean, DiameterCharacteristicDefinition as ({@id} as short, Tolerance as (DefinedAsLimit as boolean, MaxValue as ({@decimalPlaces} as short, {@linearUnit} as string, {_value_} as double), MinValue as ({@decimalPlaces} as short, {@linearUnit} as string, {_value_} as double)))), CharacteristicMeasurements as ({@n} as short, AngleBetweenCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], AngleCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], AngleFromCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], AngularCoordinateCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], AngularityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ChordCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], CircularRunoutCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], CircularityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], CoaxialityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ConcentricityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ConicalTaperCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ConicityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], CurveLengthCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], CylindricityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], DepthCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], DiameterCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], DistanceBetweenCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], DistanceFromCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], EllipticityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], FlatTaperCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], FlatnessCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], HeightCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], LengthCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], LineProfileCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], LinearCoordinateCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], OtherFormCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ParallelismCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], PerpendicularityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], PointProfileCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], PositionCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], RadiusCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SphericalDiameterCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SphericalRadiusCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SphericityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SquareCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], StraightnessCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SurfaceProfileCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SurfaceProfileNonUniformCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SurfaceTextureCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], SymmetryCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ThicknessCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ThreadCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], ToroidicityCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], TotalRunoutCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedAngularCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedAreaCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedAttributeCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedForceCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedLinearCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedMassCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedPressureCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedSpeedCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedTemperatureCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedTimeCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], UserDefinedUnitCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldBevelCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldCompoundCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldEdgeCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldFilletCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldFlareBevelCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldFlareVCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldJCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldPlugCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldScarfCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldSeamCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldSlotCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldSpotCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldSquareCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldStudCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldSurfacingCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldUCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WeldVCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[], WidthCharacteristicMeasurement as ({@id} as short, CharacteristicNominalId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Name as short)[]), CharacteristicNominals as ({@n} as boolean, DiameterCharacteristicNominal as ({@id} as short, Attributes as ({@n} as short, AttributeStr as ({@name} as string, {@value} as boolean), AttributeUser as ({@name} as string, {@nameUserAttribute} as string, UserDataXML as (ReportableStates as ({@n} as boolean, {@xmlns} as string, Reportable as ({@reportType} as short, {@val} as boolean))))), CharacteristicDefinitionId as short, CharacteristicDesignator as (Designator as boolean), FeatureNominalIds as ({@n} as boolean, Id as short), Name as string, TargetValue as ({@decimalPlaces} as short, {@linearUnit} as string, {_value_} as double))), FormalStandardId as short), Features as (FeatureDefinitions as ({@n} as boolean, CylinderFeatureDefinition as ({@id} as short, Bottom as (BottomEnum as string), Diameter as double, InternalExternal as string, Length as boolean)), FeatureMeasurements as ({@n} as short, CircleFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], CircularArcFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ConeFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ConicalSegmentFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], CylinderFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], CylindricalSegmentFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], EdgePointFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], EllipseFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], EllipticalArcFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ElongatedCircleFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ElongatedCylinderFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ExtrudedCrossSectionFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], GroupFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], LineFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], MarkingFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OppositeAngledLinesFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OppositeAngledPlanesFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OppositeParallelLinesFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OppositeParallelPlanesFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OtherCurveFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OtherNonShapeFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OtherShapeFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], OtherSurfaceFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], PlaneFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], PointDefinedCurveFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], PointDefinedSurfaceFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], PointFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], SphereFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], SphericalSegmentFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], SurfaceOfRevolutionFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ThreadedFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], ToroidalSegmentFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[], TorusFeatureMeasurement as ({@id} as short, DeterminationMode as (Checked as string), FeatureName as short, FeatureNominalId as short)[]), FeatureNominals as ({@n} as boolean, CylinderFeatureNominal as ({@id} as short, Attributes as ({@n} as short, AttributeStr as ({@name} as string, {@value} as string)[]), Axis as (AxisPoint as string, Direction as string), EntityInternalIds as ({@n} as boolean, Id as short), FeatureDefinitionId as short, Name as string))), FileUnits as (OtherUnits as ({@n} as short, AngularUnit as (SIUnitName as string, UnitConversion as (Factor as double), UnitName as string)[], LinearUnit as (SIUnitName as string, UnitConversion as (Factor as double), UnitName as string)[], MassUnit as (SIUnitName as string, UnitConversion as (Factor as double), UnitName as string)[]), PrimaryUnits as (LinearUnit as (SIUnitName as string, UnitConversion as (Factor as double), UnitName as string), MassUnit as (SIUnitName as string, UnitName as string), PMIAngularUnit as (SIUnitName as string, UnitConversion as (Factor as double), UnitName as string))), Header as (Application as (Name as string), ApplicationSource as (Name as string), Author as (Name as string, Organization as string)), Product as (GeometrySet as (Curve12Set as ({@n} as short, Nurbs12 as ({@id} as short, Nurbs12Core as ({@domain} as string, CPs as ({@count} as short, {_value_} as string), Knots as ({@count} as short, {_value_} as string), Order as short))[], Segment12 as ({@id} as short, Segment12Core as ({@domain} as string, EndPoint as string, StartPoint as string))[]), Curve13Set as ({@n} as short, ArcCircular13 as ({@id} as short, ArcCircular13Core as ({@domain} as string, Center as string, DirBeg as string, Normal as string, Radius as double))[], Segment13 as ({@id} as short, Segment13Core as ({@domain} as string, EndPoint as string, StartPoint as string))[]), PointSet as ({@n} as short, Point as ({@id} as short, XYZ as string)[]), SurfaceSet as ({@n} as short, Cylinder23 as ({@id} as short, Cylinder23Core as ({@scaleV} as double, Axis as (AxisPoint as string, Direction as string), Diameter as double, Length as boolean, Sweep as (DirBeg as string, DomainAngle as string))), Plane23 as ({@id} as short, Plane23Core as ({@domainU} as string, {@domainV} as string, DirU as string, DirV as string, Origin as string))[])), Header as (Application as (Name as string), ApplicationSource as (Name as string), File as (Name as string), MassPropertyTolerance as short, ModelTolerance as double, ScaleCoefficient as boolean), MaterialLibrary as ({@n} as boolean, Material as ({@Index} as boolean, {@MaterialName} as string)), PartSet as ({@n} as boolean, Part as ({@id} as short, {@label} as string, {@materialIndex} as boolean, Attributes as ({@n} as short, AttributeD1 as ({@name} as string, {@value} as short)[], AttributeStr as ({@name} as string, {@value} as string)), BodyIds as ({@n} as boolean, Id as short), CharacteristicNominalIds as ({@n} as boolean, Id as short), FeatureNominalIds as ({@n} as boolean, Id as short), Header as (Application as (Name as string), ApplicationSource as (Name as string), File as (Name as string)), ModelNumber as string, ViewIds as ({@n} as short, Id as short[]))), RootPart as (Id as short), TopologySet as (BodySet as ({@n} as boolean, Body as ({@color} as string, {@form} as string, {@id} as short, {@label} as string, EdgeIds as ({@n} as short, Id as short[]), FaceIds as ({@n} as short, Id as short[]), LoopIds as ({@n} as short, Id as short[]), ShellIds as ({@n} as boolean, Id as short), VertexIds as ({@n} as short, Id as short[]))), EdgeSet as ({@n} as short, Edge as ({@color} as string, {@id} as short, Curve as (Id as short), VertexBeg as (Id as short), VertexEnd as (Id as short))[]), FaceSet as ({@n} as short, Face as ({@color} as string, {@id} as short, {@turned} as boolean, LoopIds as ({@n} as short, Id as short[]), Surface as (Id as short))[]), LoopSet as ({@n} as short, Loop as ({@color} as string, {@form} as string, {@id} as short, CoEdges as ({@n} as short, CoEdge as (Curve12 as (Id as short), EdgeOriented as ({@turned} as boolean, Id as short))[]))[]), ShellSet as ({@n} as boolean, Shell as ({@closed} as boolean, {@color} as string, {@id} as short, FaceIds as ({@n} as short, Id as short[]))), VertexSet as ({@n} as short, Vertex as ({@color} as string, {@id} as short, Point as (Id as short))[])), ViewSet as (AnnotationViewSet as ({@n} as boolean, AnnotationView as ({@id} as short, Direction as string, Normal as string)), CameraSet as ({@n} as short, Camera as ({@id} as short, Far as double, Height as double, Near as double, Orientation as (Value as string), Ratio as boolean, ViewPlaneOrigin as string)[]), SavedViewSet as ({@n} as short, SavedView as ({@id} as short, {@label} as string, ActiveView as boolean, AnnotationVisibleIds as ({@n} as boolean, Id as short), Attributes as ({@n} as boolean, AttributeI1 as ({@name} as string, {@value} as boolean)), CameraIds as ({@n} as boolean, Id as short))[])), VisualizationSet as (Fonts as ({@n} as short, Font as ({@index} as short, Name as string, Size as short)[]), PMIDisplaySet as ({@n} as boolean, PMIDisplay as (Attributes as ({@n} as short, AttributeBool as ({@name} as string, {@value} as boolean), AttributeI1 as ({@name} as string, {@value} as boolean)[], AttributeI2 as ({@name} as string, {@value} as string), AttributeUser as ({@name} as string, {@nameUserAttribute} as string, UserDataXML as (PresentationColors as ({@xmlns} as string, CrvColor as ({@count} as boolean), TrColor as ({@count} as boolean))))), Color as string, LeaderExtend as (EndPoint as string, HeadForm as string, HeadHeight as double, PointExtension as string, StartPoint as string), Plane as (AnnotationViewId as (Id as short), Origin as string), Reference as (Id as short), Texts as ({@fontIndex} as boolean, {@lineHeight} as double, {@n} as short, Text as (Data as string, XY as string)[]))))), QPId as string, Results as (ActualComponentSets as ({@n} as short, ActualComponentSet as ({@n} as short, ActualComponent as ({@id} as short, SerialNumber as string, Status as (InspectionStatusEnum as string))[])[]), MeasurementResultsSet as ({@n} as short, MeasurementResults as ({@id} as short, ActualComponentIds as ({@n} as short, Id as short[]), InspectionStatus as (InspectionStatusEnum as string), InspectionTraceability as string, MeasuredCharacteristics as (CharacteristicMeasurements as ({@n} as short, AngleBetweenCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], AngleCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], AngleFromCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], AngularCoordinateCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], AngularityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ChordCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], CircularRunoutCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], CircularityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], CoaxialityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ConcentricityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ConicalTaperCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ConicityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], CurveLengthCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], CylindricityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], DepthCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], DiameterCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], DistanceBetweenCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], DistanceFromCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], EllipticityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], FlatTaperCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], FlatnessCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], HeightCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], LengthCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], LineProfileCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], LinearCoordinateCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], OtherFormCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ParallelismCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], PerpendicularityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], PointProfileCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], PositionCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], RadiusCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SphericalDiameterCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SphericalRadiusCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SphericityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SquareCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], StraightnessCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SurfaceProfileCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SurfaceProfileNonUniformCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], SurfaceTextureCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ThicknessCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ThreadCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], ToroidicityCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], TotalRunoutCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedAngularCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedAreaCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedAttributeCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedForceCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedLinearCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedMassCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedPressureCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedSpeedCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedTemperatureCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedTimeCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], UserDefinedUnitCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldBevelCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldCompoundCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldEdgeCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldFilletCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldFlareBevelCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldFlareVCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldJCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldPlugCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldScarfCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldSeamCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldSlotCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldSpotCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldSquareCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldStudCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldSurfacingCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldUCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WeldVCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[], WidthCharacteristicMeasurement as ({@id} as short, ActualComponentId as short, CharacteristicMeasurementId as short, FeatureMeasurementIds as ({@n} as short, Id as short[]), Status as (CharacteristicStatusEnum as string), Value as ({@decimalPlaces} as short, {_value_} as double))[])), MeasuredFeatures as ({@n} as short, CircleFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], CircularArcFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ConeFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ConicalSegmentFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], CylinderFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], CylindricalSegmentFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], EdgePointFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], EllipseFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], EllipticalArcFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ElongatedCircleFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ElongatedCylinderFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ExtrudedCrossSectionFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], GroupFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], LineFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], MarkingFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OppositeAngledLinesFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OppositeAngledPlanesFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OppositeParallelLinesFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OppositeParallelPlanesFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OtherCurveFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OtherNonShapeFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OtherShapeFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], OtherSurfaceFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], PlaneFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], PointDefinedCurveFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], PointDefinedSurfaceFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], PointFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], SphereFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], SphericalSegmentFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], SurfaceOfRevolutionFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ThreadedFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], ToroidalSegmentFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[], TorusFeatureMeasurement as ({@id} as short, ActualComponentId as short, FeatureMeasurementId as short)[]))[])), StandardsDefinitions as ({@n} as boolean, Standard as ({@id} as short, Designator as string, Organization as (StandardsOrganizationEnum as string))), Version as (TimeCreated as string))",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'xml',",
+				"     container: 'measurementqifin',",
+				"     validationMode: 'none',",
+				"     namespaces: false,",
+				"     dateFormats: ['MM/dd/yyyy'],",
+				"     preferredIntegralType: 'integer',",
+				"     preferredFractionalType: 'float',",
+				"     wildcardPaths:['AerohubMFINMapping.qif'],",
+				"     inferDriftedColumnReferences: true,",
+				"     preferredIntegralReference: 'integer',",
+				"     preferredFractionalReference: 'float') ~> MeasurementQIFIn",
+				"source(output(",
+				"          FeatureType as string,",
+				"          Updateid as integer,",
+				"          FeatureNominalid as integer,",
+				"          FeatureName as string,",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'MeasuredFeatures',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> FeatureUpdate",
+				"source(output(",
+				"          CharacteristicType as string,",
+				"          Updateid as integer,",
+				"          Name as string,",
+				"          CharacteristicNominalid as integer,",
+				"          QPID as string,",
+				"          Origid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'MeasuredCharacteristics',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> CharacteristicUpdate",
+				"MeasurementQIFIn select(mapColumn(",
+				"          CharacteristicMeasurements = QIFDocument.Characteristics.CharacteristicMeasurements,",
+				"          QPId = QIFDocument.QPId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CharacteristicMeasurementSelect",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> AngleBetweenReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.AngleCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.AngleCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.AngleCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> AngleReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.AngularCoordinateCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.AngularCoordinateCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.AngularCoordinateCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> AngularCoordinateReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.AngleFromCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.AngleFromCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.AngleFromCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> AngleFromReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.AngularityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.AngularityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.AngularityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> AngularityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ChordCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ChordCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ChordCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ChordReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.CircularityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.CircularityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.CircularityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CircularityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.CircularRunoutCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.CircularRunoutCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.CircularRunoutCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CircularRunoutReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.CoaxialityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.CoaxialityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.CoaxialityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CoaxialityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ConcentricityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ConcentricityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ConcentricityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ConcentricityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ConicalTaperCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ConicalTaperCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ConicalTaperCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ConicalTaperReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ConicityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ConicityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ConicityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ConicityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.CurveLengthCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.CurveLengthCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.CurveLengthCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CurveLengthReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.CylindricityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.CylindricityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.CylindricityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> CylindricityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.DepthCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.DepthCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.DepthCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> DepthReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.DiameterCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.DiameterCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.DiameterCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> DiameterReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.DistanceBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.DistanceBetweenCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.DistanceBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> DistanceBetweenReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.DistanceFromCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.DistanceFromCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.DistanceFromCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> DistanceFromReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.EllipticityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.EllipticityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.EllipticityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> EllipticityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.FlatTaperCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.FlatTaperCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.FlatTaperCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> FlatTaperReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.FlatnessCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.FlatnessCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.FlatnessCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> FlatnessReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.HeightCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.HeightCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.HeightCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> HeightReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.LengthCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.LengthCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.LengthCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> LengthReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.LinearCoordinateCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.LinearCoordinateCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.LinearCoordinateCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> LinearCoordinateReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.LineProfileCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.LineProfileCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.LineProfileCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> LineProfileReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.OtherFormCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.OtherFormCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.OtherFormCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> OtherFormReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ParallelismCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ParallelismCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ParallelismCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ParallelismReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.PerpendicularityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.PerpendicularityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.PerpendicularityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> PerpendicularityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.PointProfileCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.PointProfileCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.PointProfileCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> PointProfileReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.PositionCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.PositionCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.PositionCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> PositionReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.RadiusCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.RadiusCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.RadiusCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> RadiusReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SphericalDiameterCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SphericalDiameterCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SphericalDiameterCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SphericalDiameterReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SphericalRadiusCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SphericalRadiusCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SphericalRadiusCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SphericalRadiusReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SphericityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SphericityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SphericityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SphericityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SquareCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SquareCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SquareCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SquareReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.StraightnessCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.StraightnessCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.StraightnessCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> StraightnessReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SurfaceProfileCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SurfaceProfileCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SurfaceProfileCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SurfaceProfileReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SurfaceProfileNonUniformCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SurfaceProfileNonUniformCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SurfaceProfileNonUniformCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SurfaceProfileNonUniformReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SurfaceTextureCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SurfaceTextureCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SurfaceTextureCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SurfaceTextureReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.SymmetryCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.SymmetryCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.SymmetryCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> SymmetryReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ThicknessCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ThicknessCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ThicknessCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ThicknessReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ThreadCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ThreadCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ThreadCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ThreadReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.ToroidicityCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.ToroidicityCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.ToroidicityCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> ToroidicityReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.TotalRunoutCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.TotalRunoutCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.TotalRunoutCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> TotalRunoutReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedAttributeCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedAttributeCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedAttributeCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedAttributeReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedLinearCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedLinearCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedLinearCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedLinearReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedAngularCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedAngularCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedAngularCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedAngularReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedTemperatureCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedTemperatureCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedTemperatureCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedTemperatureReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedAreaCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedAreaCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedAreaCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedAreaReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedForceCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedForceCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedForceCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedForceReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedMassCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedMassCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedMassCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedMassReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedPressureCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedPressureCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedPressureCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedPressureReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedSpeedCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedSpeedCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedSpeedCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedSpeedReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedTimeCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedTimeCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedTimeCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedTimeReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.UserDefinedUnitCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.UserDefinedUnitCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.UserDefinedUnitCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> UserDefinedUnitReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldFilletCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldFilletCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldFilletCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldFilletReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldPlugCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldPlugCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldPlugCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldPlugReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldSlotCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldSlotCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldSlotCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldSlotReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldSpotCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldSpotCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldSpotCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldSpotReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldStudCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldStudCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldStudCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldStudReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldSeamCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldSeamCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldSeamCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldSeamReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldSurfacingCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldSurfacingCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldSurfacingCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldSurfacingReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldEdgeCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldEdgeCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldEdgeCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldEdgeReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldSquareCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldSquareCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldSquareCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldSquareReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldBevelCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldBevelCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldBevelCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldBevelReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldVCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldVCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldVCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldVReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldUCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldUCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldUCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldUReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldJCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldJCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldJCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldJReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldFlareVCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldFlareVCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldFlareVCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldFlareVReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldFlareBevelCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldFlareBevelCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldFlareBevelCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldFlareBevelReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldScarfCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldScarfCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldScarfCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldScarfReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WeldCompoundCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WeldCompoundCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WeldCompoundCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WeldCompoundReference",
+				"CharacteristicMeasurementSelect foldDown(unroll(CharacteristicMeasurements.WidthCharacteristicMeasurement.FeatureMeasurementIds.Id),",
+				"     mapColumn(",
+				"          QPID = QPId,",
+				"          Characteristicid = CharacteristicMeasurements.WidthCharacteristicMeasurement.{@id},",
+				"          Featureid = CharacteristicMeasurements.WidthCharacteristicMeasurement.FeatureMeasurementIds.Id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> WidthReference",
+				"AngleBetweenReference, AngleReference, AngularCoordinateReference, AngleFromReference, AngularityReference, ChordReference, CircularityReference, CircularRunoutReference, CoaxialityReference, ConcentricityReference, ConicalTaperReference, ConicityReference, CurveLengthReference, CylindricityReference, DepthReference, DiameterReference, DistanceBetweenReference, DistanceFromReference, EllipticityReference, FlatTaperReference, FlatnessReference, HeightReference, LengthReference, LinearCoordinateReference, LineProfileReference, OtherFormReference, ParallelismReference, PerpendicularityReference, PointProfileReference, PositionReference, RadiusReference, SphericalDiameterReference, SphericalRadiusReference, SphericityReference, SquareReference, StraightnessReference, SurfaceProfileReference, SurfaceProfileNonUniformReference, SurfaceTextureReference, SymmetryReference, ThicknessReference, ThreadReference, ToroidicityReference, TotalRunoutReference, UserDefinedAttributeReference, UserDefinedLinearReference, UserDefinedAngularReference, UserDefinedTemperatureReference, UserDefinedAreaReference, UserDefinedForceReference, UserDefinedMassReference, UserDefinedPressureReference, UserDefinedSpeedReference, UserDefinedTimeReference, UserDefinedUnitReference, WidthReference, WeldFilletReference, WeldPlugReference, WeldSlotReference, WeldSpotReference, WeldStudReference, WeldSeamReference, WeldSurfacingReference, WeldEdgeReference, WeldSquareReference, WeldBevelReference, WeldVReference, WeldUReference, WeldJReference, WeldFlareVReference, WeldFlareBevelReference, WeldScarfReference, WeldCompoundReference union(byName: true)~> ReferenceUnion",
+				"CapQPID alterRow(deleteIf(isNull(Characteristicid))) ~> RemoveNullRows",
+				"MeasurementQIFIn select(mapColumn(",
+				"          FileVersion = QIFDocument.Version.TimeCreated",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> VersionSelect",
+				"VersionSelect derive(FileVersion = toTimestamp(FileVersion,'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> ToTimestamp",
+				"CharacteristicUpdate select(mapColumn(",
+				"          Origid,",
+				"          Updateid,",
+				"          FileVersion,",
+				"          QPID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CharacteristicIdSelect",
+				"RemoveNullRows, ToTimestamp join(1 == 1,",
+				"     joinType:'cross',",
+				"     broadcast: 'auto')~> VersionJoin",
+				"VersionJoin, FeatureUpdateID join(Featureid == Orginid,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> FeatureUpdateJoin",
+				"FeatureUpdateJoin, CharacteristicUpdateID join(Characteristicid == CharacteristicOrigid,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> CharacteristicUpdateJoin",
+				"FeatureUpdate select(mapColumn(",
+				"          Origid,",
+				"          Updateid,",
+				"          FileVersion,",
+				"          QPID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FeatureIDSelect",
+				"FeatureIDSelect, VersionJoin exists(Origid == Featureid",
+				"     && FeatureIDSelect@FileVersion == ToTimestamp@FileVersion",
+				"     && FeatureIDSelect@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> FeatureIDCheck",
+				"CharacteristicIdSelect, VersionJoin exists(Origid == Characteristicid",
+				"     && CharacteristicIdSelect@FileVersion == ToTimestamp@FileVersion",
+				"     && CharacteristicIdSelect@QPID == CapQPID@QPID,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> CharacteristicIDCheck",
+				"FeatureIDCheck select(mapColumn(",
+				"          Updateid,",
+				"          Orginid = Origid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FeatureUpdateID",
+				"CharacteristicIDCheck select(mapColumn(",
+				"          CharacteristicOrigid = Origid,",
+				"          CharacterisitcUpdateid = Updateid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CharacteristicUpdateID",
+				"ReferenceUnion derive(QPID = upper(QPID)) ~> CapQPID",
+				"CharacteristicUpdateJoin sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          QPID as string,",
+				"          Featureid as integer,",
+				"          Characteristicid as integer,",
+				"          UpdatedFeatureid as integer,",
+				"          UpdatedCharacteristicid as integer,",
+				"          FileVersion as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          QPID,",
+				"          Featureid,",
+				"          Characteristicid,",
+				"          UpdatedFeatureid = Updateid,",
+				"          UpdatedCharacteristicid = CharacterisitcUpdateid,",
+				"          FileVersion",
+				"     )) ~> CharacterFeatureReferenceSink"
+			]
+		}
+	}
+}
