@@ -553,15 +553,6 @@
 				},
 				{
 					"name": "FindIDMax"
-				},
-				{
-					"name": "ItemExists"
-				},
-				{
-					"name": "ItemSelect"
-				},
-				{
-					"name": "ItemUpdateJoin"
 				}
 			],
 			"scriptLines": [
@@ -1862,7 +1853,7 @@
 				"VersionJoin, IDMaxSelect join(1==1,",
 				"     joinType:'cross',",
 				"     broadcast: 'auto')~> IDMaxJoin",
-				"ItemUpdateJoin, ACSelect join(ActualComponentid == ACOrigid,",
+				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ACUpdateJoin",
 				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
@@ -1880,20 +1871,6 @@
 				"     skipDuplicateMapOutputs: true) ~> QIFSelect",
 				"QIFSelect aggregate(groupBy(QPID),",
 				"     UpdateidMax = toInteger(max(UpdateidMax))) ~> FindIDMax",
-				"CharacteisticItemSource, VersionJoin exists(Origid == CharacteristicItemid",
-				"     && CharacteisticItemSource@QPID == CapQPID@QPID",
-				"     && CharacteisticItemSource@FileVersion == ToTimestamp@FileVersion,",
-				"     negate:false,",
-				"     broadcast: 'auto')~> ItemExists",
-				"ItemExists select(mapColumn(",
-				"          ItemUpdateid = Updateid,",
-				"          ItemOrigid = Origid",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> ItemSelect",
-				"IDMaxJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
-				"     joinType:'inner',",
-				"     broadcast: 'auto')~> ItemUpdateJoin",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -1924,7 +1901,7 @@
 				"          Resultsid = MRUpdateid,",
 				"          CharacteristicType,",
 				"          Status,",
-				"          CharacteristicItemid = ItemUpdateid,",
+				"          CharacteristicItemid = Updateid,",
 				"          ActualComponentid = ACUpdateid,",
 				"          Value,",
 				"          DecimalPlaces,",
