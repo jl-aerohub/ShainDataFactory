@@ -37,7 +37,7 @@
 						"referenceName": "MFIN Database",
 						"type": "LinkedServiceReference"
 					},
-					"name": "source1"
+					"name": "CharacteristicItemSource"
 				}
 			],
 			"sinks": [
@@ -626,7 +626,7 @@
 				"     store: 'sqlserver',",
 				"     schemaName: 'dbo',",
 				"     tableName: 'CharacteristicItems',",
-				"     isolationLevel: 'READ_UNCOMMITTED') ~> source1",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> CharacteristicItemSource",
 				"CharacteristicItemSelect foldDown(unroll(CharacteristicMeasurements.AngleBetweenCharacteristicMeasurement.FeatureMeasurementIds.Id),",
 				"     mapColumn(",
 				"          QPID,",
