@@ -9,7 +9,7 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "id",
+				"name": "Updateid",
 				"type": "int",
 				"precision": 10
 			},
@@ -25,6 +25,11 @@
 			{
 				"name": "QPID",
 				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Origid",
+				"type": "int",
+				"precision": 10
 			}
 		],
 		"typeProperties": {

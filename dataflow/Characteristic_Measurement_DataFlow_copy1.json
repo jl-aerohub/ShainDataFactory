@@ -27,7 +27,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "Characteristic_Measurement_Sink",
+						"referenceName": "Measurement_Results_Sink",
 						"type": "DatasetReference"
 					},
 					"name": "MeasurementResultsSource"
@@ -608,13 +608,8 @@
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> ActualComponentSource",
 				"source(output(",
 				"          Updateid as integer,",
-				"          Resultsid as integer,",
-				"          CharacteristicType as string,",
-				"          Status as string,",
-				"          CharacteristicItemid as integer,",
+				"          InspectionStatus as string,",
 				"          ActualComponentid as integer,",
-				"          Value as double,",
-				"          DecimalPlaces as integer,",
 				"          QPID as string,",
 				"          Origid as integer",
 				"     ),",
