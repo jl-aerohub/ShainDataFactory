@@ -562,6 +562,9 @@
 				},
 				{
 					"name": "ItemUpdateJoin"
+				},
+				{
+					"name": "MRDuplicateRemoval"
 				}
 			],
 			"scriptLines": [
@@ -1821,6 +1824,8 @@
 				"MRUpdateJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ItemUpdateJoin",
+				"MRSelect aggregate(groupBy(MRUpdateid),",
+				"     each(match(name!='MRUpdateid'), $$ = first($$))) ~> MRDuplicateRemoval",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
