@@ -562,9 +562,6 @@
 				},
 				{
 					"name": "ItemUpdateJoin"
-				},
-				{
-					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -1762,7 +1759,7 @@
 				"QIFDocumentSource, VersionJoin exists(QIFDocumentSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> QIFExists",
-				"aggregate1 select(mapColumn(",
+				"MRExists select(mapColumn(",
 				"          MRUpdateid = Updateid,",
 				"          MROrigid = Origid",
 				"     ),",
@@ -1824,8 +1821,6 @@
 				"MRUpdateJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ItemUpdateJoin",
-				"MRExists aggregate(groupBy(Updateid),",
-				"     each(match(name != 'Updateid'), $$ = first($$))) ~> aggregate1",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
