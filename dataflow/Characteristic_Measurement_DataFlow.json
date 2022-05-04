@@ -1795,7 +1795,7 @@
 				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ACUpdateJoin",
-				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
+				"ACUpdateJoin, MRDuplicateRemoval join(Resultsid == MROrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> MRUpdateJoin",
 				"ItemUpdateJoin keyGenerate(output(Updateid as long),",
