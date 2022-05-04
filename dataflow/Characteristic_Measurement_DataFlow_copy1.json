@@ -504,9 +504,6 @@
 					"name": "MeasurementResultsFlatten"
 				},
 				{
-					"name": "MRExists"
-				},
-				{
 					"name": "ACExists"
 				},
 				{
@@ -562,6 +559,12 @@
 				},
 				{
 					"name": "ItemUpdateJoin"
+				},
+				{
+					"name": "MRExists"
+				},
+				{
+					"name": "MRDuplicateRemoval"
 				}
 			],
 			"scriptLines": [
@@ -1745,10 +1748,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsFlatten",
-				"MeasurementResultsSource, VersionJoin exists(Origid == CharacterMeasurementUnion@Resultsid",
-				"     && MeasurementResultsSource@QPID == CapQPID@QPID,",
-				"     negate:false,",
-				"     broadcast: 'auto')~> MRExists",
 				"ActualComponentSource, VersionJoin exists(Origid == ActualComponentid",
 				"     && ActualComponentSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
@@ -1789,7 +1788,7 @@
 				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ACUpdateJoin",
-				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
+				"ACUpdateJoin, MRDuplicateRemoval join(Resultsid == MROrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> MRUpdateJoin",
 				"ItemUpdateJoin keyGenerate(output(Updateid as long),",
@@ -1818,6 +1817,12 @@
 				"MRUpdateJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ItemUpdateJoin",
+				"MeasurementResultsSource, VersionJoin exists(MeasurementResultsSource@QPID == CapQPID@QPID",
+				"     && Origid == Resultsid,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> MRExists",
+				"MRSelect aggregate(groupBy(MRUpdateid),",
+				"     each(match(name!='MRUpdateid'), $$ = first($$))) ~> MRDuplicateRemoval",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
