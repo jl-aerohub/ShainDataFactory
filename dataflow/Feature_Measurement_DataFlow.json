@@ -322,6 +322,9 @@
 				},
 				{
 					"name": "ItemUpdateJoin"
+				},
+				{
+					"name": "MRDuplicateRemoval"
 				}
 			],
 			"scriptLines": [
@@ -862,7 +865,7 @@
 				"IDMaxJoin, ACSelect join(ActualComponentid == ACOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ACUpdateJoin",
-				"ACUpdateJoin, MRSelect join(Resultsid == MROrigid,",
+				"ACUpdateJoin, MRDuplicateRemoval join(Resultsid == MROrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> MRUpdateJoin",
 				"FeatureItemSource, VersionJoin exists(FeatureItemSource@QPID == CapQPID@QPID",
@@ -879,6 +882,8 @@
 				"MRUpdateJoin, ItemSelect join(FeatureItemId == ItemOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ItemUpdateJoin",
+				"MRSelect aggregate(groupBy(MRUpdateid),",
+				"     each(match(name!='MRUpdateid'), $$ = first($$))) ~> MRDuplicateRemoval",
 				"AddIDMax sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",

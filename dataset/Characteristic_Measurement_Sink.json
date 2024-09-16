@@ -9,7 +9,7 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "id",
+				"name": "Updateid",
 				"type": "int",
 				"precision": 10
 			},
@@ -32,11 +32,6 @@
 				"precision": 10
 			},
 			{
-				"name": "MeasuredFeatureid",
-				"type": "int",
-				"precision": 10
-			},
-			{
 				"name": "ActualComponentid",
 				"type": "int",
 				"precision": 10
@@ -54,6 +49,11 @@
 			{
 				"name": "QPID",
 				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Origid",
+				"type": "int",
+				"precision": 10
 			}
 		],
 		"typeProperties": {

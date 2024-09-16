@@ -1,5 +1,5 @@
 {
-	"name": "Characteristic_Measurement_DataFlow",
+	"name": "Characteristic_Measurement_DataFlow_copy1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -26,9 +26,9 @@
 					"name": "ActualComponentSource"
 				},
 				{
-					"linkedService": {
-						"referenceName": "MFIN Database",
-						"type": "LinkedServiceReference"
+					"dataset": {
+						"referenceName": "Measurement_Results_Sink",
+						"type": "DatasetReference"
 					},
 					"name": "MeasurementResultsSource"
 				},
@@ -504,9 +504,6 @@
 					"name": "MeasurementResultsFlatten"
 				},
 				{
-					"name": "MRExists"
-				},
-				{
 					"name": "ACExists"
 				},
 				{
@@ -564,6 +561,9 @@
 					"name": "ItemUpdateJoin"
 				},
 				{
+					"name": "MRExists"
+				},
+				{
 					"name": "MRDuplicateRemoval"
 				}
 			],
@@ -590,9 +590,10 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'query',",
+				"     format: 'table',",
 				"     store: 'sqlserver',",
-				"     query: 'SELECT QPID FROM QIFDocument',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'QIFDocument',",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> QIFDocumentSource",
 				"source(output(",
 				"          Updateid as integer,",
@@ -617,11 +618,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table',",
-				"     store: 'sqlserver',",
-				"     schemaName: 'dbo',",
-				"     tableName: 'MeasurementResults',",
-				"     isolationLevel: 'READ_UNCOMMITTED') ~> MeasurementResultsSource",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> MeasurementResultsSource",
 				"source(output(",
 				"          CharacteristicType as string,",
 				"          Updateid as integer,",
@@ -1750,10 +1748,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> MeasurementResultsFlatten",
-				"MeasurementResultsSource, VersionJoin exists(Origid == Resultsid",
-				"     && MeasurementResultsSource@QPID == CapQPID@QPID,",
-				"     negate:false,",
-				"     broadcast: 'auto')~> MRExists",
 				"ActualComponentSource, VersionJoin exists(Origid == ActualComponentid",
 				"     && ActualComponentSource@QPID == CapQPID@QPID,",
 				"     negate:false,",
@@ -1823,6 +1817,10 @@
 				"MRUpdateJoin, ItemSelect join(CharacteristicItemid == ItemOrigid,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> ItemUpdateJoin",
+				"MeasurementResultsSource, VersionJoin exists(MeasurementResultsSource@QPID == CapQPID@QPID",
+				"     && Origid == Resultsid,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> MRExists",
 				"MRSelect aggregate(groupBy(MRUpdateid),",
 				"     each(match(name!='MRUpdateid'), $$ = first($$))) ~> MRDuplicateRemoval",
 				"AddIDMax sink(allowSchemaDrift: true,",
@@ -1849,7 +1847,6 @@
 				"     upsertable: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 2,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          Updateid,",
